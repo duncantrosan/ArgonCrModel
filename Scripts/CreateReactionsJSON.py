@@ -113,9 +113,10 @@ def build_transitions_json(in_csv, out_json):
 if __name__ == '__main__':
     from pathlib import Path
     MainDir = Path(__file__).resolve().parent.parent
-    DataFolder = MainDir / 'InputData'
-    InCSV = DataFolder / 'ArgonReactionList.csv' # Change path for Alternative Reaction LIST (default is NIST)
+    DataFolder = MainDir / r'InputData\AtomicNitrogenData'
+    InCSV = DataFolder / 'AtomicNitrogenReactionList.csv' # Change path for Alternative Reaction LIST (default is NIST)
 
-    OutJSON = DataFolder / 'ArgonReactionList.json' # Change For alternative ReactionList
+    OutJSON = DataFolder / 'AtomicNitogenReactionList.json' # Change For alternative ReactionList
     t = build_transitions_json(InCSV,OutJSON)
     print(f"Parsed {len(t)} transitions from {InCSV} -> {OutJSON}")
+    

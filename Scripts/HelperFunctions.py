@@ -19,6 +19,12 @@ def eV2nm(eV):
     Wavelength = (constants.h * constants.c) / Joules * 10**9
     return Wavelength
 
+def Volume2Torr(N,T=300):
+    k_B = 1.380649e-23   # Boltzmann constant, J/K
+    P = N*k_B*T # p = (n/V)kT pressure in pascal
+    Torr = P / 133.322368  # Pascal -> Torr
+    return Torr
+
 def Torr2Volume(P,T = 300): # Converts partial pressure of a gas to molecules per m^3
     """Converts partial pressure of a gas (in Torr) to number density (molecules per m^3).
     
@@ -37,7 +43,7 @@ def Te2EEPF(Te = 2,E = None):
     
     E_True = E is not None
     if E is None:
-        E = np.linspace(0, 20, 1000)
+        E = np.linspace(0, 40, 1000)
     
     EEPF = 2*np.sqrt(1/pi)* Te**(-3/2)*np.sqrt(E)*np.exp(-E/Te)
     if E_True:
@@ -106,6 +112,32 @@ def FindTau(UpperLevel, LowerLevel, Reaction, P_torr, Tg, R_m,
     return a, tau0
 
 
+def FindTauInModel(UpperLevel, LowerLevel, Reaction, P_torr, Tg, R_m,
+                m_Ar=6.63e-26):
+    """Convert (pressure, temperature) -> (a, tau0) for a resonance line."""
+    kB, c, e, eps0, me = (constants.k, constants.c, constants.e,
+                          constants.epsilon_0, constants.m_e)
+    g_u, g_l = UpperLevel['g'], LowerLevel['g']
+    lam = eV2nm(UpperLevel['energy_eV'] - LowerLevel['energy_eV'])/1e9
+    A_ul = Reaction['coeff']
+    nu0 = c/lam
+
+    n_g  = (P_torr*133.322)/(kB*Tg)               # ground density m^-3
+    dnu_D = (nu0/c)*np.sqrt(2*kB*Tg/m_Ar)         # 1/e half-width
+    f_lu = Einstein2Oscilator(A_ul, lam, g_u, g_l) # Oscillator strength
+
+    # resonance (self) broadening FWHM, Hz
+    K = e**2/(4*np.pi*eps0*me)
+    Gamma_L = 1.61*K*np.sqrt(g_l/g_u)*f_lu*n_g/(2*np.pi*nu0)
+
+    a    = (Gamma_L/2.0)/dnu_D
+    phi0 = np.real(wofz(1j*a))/(dnu_D*np.sqrt(np.pi))
+    k0_over_n = (lam**2/(8*np.pi))*(g_u/g_l)*A_ul*phi0
+    tau0 = k0_over_n*n_g*R_m
+    return a, tau0
+
+
+
 #############
 # Find k_0 
 def FindKOverN(UpperLevel,LowerLevel,Reaction,Tg = 300):
@@ -136,13 +168,13 @@ def FindDiffusionTime(P,Tg,R):
     s3,s5 = FindDiffusionCoeff(P,Tg)
     Lam = 4.493 # Derived from transport geomettry in hemispherical Coord. 
     T_s3 = (R/Lam)**2 / s3
-    T_s5 = (R/Lam)**2 / s3
+    T_s5 = (R/Lam)**2 / s5
     return T_s3, T_s5
 
 
 def CreateIonizationCrossSections(LevelList, Ee=None):
     pi = math.pi
-    a0 = constants.physical_constants['Bohr radius'][0] * 100          # cm
+    a0 = constants.physical_constants['Bohr radius'][0]           # cm
     R  = constants.physical_constants['Rydberg constant times hc in eV'][0]  # eV
     e4 = (2 * a0 * R)**2   # cm^2 * eV^2
 
@@ -153,8 +185,18 @@ def CreateIonizationCrossSections(LevelList, Ee=None):
     if Ee is None:
         Ee = np.linspace(0.01, 100, 2000)   # avoid Ee=0
     Ee = np.atleast_1d(Ee).astype(float)
-
+    
+    
+    
+    
     for label, level in LevelList.items():
+        level['Ionization Data'] = {
+            'Energy_eV': [],
+            'CrossSection_m^2': [],
+            'Threshold_eV':[],
+            'Rate_cm^3':[]
+        }
+        
         if level.get('kind') == 'ground':
             continue   # handle ground state separately
 
@@ -167,9 +209,9 @@ def CreateIonizationCrossSections(LevelList, Ee=None):
         Cross = np.where(Ee > Ek, Cross, 0.0)
         Cross = np.nan_to_num(Cross, nan=0.0, posinf=0.0, neginf=0.0)
 
-        level['IonizationCrossSection'] = Cross
-        level['IonizationCrossSectionEnergy'] = Ee
-
+        level['Ionization Data']['CrossSection_m^2'] = Cross
+        level['Ionization Data']['Energy_eV'] = Ee
+        level['Ionization Data']['Threshold_eV'] = Ek
     return LevelList
 
 def CreateIonizationRate(): 
@@ -193,7 +235,7 @@ def MaxweillianReactionRates(CrossSections,Te=2):
         InterpolatedCS[E <= Threshold] = 0.0     # enforce threshold, same length as E
 
         Integrand = np.sqrt(E) * EEPF * InterpolatedCS
-        Rate = np.sqrt(2 * e_charge**3 / m_e) * np.trapezoid(Integrand, E)
+        Rate = np.sqrt(2 * e_charge / m_e) * np.trapezoid(Integrand, E)
 
         NewCS = dict(CS)          # shallow copy, so original CrossSections is untouched
         NewCS['Rate'] = Rate
@@ -202,12 +244,15 @@ def MaxweillianReactionRates(CrossSections,Te=2):
     return Results
         
 
-        
-       
+
+def FindRadiationTrapping(RadiationTrappingMatrix,Tau,a):
+    
+    a=1
+    return 
         
     
 
-#%%  Importing Data
+#%%  Level List
 ###############################################################################
 ## Import JSON Files and Build Dicts
 def ImportCrossSections():
@@ -216,7 +261,7 @@ def ImportCrossSections():
     
     # 2. Join using the / operator
     DataFolder = MainDir / 'InputData'
-    CSPath = DataFolder / 'ArgonCross_Sections.json'
+    CSPath = DataFolder / 'ArgonCrossSections.json'
     
     # 3. Open the file directly using the Path object
     with open(CSPath, 'r') as file:
@@ -249,33 +294,24 @@ def ImportReactionList():
         ReactionList = json.load(file)
         return ReactionList
 
-def BuildRateModel(LevelList, LevelList_Update, CrossSectionRates):
-    """
-    Merge radiative (Aki) and electron-impact (Rate) data into one
-    per-level structure of production/loss channels.
-
-    LevelList        : original dict keyed by label, with g/energy_eV/etc.
-    LevelList_Update  : output of combine(), with transitions_in_set,
-                        transitions_cascade_in, A_total_per_upper
-    CrossSectionRates : output of MaxwellianReactionRates(), list of dicts
-                        with lower_label/upper_label/Rate
-    """
+def BuildRateModel(LevelList, LevelList_Update):
     Model = {label: dict(info) for label, info in LevelList.items()}
     for lvl in Model.values():
-        lvl['gain'] = []   # each entry: {'partner', 'coeff', 'process'}
-        lvl['loss'] = []
+        lvl['RadiativeDecay'] = []
 
     # --- Radiative decay: upper -> lower + photon ---
     for t in LevelList_Update['transitions_in_set']:
-        up, lo, Aki = t['upper_label'], t['lower_label'], t['Aki']
+        up, lo, Aki, WL = t['upper_label'], t['lower_label'], t['Aki'], t['wl_nm']
         if Aki is None or up not in Model or lo not in Model:
             continue
-        Model[up]['loss'].append({'partner': lo, 'coeff': Aki, 'process': 'radiative'})
-        Model[lo]['gain'].append({'partner': up, 'coeff': Aki, 'process': 'radiative'})
+        Model[up]['RadiativeDecay'].append(
+            {'partner': lo, 'coeff': Aki, 'process': 'radiative',
+             'direction': 'loss', 'wavelength_nm': WL})
+        Model[lo]['RadiativeDecay'].append(
+            {'partner': up, 'coeff': Aki, 'process': 'radiative',
+             'direction': 'gain', 'wavelength_nm': WL})
 
     # --- Cascades from untracked upper levels: informational only ---
-    # These add population to 'lower_label' but the source population isn't
-    # modeled here. Store separately so you can decide how to handle them.
     for t in LevelList_Update['transitions_cascade_in']:
         lo, Aki = t['lower_label'], t['Aki']
         if Aki is None or lo not in Model:
@@ -283,37 +319,18 @@ def BuildRateModel(LevelList, LevelList_Update, CrossSectionRates):
         Model[lo].setdefault('untracked_cascade_in', []).append(
             {'Aki': Aki, 'wl_nm': t['wl_nm']})
 
-    # --- Electron-impact excitation/de-excitation ---
-    g_lookup = {label: info['g'] for label, info in LevelList.items()}
-    E_lookup = {label: info['energy_eV'] for label, info in LevelList.items()}
-
-    for CS in CrossSectionRates:
-        lo, up, k_exc = CS.get('lower_label'), CS.get('upper_label'), CS.get('Rate')
-        if lo is None or up is None or k_exc is None:
-            continue
-        if lo not in Model or up not in Model:
-            continue
-
-        # Excitation: lower -> upper
-        Model[lo]['loss'].append({'partner': up, 'coeff': k_exc, 'process': 'e_excitation'})
-        Model[up]['gain'].append({'partner': lo, 'coeff': k_exc, 'process': 'e_excitation'})
-
-        # De-excitation via detailed balance (Klein-Rosseland), same k_exc
-        # already integrated -> need separate integral in general, but if
-        # you computed k_exc via a Maxwellian rate, the standard shortcut
-        # k_deexc = (g_lo/g_up) * k_exc * exp(threshold/Te) holds ONLY for
-        # a Maxwellian EEDF specifically (not general EEDFs).
-        g_lo, g_up = g_lookup.get(lo), g_lookup.get(up)
-        threshold = CS.get('threshold_eV')
-        if g_lo and g_up and threshold is not None:
-            # NOTE: Te must be passed in or stored on CS; shown here for clarity
-            pass  # see below
-
-        Model[up]['loss'].append({'partner': lo, 'coeff': None, 'process': 'e_deexcitation_TODO'})
-        Model[lo]['gain'].append({'partner': up, 'coeff': None, 'process': 'e_deexcitation_TODO'})
+    # --- Radiative loss to UNTRACKED lower levels ---
+    A_tot = LevelList_Update['A_total_per_upper']
+    for label, lvl in Model.items():
+        A_all = A_tot.get(label, 0.0)
+        A_tracked = sum(r['coeff'] for r in lvl['RadiativeDecay']
+                        if r['direction'] == 'loss')
+        A_missing = A_all - A_tracked
+        lvl['A_untracked_loss'] = A_missing if A_missing > 1e-3 * A_all else 0.0
 
     return Model
 
+#%% Electron Excitation Functions
 def AddElectronExcitation(ModelData, CrossSectionList):
     CrossSections = CrossSectionList['cross_sections']
 
@@ -346,6 +363,15 @@ def AddElectronExcitation(ModelData, CrossSectionList):
                     'cross_section': CS['cross_section'],
                 })
     return ModelData
+
+# Bug fix to help parse the ground state in LXcat reactions 
+def resolve_label(lxcat_name, crosswalk):
+    if lxcat_name is None:
+        return None
+    cleaned = lxcat_name.strip().rstrip('<').strip()
+    if cleaned.startswith('Ar(3p6'):
+        return 'ground'
+    return crosswalk.get(cleaned)
 
 def ImportRadiationTrappingMatrix():
     # 1. Get the directory
@@ -468,6 +494,422 @@ def AddTerm(Model, level, kind, coeff, process,
 
 
 
+#%% Create Analytical Excitation rates 
+# -*- coding: utf-8 -*-
+"""
+Analytic (Drawin / Bogaerts) electron-impact excitation cross sections.
+
+Paste this whole block into HelperFunctions.py, e.g. under a new cell
+    #%% Analytic cross sections (Bogaerts 1998)
+placed AFTER Einstein2Oscilator and eV2nm are defined.
+
+Requires (already in HelperFunctions.py):
+    numpy as np, math, scipy.constants as constants
+    eV2nm(), Einstein2Oscilator()
+
+Entry point:
+    ModelData = AddAnalyticExcitationCrossSections(ModelData)
+
+Produces cross sections in m^2 on a shared energy grid in eV, appended to
+    level['Electron Impact CrossSections']['Reactants']   (level = LOWER)
+    level['Electron Impact CrossSections']['Products']    (level = UPPER)
+with exactly the same keys the LXCat importer uses, plus a 'source' tag.
+"""
+
+
+
+
+# ---------------------------------------------------------------------------
+# Constants / provenance
+# ---------------------------------------------------------------------------
+
+BOGAERTS_SOURCE = ("Bogaerts, Gijbels & Vlcek, J. Appl. Phys. 84, 121 (1998), "
+                   "Sec. III A - Drawin semi-empirical formulae "
+                   "(orig. Drawin 1967; cf. Vlcek, J. Phys. D 22, 623 (1989))")
+
+_A0_M       = constants.physical_constants['Bohr radius'][0]                      # m
+_E_H        = constants.physical_constants['Rydberg constant times hc in eV'][0]  # 13.6057 eV
+_FOURPI_A0SQ = 4.0 * np.pi * _A0_M**2                                             # 3.5195e-20 m^2
+_CM2_TO_M2  = 1.0e-4
+
+# Bogaerts Eq. for optically-forbidden transitions among the four 4s levels.
+# Coefficients are quoted in cm^2 in the paper -> converted to m^2 here.
+_Q_4S = {(2, 3): 1.0,
+         (2, 4): 0.1,
+         (2, 5): 0.1,
+         (3, 4): 0.1,
+         (3, 5): 0.1}
+_C_4S_Q   = 5.797e-15 * _CM2_TO_M2   # m^2, prefactor for the Q_nm formula
+_P_4S_Q   = -0.54                    # exponent on (E - E_mn)
+_C_4S_45  = 8.111e-16 * _CM2_TO_M2   # m^2, prefactor for the n=4 -> m=5 formula
+_P_4S_45  = -1.04
+
+
+# ---------------------------------------------------------------------------
+# Energy grid
+# ---------------------------------------------------------------------------
+
+def DefaultCrossSectionGrid(E_max=200.0):
+    """
+    Energy grid (eV) for analytic cross sections.
+
+    Dense below 2 eV so the near-degenerate 4s-4s transitions (dE ~ 0.08 eV)
+    are resolved, dense through the 10-20 eV region where the EEPF grid in
+    Te2EEPF lives, coarser out to E_max.
+    """
+    return np.unique(np.concatenate([
+        np.linspace(0.0,  2.0,  401),
+        np.linspace(2.0,  20.0, 901),
+        np.linspace(20.0, E_max, 401),
+    ])).astype(float)
+
+
+# ---------------------------------------------------------------------------
+# The three cross-section shapes
+# ---------------------------------------------------------------------------
+
+def SigmaDrawinAllowed(E, dE, f_lu, alpha=1.0, beta=1.0):
+    """
+    Optically allowed (dipole) transitions, Drawin form:
+
+        sigma = 4 pi a0^2 (E_H/dE)^2 f_nm alpha (u-1)/u^2 ln(1.25 beta u)
+
+    with u = E/dE. E [eV] array, dE [eV] scalar, returns m^2.
+    """
+    E = np.asarray(E, dtype=float)
+    sigma = np.zeros_like(E)
+    if dE <= 0 or f_lu <= 0:
+        return sigma
+    u = E / dE
+    m = u > 1.0
+    if not np.any(m):
+        return sigma
+    ln_term = np.clip(np.log(1.25 * beta * u[m]), 0.0, None)
+    sigma[m] = (_FOURPI_A0SQ * (_E_H / dE)**2 * f_lu * alpha
+                * (u[m] - 1.0) / u[m]**2 * ln_term)
+    return sigma
+
+
+def SigmaDrawinForbidden(E, dE, alpha=1.0, p=1.0, q=2.0):
+    """
+    Optically forbidden transitions, generalised Drawin form:
+
+        sigma = 4 pi a0^2 alpha (u-1)^p / u^q,     u = E/dE
+
+    Defaults (p, q) = (1, 2) correspond to the parity-forbidden branch.
+    Use (p, q) = (2, 3) for the spin-forbidden branch.
+
+    NOTE: the exponents in the scanned paper are ambiguous in the OCR text.
+    They are exposed as parameters so you can set them once you have the
+    original typeset equations (or Vlcek 1989) in front of you.
+    """
+    E = np.asarray(E, dtype=float)
+    sigma = np.zeros_like(E)
+    if dE <= 0:
+        return sigma
+    u = E / dE
+    m = u > 1.0
+    if not np.any(m):
+        return sigma
+    sigma[m] = _FOURPI_A0SQ * alpha * (u[m] - 1.0)**p / u[m]**q
+    return sigma
+
+
+def Sigma4sManifold(E, dE, g_lower, g_upper, Q=None, mode='Q'):
+    """
+    Bogaerts' special-cased cross sections for the optically forbidden
+    transitions among the four 4s / 4s' levels (their n = 2..5):
+
+      mode='Q'  :  sigma = (g_m/g_n) ((E-dE)/E) * 5.797e-15 * Q_nm * (E-dE)^-0.54
+      mode='45' :  sigma = (g_m/g_n) ((E-dE)/E) * 8.111e-16 * (E-dE)^-1.04
+
+    Prefactors converted from cm^2 to m^2. Returns m^2.
+    """
+    E = np.asarray(E, dtype=float)
+    sigma = np.zeros_like(E)
+    if dE <= 0:
+        return sigma
+    # strict inequality + small offset: the exponents are negative, so
+    # (E - dE) -> 0 would diverge.
+    m = E > (dE + 1e-6)
+    if not np.any(m):
+        return sigma
+    dEE = E[m] - dE
+    gratio = float(g_upper) / float(g_lower)
+    if mode == 'Q':
+        if Q is None:
+            Q = 1.0
+        sigma[m] = gratio * (dEE / E[m]) * _C_4S_Q * Q * dEE**_P_4S_Q
+    else:
+        sigma[m] = gratio * (dEE / E[m]) * _C_4S_45 * dEE**_P_4S_45
+    return sigma
+
+
+# ---------------------------------------------------------------------------
+# Small structural helpers
+# ---------------------------------------------------------------------------
+
+def _ExistingExcitationPairs(ModelData):
+    """Set of (lower_label, upper_label) pairs that already carry a cross section."""
+    pairs = set()
+    for label, lvl in ModelData.items():
+        cs = lvl.get('Electron Impact CrossSections')
+        if not cs:
+            continue
+        for r in cs.get('Reactants', []):          # this level is the LOWER one
+            pairs.add((lvl['label'], r['partner_label']))
+        for p in cs.get('Products', []):           # this level is the UPPER one
+            pairs.add((p['partner_label'], lvl['label']))
+    return pairs
+
+
+def _FindAki(ModelData, upper_label, lower_label):
+    """Einstein A (s^-1) for upper -> lower, or None if the transition is absent."""
+    up = ModelData.get(upper_label)
+    if up is None:
+        return None
+    for rad in up.get('RadiativeDecay', []):
+        if rad.get('direction') == 'loss' and rad.get('partner') == lower_label:
+            A = rad.get('coeff')
+            if A:
+                return float(A)
+    return None
+
+
+def _Is4sLevel(lvl):
+    """Heuristic identification of the 3p5.4s manifold (the four 1s levels)."""
+    cfg = str(lvl.get('configuration', ''))
+    Ee = lvl.get('energy_eV')
+    if Ee is None:
+        return False
+    return ('4s' in cfg) and (11.0 < float(Ee) < 12.0)
+
+
+def _Build4sIndexMap(ModelData):
+    """
+    Map your labels onto Bogaerts' effective level numbers n = 2,3,4,5 for the
+    4s manifold. Bogaerts orders them by energy:
+        n=2  4s[3/2]_2  11.548 eV   (metastable, Paschen 1s5)
+        n=3  4s[3/2]_1  11.624 eV   (resonant,   Paschen 1s4)
+        n=4  4s'[1/2]_0 11.723 eV   (metastable, Paschen 1s3)
+        n=5  4s'[1/2]_1 11.828 eV   (resonant,   Paschen 1s2)
+    so sorting by energy reproduces his numbering regardless of your labelling.
+    Returns {} unless exactly four such levels are found.
+    """
+    found = [(lvl['label'], float(lvl['energy_eV']))
+             for lvl in ModelData.values() if _Is4sLevel(lvl)]
+    if len(found) != 4:
+        return {}
+    found.sort(key=lambda t: t[1])
+    return {lbl: n for n, (lbl, _) in enumerate(found, start=2)}
+
+
+# ---------------------------------------------------------------------------
+# Main entry point
+# ---------------------------------------------------------------------------
+
+def AddAnalyticExcitationCrossSections(ModelData,
+                                       E=None,
+                                       alpha_allowed=1.0,
+                                       beta_allowed=1.0,
+                                       alpha_forbidden=0.01,
+                                       forbidden_powers=(1.0, 2.0),
+                                       use_4s_special=True,
+                                       only_missing=True,
+                                       sigma_cap_m2=1.0e-18,
+                                       exclude_labels=(),
+                                       verbose=True):
+    """
+    Fill in every lower -> upper electron-impact excitation channel that does
+    not already have a measured/LXCat cross section, using the Drawin
+    semi-empirical formulae as implemented by Bogaerts et al. (1998).
+
+    Classification of each pair:
+      * an Einstein A exists for upper -> lower   -> optically allowed,
+        f_lu computed from that A via Einstein2Oscilator
+      * both levels are in the 4s manifold        -> Bogaerts' special-cased
+        4s-4s formulae (only if use_4s_special)
+      * otherwise                                 -> forbidden branch
+
+    Parameters
+    ----------
+    E : array or None
+        Energy grid in eV. Defaults to DefaultCrossSectionGrid().
+    alpha_allowed, beta_allowed : float
+        Drawin's transition-dependent parameters alpha_nm, beta_nm. The paper
+        takes these from Vlcek (1989) per transition; with no table available
+        the standard fallback is 1.0 for both. Override per run if you fit them.
+    alpha_forbidden : float
+        alpha_P (or alpha_S) for the forbidden branch.
+    forbidden_powers : (p, q)
+        Exponents in (u-1)^p / u^q. (1,2) = parity-forbidden,
+        (2,3) = spin-forbidden.
+    only_missing : bool
+        If True (default) never touch a pair that already has data. If False,
+        analytic channels are added alongside existing ones - which would
+        DOUBLE-COUNT in the rate sums, so leave this True unless you are
+        deliberately comparing.
+    sigma_cap_m2 : float or None
+        Hard ceiling on sigma. The (E_H/dE)^2 prefactor diverges for
+        near-degenerate pairs, so this guards against nonsense for closely
+        spaced high-lying levels. 1e-18 m^2 = 1e-14 cm^2 is far above any
+        real atomic excitation cross section. Set None to disable.
+    exclude_labels : iterable
+        Level labels to leave out entirely.
+
+    Returns
+    -------
+    ModelData (modified in place) with new entries carrying:
+        'partner_label', 'threshold_eV', 'energy_eV', 'cross_section',
+        'source', 'method', 'analytic'
+    """
+    if E is None:
+        E = DefaultCrossSectionGrid()
+    E = np.asarray(E, dtype=float)
+
+    p_forb, q_forb = forbidden_powers
+    exclude = set(exclude_labels)
+
+    # levels usable for excitation bookkeeping
+    levels = []
+    for lvl in ModelData.values():
+        if lvl['label'] in exclude:
+            continue
+        if lvl.get('energy_eV') is None or lvl.get('g') is None:
+            continue
+        lvl.setdefault('Electron Impact CrossSections',
+                       {'Reactants': [], 'Products': []})
+        levels.append(lvl)
+    levels.sort(key=lambda l: float(l['energy_eV']))
+
+    existing = _ExistingExcitationPairs(ModelData) if only_missing else set()
+    map4s = _Build4sIndexMap(ModelData) if use_4s_special else {}
+
+    added, skipped, tally = 0, 0, {'allowed': 0, 'forbidden': 0, '4s': 0}
+
+    for i, low in enumerate(levels):
+        for up in levels[i + 1:]:
+            lo_lbl, up_lbl = low['label'], up['label']
+            dE = float(up['energy_eV']) - float(low['energy_eV'])
+            if dE <= 0:
+                continue
+            if (lo_lbl, up_lbl) in existing:
+                skipped += 1
+                continue
+
+            g_lo, g_up = float(low['g']), float(up['g'])
+            Aki = _FindAki(ModelData, up_lbl, lo_lbl)
+
+            # --- pick the branch -------------------------------------------
+            if lo_lbl in map4s and up_lbl in map4s and Aki is None:
+                n_lo, n_up = map4s[lo_lbl], map4s[up_lbl]
+                if (n_lo, n_up) == (4, 5):
+                    sigma = Sigma4sManifold(E, dE, g_lo, g_up, mode='45')
+                    method = "4s manifold, n=4->5 empirical fit"
+                else:
+                    Q = _Q_4S.get((n_lo, n_up))
+                    if Q is None:
+                        sigma = SigmaDrawinForbidden(E, dE, alpha_forbidden,
+                                                     p_forb, q_forb)
+                        method = "Drawin forbidden (no Q_nm tabulated)"
+                    else:
+                        sigma = Sigma4sManifold(E, dE, g_lo, g_up, Q=Q, mode='Q')
+                        method = f"4s manifold, Q_nm={Q} (n={n_lo}->{n_up})"
+                tally['4s'] += 1
+
+            elif Aki is not None:
+                lam_m = eV2nm(dE) / 1.0e9
+                f_lu = Einstein2Oscilator(Aki, lam_m, g_up, g_lo)
+                sigma = SigmaDrawinAllowed(E, dE, f_lu,
+                                           alpha=alpha_allowed,
+                                           beta=beta_allowed)
+                method = (f"Drawin allowed, f_lu={f_lu:.4g} from A={Aki:.4g} s^-1, "
+                          f"alpha={alpha_allowed}, beta={beta_allowed}")
+                tally['allowed'] += 1
+
+            else:
+                sigma = SigmaDrawinForbidden(E, dE, alpha_forbidden,
+                                             p_forb, q_forb)
+                method = (f"Drawin forbidden, alpha={alpha_forbidden}, "
+                          f"(p,q)=({p_forb},{q_forb})")
+                tally['forbidden'] += 1
+
+            sigma = np.nan_to_num(sigma, nan=0.0, posinf=0.0, neginf=0.0)
+            if sigma_cap_m2 is not None:
+                if sigma.max() > sigma_cap_m2 and verbose:
+                    print(f"  [cap] {lo_lbl} -> {up_lbl} (dE={dE:.4f} eV): "
+                          f"peak {sigma.max():.3e} m^2 clipped to {sigma_cap_m2:.1e}")
+                sigma = np.minimum(sigma, sigma_cap_m2)
+            if sigma.max() <= 0:
+                continue
+
+            # --- append, mirroring the LXCat entry format -------------------
+            common = dict(threshold_eV=dE,
+                          energy_eV=E,
+                          cross_section=sigma,
+                          source=BOGAERTS_SOURCE,
+                          method=method,
+                          analytic=True)
+
+            low['Electron Impact CrossSections']['Reactants'].append(
+                dict(partner_label=up_lbl, **common))
+            up['Electron Impact CrossSections']['Products'].append(
+                dict(partner_label=lo_lbl, **common))
+
+            existing.add((lo_lbl, up_lbl))
+            added += 1
+
+    if verbose:
+        print("\n" + "=" * 68)
+        print("ANALYTIC EXCITATION CROSS SECTIONS (Bogaerts / Drawin)")
+        print("=" * 68)
+        print(f"  channels added        : {added}")
+        print(f"    optically allowed   : {tally['allowed']}")
+        print(f"    forbidden           : {tally['forbidden']}")
+        print(f"    4s manifold special : {tally['4s']}")
+        print(f"  channels already present (left alone): {skipped}")
+        print(f"  grid: {E[0]:.2f} - {E[-1]:.1f} eV, {len(E)} points, sigma in m^2")
+        print("=" * 68 + "\n")
+
+    return ModelData
+
+
+# ---------------------------------------------------------------------------
+# Convenience: tag the imported LXCat data so provenance is uniform
+# ---------------------------------------------------------------------------
+
+def TagExistingCrossSectionSources(ModelData, source='LXCat import'):
+    """Give every cross-section entry without a 'source' key one."""
+    n = 0
+    for lvl in ModelData.values():
+        cs = lvl.get('Electron Impact CrossSections')
+        if not cs:
+            continue
+        for direction in ('Reactants', 'Products'):
+            for entry in cs.get(direction, []):
+                if 'source' not in entry:
+                    entry['source'] = source
+                    entry['analytic'] = False
+                    n += 1
+    return ModelData
+
+
+def ListAnalyticChannels(ModelData):
+    """Return a flat list of the analytic channels, for inspection/plotting."""
+    out = []
+    for lvl in ModelData.values():
+        cs = lvl.get('Electron Impact CrossSections', {})
+        for entry in cs.get('Reactants', []):     # lvl is the lower state
+            if entry.get('analytic'):
+                out.append({'lower': lvl['label'],
+                            'upper': entry['partner_label'],
+                            'threshold_eV': entry['threshold_eV'],
+                            'sigma_peak_m^2': float(np.max(entry['cross_section'])),
+                            'method': entry['method']})
+    out.sort(key=lambda d: d['threshold_eV'])
+    return out
+
+
 #%% Create Final Data 
 def GetData():
     #import all levels taken into consideration JSON file includes type of level
@@ -484,12 +926,16 @@ def GetData():
     print('Importing Reaction List...')
     CrossSectionRates = MaxweillianReactionRates(CrossSectionList['cross_sections'])
     #Combines Radiative transition into ModelData
-    ModelData = BuildRateModel(LevelList, LevelList_Update, CrossSectionRates)
+    ModelData = BuildRateModel(LevelList, LevelList_Update)
     # Adds in cross-section data into the Model List
     ModelData = AddElectronExcitation(ModelData,CrossSectionList)
     print('Combining Data...')
     # Adds ionization Rates to the data (adds to loss terms)
     ModelData = CreateIonizationCrossSections(ModelData)
+    # Tags exisiting Cross sections and marks Lxcat data 
+    ModelData = TagExistingCrossSectionSources(ModelData)      # optional, marks LXCat data
+    # Fills and left over excitation rates with analytic estimation
+    ModelData = AddAnalyticExcitationCrossSections(ModelData)  # fills the gaps
     # Imports Radiation Trapping Matrix
     print('Importing Radiation Trapping Lookup...')
     RadiationTrappingMatrix = ImportRadiationTrappingMatrix()
@@ -504,9 +950,10 @@ if __name__ == "__main__":
     LevelList = ImportLevelList()
     A = LevelList['4p10']
     A1 = LevelList['4s2']
-    print(A)
     B = A['configuration']
-    
+    RadiationReactions = ImportReactionList()
+    LevelList_Update = combine(LevelList,RadiationReactions['transitions'])
+    ModelData = BuildRateModel(LevelList, LevelList_Update)
     C1 = A['energy_eV']
     C2 = A1['energy_eV']
     

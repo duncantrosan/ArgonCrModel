@@ -1,0 +1,149 @@
+system,vu,vl,head_nm,extent_nm,degraded,note,lo_nm,hi_nm
+SPS C-B,4,0,268.48,3.5,violet,Dunham,264.98,268.78000000000003
+SPS C-B,4,1,281.33,3.5,violet,Dunham,277.83,281.63
+SPS C-B,3,0,281.94,3.5,violet,Dunham,278.44,282.24
+SPS C-B,4,2,295.23,3.5,violet,Dunham,291.73,295.53000000000003
+SPS C-B,3,1,296.15,3.5,violet,Dunham,292.65,296.45
+SPS C-B,2,0,297.65,3.5,violet,Dunham,294.15,297.95
+OH A-X,0,0,306.36,4.0,violet,literature,302.36,306.66
+FNS B-X,3,0,307.97,4.0,violet,Dunham,303.97,308.27000000000004
+OH A-X,0,0,308.9,3.0,violet,literature,305.9,309.2
+SPS C-B,4,3,310.3,3.5,violet,Dunham,306.8,310.6
+SPS C-B,3,2,311.61,3.5,violet,Dunham,308.11,311.91
+SPS C-B,2,1,313.54,3.5,violet,Dunham,310.04,313.84000000000003
+SPS C-B,1,0,315.88,3.5,violet,Dunham,312.38,316.18
+SPS C-B,4,4,326.68,3.5,violet,Dunham,323.18,326.98
+SPS C-B,3,3,328.45,3.5,violet,Dunham,324.95,328.75
+FNS B-X,3,1,329.95,4.0,violet,Dunham,325.95,330.25
+FNS B-X,2,0,330.87,4.0,violet,Dunham,326.87,331.17
+SPS C-B,2,2,330.92,3.5,violet,Dunham,327.42,331.22
+SPS C-B,1,1,333.85,3.5,violet,Dunham,330.35,334.15000000000003
+NH A-X,0,0,336.0,2.0,violet,literature,334.0,336.3
+SPS C-B,0,0,337.11,3.5,violet,Dunham,333.61,337.41
+SPS C-B,4,5,344.52,3.5,violet,Dunham,341.02,344.82
+SPS C-B,3,4,346.85,3.5,violet,Dunham,343.35,347.15000000000003
+SPS C-B,2,3,349.98,3.5,violet,Dunham,346.48,350.28000000000003
+SPS C-B,1,2,353.63,3.5,violet,Dunham,350.13,353.93
+FNS B-X,3,2,354.95,4.0,violet,Dunham,350.95,355.25
+FNS B-X,2,1,356.44,4.0,violet,Dunham,352.44,356.74
+SPS C-B,0,1,357.66,3.5,violet,Dunham,354.16,357.96000000000004
+FNS B-X,1,0,358.27,4.0,violet,Dunham,354.27,358.57
+FPS B-A,12,0,358.36,8.0,red,Dunham +1.5nm (approx +-1nm),358.06,366.36
+SPS C-B,4,6,364.01,3.5,violet,Dunham,360.51,364.31
+SPS C-B,3,5,367.04,3.5,violet,Dunham,363.54,367.34000000000003
+SPS C-B,2,4,370.96,3.5,violet,Dunham,367.46,371.26
+FPS B-A,11,0,375.2,8.0,red,Dunham +1.5nm (approx +-1nm),374.9,383.2
+SPS C-B,1,3,375.48,3.5,violet,Dunham,371.98,375.78000000000003
+FPS B-A,12,1,376.47,8.0,red,Dunham +1.5nm (approx +-1nm),376.17,384.47
+SPS C-B,0,2,380.45,3.5,violet,Dunham,376.95,380.75
+FNS B-X,3,3,383.61,4.0,violet,Dunham,379.61,383.91
+SPS C-B,4,7,385.35,3.5,violet,Dunham,381.85,385.65000000000003
+FNS B-X,2,2,385.84,4.0,violet,Dunham,381.84,386.14
+CN B-X,1,1,387.14,1.5,violet,literature,385.64,387.44
+CN B-X,0,0,388.34,2.5,violet,literature,385.84,388.64
+FNS B-X,1,1,388.48,4.0,violet,Dunham,384.48,388.78000000000003
+SPS C-B,3,6,389.24,3.5,violet,Dunham,385.74,389.54
+FNS B-X,0,0,391.47,4.0,violet,Dunham,387.47,391.77000000000004
+SPS C-B,2,5,394.14,3.5,violet,Dunham,390.64,394.44
+SPS C-B,1,4,399.74,3.5,violet,Dunham,396.24,400.04
+SPS C-B,0,3,405.87,3.5,violet,Dunham,402.37,406.17
+FPS B-A,10,0,406.72,8.0,violet,Dunham +1.5nm (approx +-1nm),398.72,407.02000000000004
+FPS B-A,11,1,407.09,8.0,violet,Dunham +1.5nm (approx +-1nm),399.09,407.39
+FPS B-A,12,2,407.66,8.0,violet,Dunham +1.5nm (approx +-1nm),399.66,407.96000000000004
+SPS C-B,4,8,408.8,3.5,violet,Dunham,405.3,409.1
+SPS C-B,3,7,413.75,3.5,violet,Dunham,410.25,414.05
+FNS B-X,3,4,416.74,4.0,violet,Dunham,412.74,417.04
+SPS C-B,2,6,419.86,3.5,violet,Dunham,416.36,420.16
+FNS B-X,2,3,419.96,4.0,violet,Dunham,415.96,420.26
+FPS B-A,9,0,423.22,8.0,violet,Dunham +1.5nm (approx +-1nm),415.22,423.52000000000004
+FPS B-A,10,1,423.42,8.0,violet,Dunham +1.5nm (approx +-1nm),415.42,423.72
+FNS B-X,1,2,423.69,4.0,violet,Dunham,419.69,423.99
+FPS B-A,11,2,423.77,8.0,violet,Dunham +1.5nm (approx +-1nm),415.77,424.07
+FPS B-A,12,3,424.3,8.0,violet,Dunham +1.5nm (approx +-1nm),416.3,424.6
+SPS C-B,1,5,426.79,3.5,violet,Dunham,423.29,427.09000000000003
+FNS B-X,0,1,427.84,4.0,violet,Dunham,423.84,428.14
+SPS C-B,0,4,434.37,3.5,violet,Dunham,430.87,434.67
+SPS C-B,3,8,440.91,3.5,violet,Dunham,437.41,441.21000000000004
+SPS C-B,2,7,448.53,3.5,violet,Dunham,445.03,448.83
+FPS B-A,11,3,449.01,8.0,violet,Dunham +1.5nm (approx +-1nm),441.01,449.31
+FPS B-A,12,4,449.07,8.0,violet,Dunham +1.5nm (approx +-1nm),441.07,449.37
+FPS B-A,10,2,449.14,8.0,violet,Dunham +1.5nm (approx +-1nm),441.14,449.44
+FPS B-A,9,1,449.45,8.0,violet,Dunham +1.5nm (approx +-1nm),441.45,449.75
+FPS B-A,8,0,449.92,8.0,violet,Dunham +1.5nm (approx +-1nm),441.92,450.22
+SPS C-B,1,6,457.11,3.5,violet,Dunham,453.61,457.41
+FNS B-X,2,4,460.03,4.0,violet,Dunham,456.03,460.33
+FNS B-X,1,3,465.22,4.0,violet,Dunham,461.22,465.52000000000004
+SPS C-B,0,5,466.5,3.5,violet,Dunham,463.0,466.8
+FNS B-X,0,2,470.96,4.0,violet,Dunham,466.96,471.26
+FPS B-A,12,5,476.87,8.0,violet,Dunham +1.5nm (approx +-1nm),468.87,477.17
+FPS B-A,11,4,477.42,8.0,violet,Dunham +1.5nm (approx +-1nm),469.42,477.72
+FPS B-A,10,3,478.19,8.0,violet,Dunham +1.5nm (approx +-1nm),470.19,478.49
+FPS B-A,9,2,479.17,8.0,violet,Dunham +1.5nm (approx +-1nm),471.17,479.47
+FPS B-A,8,1,480.33,8.0,violet,Dunham +1.5nm (approx +-1nm),472.33,480.63
+SPS C-B,2,8,480.62,3.5,violet,Dunham,477.12,480.92
+FPS B-A,7,0,481.64,8.0,violet,Dunham +1.5nm (approx +-1nm),473.64,481.94
+SPS C-B,1,7,491.29,3.5,violet,Dunham,487.79,491.59000000000003
+SPS C-B,0,6,502.97,3.5,violet,Dunham,499.47,503.27000000000004
+FPS B-A,12,6,507.82,8.0,violet,Dunham +1.5nm (approx +-1nm),499.82,508.12
+FPS B-A,11,5,509.16,8.0,violet,Dunham +1.5nm (approx +-1nm),501.16,509.46000000000004
+FPS B-A,10,4,510.76,8.0,violet,Dunham +1.5nm (approx +-1nm),502.76,511.06
+FPS B-A,9,3,512.59,8.0,violet,Dunham +1.5nm (approx +-1nm),504.59000000000003,512.89
+FPS B-A,8,2,514.64,8.0,violet,Dunham +1.5nm (approx +-1nm),506.64,514.9399999999999
+FNS B-X,1,4,514.91,4.0,violet,Dunham,510.90999999999997,515.2099999999999
+FPS B-A,7,1,516.88,8.0,violet,Dunham +1.5nm (approx +-1nm),508.88,517.18
+FPS B-A,6,0,519.28,8.0,violet,Dunham +1.5nm (approx +-1nm),511.28,519.5799999999999
+FNS B-X,0,3,522.86,4.0,violet,Dunham,518.86,523.16
+SPS C-B,1,8,530.07,3.5,violet,Dunham,526.57,530.37
+FPS B-A,12,7,542.34,8.0,violet,Dunham +1.5nm (approx +-1nm),534.34,542.64
+SPS C-B,0,7,544.67,3.5,violet,Dunham,541.17,544.9699999999999
+FPS B-A,11,6,544.7,8.0,violet,Dunham +1.5nm (approx +-1nm),536.7,545.0
+FPS B-A,10,5,547.36,8.0,violet,Dunham +1.5nm (approx +-1nm),539.36,547.66
+FPS B-A,9,4,550.3,8.0,violet,Dunham +1.5nm (approx +-1nm),542.3,550.5999999999999
+FPS B-A,8,3,553.51,8.0,violet,Dunham +1.5nm (approx +-1nm),545.51,553.81
+FPS B-A,7,2,556.95,8.0,violet,Dunham +1.5nm (approx +-1nm),548.95,557.25
+FPS B-A,6,1,560.61,8.0,violet,Dunham +1.5nm (approx +-1nm),552.61,560.91
+FPS B-A,5,0,564.45,8.0,violet,Dunham +1.5nm (approx +-1nm),556.45,564.75
+FPS B-A,12,8,581.01,8.0,violet,Dunham +1.5nm (approx +-1nm),573.01,581.31
+FPS B-A,11,7,584.68,8.0,violet,Dunham +1.5nm (approx +-1nm),576.68,584.9799999999999
+FNS B-X,0,4,586.49,4.0,violet,Dunham,582.49,586.79
+FPS B-A,10,6,588.72,8.0,violet,Dunham +1.5nm (approx +-1nm),580.72,589.02
+SPS C-B,0,8,592.73,3.5,violet,Dunham,589.23,593.03
+FPS B-A,9,5,593.11,8.0,violet,Dunham +1.5nm (approx +-1nm),585.11,593.41
+FPS B-A,8,4,597.82,8.0,violet,Dunham +1.5nm (approx +-1nm),589.82,598.12
+FPS B-A,7,3,602.84,8.0,violet,Dunham +1.5nm (approx +-1nm),594.84,603.14
+FPS B-A,6,2,608.15,8.0,violet,Dunham +1.5nm (approx +-1nm),600.15,608.4499999999999
+FPS B-A,5,1,613.72,8.0,violet,Dunham +1.5nm (approx +-1nm),605.72,614.02
+FPS B-A,4,0,619.53,8.0,violet,Dunham +1.5nm (approx +-1nm),611.53,619.8299999999999
+FPS B-A,12,9,624.54,8.0,violet,Dunham +1.5nm (approx +-1nm),616.54,624.8399999999999
+FPS B-A,11,8,629.92,8.0,violet,Dunham +1.5nm (approx +-1nm),621.92,630.2199999999999
+FPS B-A,10,7,635.76,8.0,violet,Dunham +1.5nm (approx +-1nm),627.76,636.06
+FPS B-A,9,6,642.04,8.0,violet,Dunham +1.5nm (approx +-1nm),634.04,642.3399999999999
+FPS B-A,8,5,648.74,8.0,violet,Dunham +1.5nm (approx +-1nm),640.74,649.04
+FPS B-A,7,4,655.85,8.0,violet,Dunham +1.5nm (approx +-1nm),647.85,656.15
+FPS B-A,6,3,663.35,8.0,violet,Dunham +1.5nm (approx +-1nm),655.35,663.65
+FPS B-A,5,2,671.23,8.0,violet,Dunham +1.5nm (approx +-1nm),663.23,671.53
+FPS B-A,12,10,673.84,8.0,violet,Dunham +1.5nm (approx +-1nm),665.84,674.14
+FPS B-A,4,1,679.46,8.0,violet,Dunham +1.5nm (approx +-1nm),671.46,679.76
+FPS B-A,11,9,681.46,8.0,violet,Dunham +1.5nm (approx +-1nm),673.46,681.76
+FPS B-A,3,0,688.03,8.0,violet,Dunham +1.5nm (approx +-1nm),680.03,688.3299999999999
+FPS B-A,10,8,689.67,8.0,violet,Dunham +1.5nm (approx +-1nm),681.67,689.9699999999999
+FPS B-A,9,7,698.45,8.0,violet,Dunham +1.5nm (approx +-1nm),690.45,698.75
+FPS B-A,8,6,707.8,8.0,violet,Dunham +1.5nm (approx +-1nm),699.8,708.0999999999999
+FPS B-A,7,5,717.71,8.0,violet,Dunham +1.5nm (approx +-1nm),709.71,718.01
+FPS B-A,6,4,728.18,8.0,violet,Dunham +1.5nm (approx +-1nm),720.18,728.4799999999999
+FPS B-A,5,3,739.19,8.0,violet,Dunham +1.5nm (approx +-1nm),731.19,739.49
+FPS B-A,11,10,740.63,8.0,violet,Dunham +1.5nm (approx +-1nm),732.63,740.93
+FPS B-A,4,2,750.74,8.0,violet,Dunham +1.5nm (approx +-1nm),742.74,751.04
+FPS B-A,10,9,751.99,8.0,violet,Dunham +1.5nm (approx +-1nm),743.99,752.29
+FPS B-A,3,1,762.83,8.0,violet,Dunham +1.5nm (approx +-1nm),754.83,763.13
+FPS B-A,9,8,764.12,8.0,violet,Dunham +1.5nm (approx +-1nm),756.12,764.42
+FPS B-A,2,0,775.45,8.0,violet,Dunham +1.5nm (approx +-1nm),767.45,775.75
+FPS B-A,8,7,777.04,8.0,violet,Dunham +1.5nm (approx +-1nm),769.04,777.3399999999999
+FPS B-A,7,6,790.76,8.0,violet,Dunham +1.5nm (approx +-1nm),782.76,791.06
+FPS B-A,6,5,805.3,8.0,violet,Dunham +1.5nm (approx +-1nm),797.3,805.5999999999999
+FPS B-A,5,4,820.66,8.0,violet,Dunham +1.5nm (approx +-1nm),812.66,820.9599999999999
+FPS B-A,10,10,824.74,8.0,violet,Dunham +1.5nm (approx +-1nm),816.74,825.04
+FPS B-A,4,3,836.87,8.0,violet,Dunham +1.5nm (approx +-1nm),828.87,837.17
+FPS B-A,9,9,841.42,8.0,violet,Dunham +1.5nm (approx +-1nm),833.42,841.7199999999999
+FPS B-A,3,2,853.94,8.0,violet,Dunham +1.5nm (approx +-1nm),845.94,854.24
+FPS B-A,8,8,859.25,8.0,violet,Dunham +1.5nm (approx +-1nm),851.25,859.55

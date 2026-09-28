@@ -1,0 +1,9 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Generated output (CR model and experimental analysis)
+Scripts/Output/*
+!Scripts/Output/.gitkeep
+Experimental_Data/Output/*
+!Experimental_Data/Output/.gitkeep
