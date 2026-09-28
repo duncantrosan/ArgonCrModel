@@ -188,6 +188,74 @@ def ImportMultiBoltEEDFs(RunFolder, E=None, dE=0.02, verbose=True):
     return EEDFs
 
 
+# MultiBolt command-line binary (lives outside this repo - edit if it moves)
+MULTIBOLT_EXE = Path(r'C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master'
+                     r'\MultiBolt-master\bin\multibolt_win64.exe')
+MULTIBOLT_FOLDER = Path(__file__).resolve().parent.parent / 'InputData' / 'MultiBolt'
+
+def RunMultiBolt(XsecFiles, Name, EN_Td, species='Ar', P_Torr=1, T_K=300,
+                 Nu=1000, N_terms=6, model='HD+GE', export_xsecs=False,
+                 overwrite=False, ExportFolder=MULTIBOLT_FOLDER, exe=MULTIBOLT_EXE,
+                 verbose=True):
+    """
+    Run MultiBolt for an E/N sweep and return the EEDFs (ImportMultiBoltEEDFs).
+
+    XsecFiles : LXCat cross-section file, or a list of them. Must hold a complete
+                set for each species (elastic/effective + excitation + ionization).
+    Name      : run folder, written to ExportFolder/Name (InputData/MultiBolt by
+                default) - use it as MULTIBOLT_RUN in MainFileV2.py afterwards
+    EN_Td     : E/N values [Td], one EEDF each
+    species   : 'Ar' (fraction 1), or {'Ar': 0.9, 'N2': 0.1}; names as in the files
+    export_xsecs : also save the cross sections MultiBolt used in the run folder
+    overwrite : MultiBolt silently replaces an existing run folder, so by default
+                an existing Name is refused
+
+    The command and MultiBolt's console output are saved in the run folder as
+    multibolt_log.txt, which records the cross-section files used.
+    """
+    import subprocess
+    exe = Path(exe)
+    if not exe.is_file():
+        raise FileNotFoundError(f'MultiBolt binary not found: {exe} (set he.MULTIBOLT_EXE)')
+    XsecFiles = [XsecFiles] if isinstance(XsecFiles, (str, Path)) else list(XsecFiles)
+    XsecFiles = [Path(f).resolve() for f in XsecFiles]
+    for f in XsecFiles:
+        if not f.is_file():
+            raise FileNotFoundError(f'Cross-section file not found: {f}')
+    RunFolder = Path(ExportFolder).resolve() / Name
+    if RunFolder.exists() and not overwrite:
+        raise FileExistsError(f'{RunFolder} already exists - pick another Name or pass overwrite=True')
+    RunFolder.parent.mkdir(parents=True, exist_ok=True)
+    if isinstance(species, str):
+        species = {species: 1.0}
+
+    cmd = [str(exe)]
+    for f in XsecFiles:                      # cross sections before species
+        cmd += ['--LXCat_Xsec_fid', str(f)]
+    for name, frac in species.items():
+        cmd += ['--species', name, str(frac)]
+    cmd += ['--export_location', str(RunFolder.parent), '--export_name', Name,
+            '--sweep_option', 'EN_Td', '--sweep_style', 'def', *[f'{x:g}' for x in EN_Td],
+            '--model', model, '--N_terms', str(N_terms), '--Nu', str(Nu),
+            '--p_Torr', f'{P_Torr:g}', '--T_K', f'{T_K:g}', '--EN_Td', f'{EN_Td[0]:g}',
+            '--initial_eV_max', '100', '--USE_ENERGY_REMAP',
+            '--remap_target_order_span', '10', '--remap_grid_trial_max', '10',
+            '--conv_err', '1e-6', '--weight_f0', '1.0', '--iter_max', '100', '--iter_min', '4']
+    if export_xsecs:
+        cmd.append('--EXPORT_XSECS')
+
+    if verbose:
+        print(f'Running MultiBolt: {len(EN_Td)} E/N points, Nu = {Nu} -> {RunFolder}')
+    result = subprocess.run(cmd, cwd=exe.parent, capture_output=True, text=True, errors='replace')
+    log = (subprocess.list2cmdline(cmd) + '\n\n' + result.stdout + result.stderr)
+    if result.returncode != 0 or not (RunFolder / 'EEDFs_f0').is_dir():
+        tail = '\n'.join(log.strip().splitlines()[-15:])
+        raise RuntimeError(f'MultiBolt failed (exit code {result.returncode}):\n{tail}')
+    with open(RunFolder / 'multibolt_log.txt', 'w') as file:
+        file.write(log)
+    return ImportMultiBoltEEDFs(RunFolder, verbose=verbose)
+
+
 #%% Helpers for Radiation Trapping solve   
     
 ############

@@ -36,6 +36,8 @@ R = 4/100 # Radius in meters
 #                 RUN_DETAILS.txt and EEDFs_f0/), one per sweep point (e.g. E/N).
 #                 Te is then replaced by Te_eff = 2/3 <E> of each EEDF, which is
 #                 what the plots use as their x-axis.
+#                 New run with your own cross sections (lands in InputData/MultiBolt):
+#                 he.RunMultiBolt(r'path\to\Ar_set.txt', 'Ar_MySet_EN_sweep', [5, 10, 30, 100])
 EEDF_MODE = 'maxwell'
 MULTIBOLT_RUN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..',
                              'InputData', 'MultiBolt', 'Ar_Biagi_EN_sweep')
