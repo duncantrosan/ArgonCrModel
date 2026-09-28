@@ -30,6 +30,16 @@ Te = np.linspace(2,8,20) # Electron Temperature in ev
 Ne = np.linspace(1,100,10)*10**17 # electron Density in m^-3
 R = 4/100 # Radius in meters
 
+# Electron energy distribution for all electron-impact rates
+#   'maxwell'   : Maxwell-Boltzmann EEDF at each Te above
+#   'multibolt' : numerical EEDFs from a MultiBolt export folder (the one holding
+#                 RUN_DETAILS.txt and EEDFs_f0/), one per sweep point (e.g. E/N).
+#                 Te is then replaced by Te_eff = 2/3 <E> of each EEDF, which is
+#                 what the plots use as their x-axis.
+EEDF_MODE = 'maxwell'
+MULTIBOLT_RUN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..',
+                             'InputData', 'MultiBolt', 'Ar_Biagi_EN_sweep')
+
 
 ## Import preliminary structured data 
 ModelData,RadiationTrappingMatrix = he.GetData()
@@ -37,12 +47,11 @@ ModelData,RadiationTrappingMatrix = he.GetData()
 def GetEta(interp,tau,a):
     return 10**interp(((np.log10(tau), a)))
 
-def CreateSuperelasticRates(ModelData, Te):
+def CreateSuperelasticRates(ModelData, eedf):
     """
-    Compute electron-impact de-excitation (superelastic) rate coefficients
-    via detailed balance from the already-computed excitation rates.
+    Compute electron-impact de-excitation (superelastic) rate coefficients.
  
-    MUST be called AFTER CreateExcitationReactionRates(ModelData, Te) in the
+    MUST be called AFTER CreateExcitationReactionRates(ModelData, eedf) in the
     same iteration, since it reads the 'Rate' field that function fills in.
  
     Adds a 'Superelastic' list to every level, mirroring the structure of
@@ -55,12 +64,24 @@ def CreateSuperelasticRates(ModelData, Te):
     - 'gain' entries go on the LOWER state (it gets repopulated, needs
        *Ne and the UPPER state's density when used in the production sum)
  
-    Note: this uses the standard Maxwellian detailed-balance relation.
-    If your EEPF (Te2EEPF) is non-Maxwellian, this is an approximation -
-    strictly correct detailed balance requires balancing against the same
-    EEPF used for the forward rate, but this is the standard first-order
-    treatment used in most CR models.
+    eedf : Te [eV] (Maxwellian) or an EEDF dict (see he.MaxwellianEEDF,
+           he.ImportMultiBoltEEDFs).
+    Maxwellian EEDF: detailed balance of the rates,
+        k_deexc = k_exc (g_lower/g_upper) exp(dE/Te)
+    Numerical EEDF: the rates are not in detailed balance, so k_deexc is
+    integrated from the Klein-Rosseland (detailed balance) cross section
+        sigma_sup(E) = (g_lower/g_upper) (E + dE)/E sigma_exc(E + dE)
+    which, with u = E + dE the electron energy after the collision, gives
+        k_deexc = sqrt(2e/m_e) (g_lower/g_upper) int_dE u sigma_exc(u) f(u - dE) du
+    with f the EEPF. This is integrated on the same grid (same sigma samples) as
+    the excitation rate, so a Maxwellian reproduces exp(dE/Te) detailed balance
+    exactly instead of to within the quadrature error of the threshold step.
     """
+    eedf = he.AsEEDF(eedf)
+    Te = eedf['Te']                      # None for a numerical EEDF
+    E = eedf['E']
+    logEEPF = np.log(np.maximum(eedf['EEPF'], 1e-300))    # f(u - dE) interpolated in log(f)
+    prefactor = np.sqrt(2 * 1.60217e-19 / 9.10938e-31)   # sqrt(2e/m_e)
     for MD in ModelData.values():
         MD['Superelastic'] = []
  
@@ -74,7 +95,9 @@ def CreateSuperelasticRates(ModelData, Te):
         for Reac in US['Electron Impact CrossSections']['Products']:
             lower_label = Reac['partner_label']
             k_exc = Reac.get('Rate')
-            if not k_exc:
+            # Maxwellian k_deexc is proportional to k_exc; a numerical EEDF with
+            # no electrons above threshold still de-excites, so no skip there
+            if Te is not None and not k_exc:
                 continue
  
             LowerState = next((p for p in ModelData.values()
@@ -91,7 +114,16 @@ def CreateSuperelasticRates(ModelData, Te):
             if DeltaE <= 0:
                 continue
  
-            k_deexc = k_exc * (g_lower / g_upper) * np.exp(DeltaE / Te)
+            if Te is not None:
+                k_deexc = k_exc * (g_lower / g_upper) * np.exp(DeltaE / Te)
+            else:
+                Sigma = np.interp(E, Reac['energy_eV'], Reac['cross_section'],
+                                  left=0.0, right=0.0)
+                Sigma[(E <= Reac['threshold_eV']) | (E < DeltaE)] = 0.0
+                EEPF_in = np.exp(np.interp(E - DeltaE, E, logEEPF))   # f(u - dE)
+                k_deexc = prefactor * (g_lower / g_upper) * np.trapezoid(E * Sigma * EEPF_in, E)
+                if not k_deexc:
+                    continue
  
             # Loss for the upper state (it de-excites away)
             US['Superelastic'].append({
@@ -110,8 +142,10 @@ def CreateSuperelasticRates(ModelData, Te):
  
     return ModelData
 
-def CreateExcitationReactionRates(ModelData, Te):
-    EEPF, E = he.Te2EEPF(Te)
+def CreateExcitationReactionRates(ModelData, eedf):
+    # eedf: Te [eV] (Maxwellian) or an EEDF dict, e.g. from he.ImportMultiBoltEEDFs
+    eedf = he.AsEEDF(eedf)
+    E, EEDF = eedf['E'], eedf['EEDF']
     m_e = 9.10938e-31       # kg
     e_charge = 1.60217e-19  # J per eV
 
@@ -127,15 +161,17 @@ def CreateExcitationReactionRates(ModelData, Te):
                 InterpolatedCS = np.interp(E, DataEnergy, DataCS, left=0.0, right=0.0)
                 InterpolatedCS[E <= Threshold] = 0.0
 
-                Integrand = np.sqrt(E) * EEPF * InterpolatedCS
+                Integrand = np.sqrt(E) * EEDF * InterpolatedCS
                 Rate = prefactor * np.trapezoid(Integrand, E)
 
                 Reac['Rate'] = Rate   # overwritten fresh each call to this function
 
     return ModelData
 
-def CreateIonizationReactionRates(ModelData, Te):
-    EEPF, E = he.Te2EEPF(Te)
+def CreateIonizationReactionRates(ModelData, eedf):
+    # eedf: Te [eV] (Maxwellian) or an EEDF dict, e.g. from he.ImportMultiBoltEEDFs
+    eedf = he.AsEEDF(eedf)
+    E, EEDF = eedf['E'], eedf['EEDF']
     m_e = 9.10938e-31       # kg
     e_charge = 1.60217e-19  # J per eV
     prefactor = np.sqrt(2 * e_charge / m_e)
@@ -160,12 +196,12 @@ def CreateIonizationReactionRates(ModelData, Te):
         DataEnergy = IonData['Energy_eV']
         DataCS = IonData['CrossSection_m^2']
         
-        # Interpolate cross-section to EEPF energy grid
+        # Interpolate cross-section to EEDF energy grid
         InterpolatedCS = np.interp(E, DataEnergy, DataCS, left=0.0, right=0.0)
         InterpolatedCS[E <= Threshold] = 0.0
         
         # Calculate rate coefficient
-        Integrand = np.sqrt(E) * EEPF * InterpolatedCS
+        Integrand = np.sqrt(E) * EEDF * InterpolatedCS
         Rate = prefactor * np.trapezoid(Integrand, E)
         
         # Store the rate
@@ -477,6 +513,29 @@ def PlotEmissionIntensities(EI, top_n=30):
     plt.savefig(os.path.join(OUTPUT_DIR, 'emission_intensities.png'), dpi=300)
     plt.show()
 
+def PlotEEDFs(EEDFs):
+    """EEPF of every EEDF in the sweep; numerical ones get the Maxwellian with the same <E> dashed"""
+    fig, ax = plt.subplots(figsize=(12, 6))
+    colors = plt.cm.Blues(np.linspace(0.35, 1.0, len(EEDFs)))   # ordered sweep: light -> dark
+    for eedf, color in zip(EEDFs, colors):
+        ax.semilogy(eedf['E'], eedf['EEPF'], color=color, linewidth=1.5, label=eedf['label'])
+        if eedf['Te'] is None:
+            Maxwell = he.MaxwellianEEDF(eedf['Te_eff'], eedf['E'])
+            ax.semilogy(eedf['E'], Maxwell['EEPF'], '--', color=color,
+                        linewidth=1, alpha=0.6)
+    if any(eedf['Te'] is None for eedf in EEDFs):
+        ax.plot([], [], 'k--', linewidth=1, label=r'Maxwellian, same $\langle\varepsilon\rangle$')
+    peak = max(eedf['EEPF'].max() for eedf in EEDFs)
+    ax.set_ylim(peak * 1e-10, peak * 2)
+    ax.set_xlabel('Electron energy [eV]', fontsize=12)
+    ax.set_ylabel(r'EEPF [eV$^{-3/2}$]', fontsize=12)
+    ax.set_title('Electron energy probability functions', fontsize=14, fontweight='bold')
+    ax.grid(True, alpha=0.3, which='both')
+    ax.legend(fontsize=8, ncol=2)
+    plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, 'eedfs.png'), dpi=300)
+    plt.show()
+
 
 #%% Cr Model
 # Simple CR model that does not test for convergence
@@ -507,18 +566,22 @@ def PlotEmissionIntensities(EI, top_n=30):
 
 
 
-def CRModel(ModelData, Te, Ne, P, T, R, interp,
+def CRModel(ModelData, eedf, Ne, P, T, R, interp,
             max_iter=500, tol=1e-6, relax=1.0, verbose=False):
     """
     Solve the CR balance to self-consistency.
 
+    eedf   : electron energy distribution for all electron-impact rates -
+             Te [eV] for a Maxwell-Boltzmann EEDF, or an EEDF dict
+             (he.MaxwellianEEDF, he.TabulatedEEDF, he.ImportMultiBoltEEDFs)
     tol    : convergence on max relative change in density between sweeps
     relax  : under-relaxation factor. 1.0 = plain Gauss-Seidel. Drop to
              ~0.5 if the metastable-metastable term makes it oscillate.
     """
-    ModelData = CreateExcitationReactionRates(ModelData, Te)
-    ModelData = CreateIonizationReactionRates(ModelData, Te)
-    ModelData = CreateSuperelasticRates(ModelData, Te)   # was `t` - global leak
+    eedf = he.AsEEDF(eedf)
+    ModelData = CreateExcitationReactionRates(ModelData, eedf)
+    ModelData = CreateIonizationReactionRates(ModelData, eedf)
+    ModelData = CreateSuperelasticRates(ModelData, eedf)   # was `t` - global leak
 
     Ng = he.Torr2Volume(P, T)
     Data = InitializeStateDensities(ModelData, P, T)
@@ -558,7 +621,7 @@ def CRModel(ModelData, Te, Ne, P, T, R, interp,
     if not converged:
         print(f"WARNING: CRModel did not converge in {max_iter} sweeps "
               f"(residual {residual:.3e}, worst level {worst}) "
-              f"at Te={Te:.2f} eV, Ne={Ne:.2e}")
+              f"at {eedf['label']}, Ne={Ne:.2e}")
 
     SD = ExtractStateDensities(Data)
     EI = ExtractEmissionIntensities(Data)
@@ -664,19 +727,29 @@ interp = RegularGridInterpolator(
     bounds_error=False, fill_value=None
 )
 
+# Electron energy distributions to sweep over (see EEDF_MODE at the top)
+if EEDF_MODE == 'maxwell':
+    EEDFs = [he.MaxwellianEEDF(t) for t in Te]
+    TeLabel = r'$T_e$ [eV]'
+elif EEDF_MODE == 'multibolt':
+    EEDFs = he.ImportMultiBoltEEDFs(MULTIBOLT_RUN)
+    Te = np.array([eedf['Te_eff'] for eedf in EEDFs])   # x-axis for the plots below
+    TeLabel = r'$T_{e,\mathrm{eff}} = \frac{2}{3}\langle\varepsilon\rangle$ [eV]'
+else:
+    raise ValueError(f"EEDF_MODE must be 'maxwell' or 'multibolt', not {EEDF_MODE!r}")
+PlotEEDFs(EEDFs)
+
 Ratio_a = np.zeros((len(Ne), len(Te)))   # 4p'[1/2]0 / 4p[1/2]0
 Ratio_b = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
 Ratio_c = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
 Metastable_4s3 = np.zeros((len(Ne), len(Te)))  # ADD THIS
 Metastable_4s4 = np.zeros((len(Ne), len(Te)))  # ADD THIS
 
-for j,t in enumerate(Te) :
+for j,eedf in enumerate(EEDFs) :
     for i,n in enumerate(Ne):
-        print(t)
+        print(eedf['label'])
         print(n)
-        UpdatedModel = CreateExcitationReactionRates(ModelData, t)
-        UpdatedModel = CreateIonizationReactionRates(ModelData, t)
-        Data, SD, EI, solver = CRModel(UpdatedModel, t, n, Pressure, Tg, R, interp)
+        Data, SD, EI, solver = CRModel(ModelData, eedf, n, Pressure, Tg, R, interp)
         # StateDensities.append(SD)
         # EmissionIntensities.append(EI)
         # for Reac in EI.values():
@@ -708,12 +781,12 @@ fig, ax = plt.subplots(1,2,figsize=(16, 5))
 TeGrid, NeGrid = np.meshgrid(Te, Ne)  # match paper's axis units
 CS = ax[0].contour(TeGrid, NeGrid, Ratio_a, levels=8, colors='black')
 ax[0].clabel(CS, inline=True, fontsize=9)
-ax[0].set_xlabel(r'$T_e$ [eV]')
+ax[0].set_xlabel(TeLabel)
 ax[0].set_ylabel(r'$N_e$ [m$^{-3}$]')
 ax[0].set_title("4p'[1/2]$_0$ / 4p[1/2]$_0$")
 CS = ax[1].contour(TeGrid, NeGrid, Ratio_b, levels=8, colors='black')
 ax[1].clabel(CS, inline=True, fontsize=9)
-ax[1].set_xlabel(r'$T_e$ [eV]')
+ax[1].set_xlabel(TeLabel)
 ax[1].set_ylabel(r'$N_e$ [ m$^{-3}$]')
 ax[1].set_title( r'$4d[3/2]^0$/ 4p[1/2]$_0$')
 
@@ -727,13 +800,14 @@ plt.show()
 
 
 
-t_test, n_test = 4.0, 1e15
+eedf_test = 4.0 if EEDF_MODE == 'maxwell' else EEDFs[len(EEDFs) // 2]
+n_test = 1e15
 
-UpdatedModel = CreateExcitationReactionRates(ModelData, t_test)
-UpdatedModel = CreateIonizationReactionRates(UpdatedModel, t_test)
-UpdatedModel = CreateSuperelasticRates(UpdatedModel, t_test)
+UpdatedModel = CreateExcitationReactionRates(ModelData, eedf_test)
+UpdatedModel = CreateIonizationReactionRates(UpdatedModel, eedf_test)
+UpdatedModel = CreateSuperelasticRates(UpdatedModel, eedf_test)
 
-Data, SD, EI,solver = CRModel(UpdatedModel, t_test, n_test, Pressure, Tg, R, interp)
+Data, SD, EI,solver = CRModel(UpdatedModel, eedf_test, n_test, Pressure, Tg, R, interp)
 
 print("Loss terms for 4s3 (metastable):")
 print(f"  IonLoss: {Data['4s3'].get('IonLoss', 'N/A')}")
@@ -767,7 +841,7 @@ for i in range(0, len(Ne), step):
             label=f'$N_e$ = {Ne[i]:.1e} m$^{{-3}}$', 
             linewidth=2.5, markersize=6)
  
-ax.set_xlabel(r'$T_e$ [eV]', fontsize=13)
+ax.set_xlabel(TeLabel, fontsize=13)
 ax.set_ylabel(r'Intensity ratio: $I_{4p^{\prime}[1/2]_0} / I_{4p[1/2]_0}$', fontsize=13)
 ax.set_title('Line ratio vs electron temperature', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3)
@@ -788,7 +862,7 @@ for i in range(0, len(Ne), step):
                 label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
                 linewidth=2.5, markersize=6)
  
-ax.set_xlabel(r'$T_e$ [eV]', fontsize=13)
+ax.set_xlabel(TeLabel, fontsize=13)
 ax.set_ylabel(r'Metastable density: $n_{4s3} + n_{4s4}$ [m$^{-3}$]', fontsize=13)
 ax.set_title('Metastable population vs electron temperature', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3, which='both')
@@ -808,7 +882,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
  
 # Left: Ratio
 ax1.plot(Te, Ratio_a[Ne_idx, :], 'o-', color='darkred', linewidth=3, markersize=8)
-ax1.set_xlabel(r'$T_e$ [eV]', fontsize=12)
+ax1.set_xlabel(TeLabel, fontsize=12)
 ax1.set_ylabel(r'Intensity ratio', fontsize=12, color='darkred')
 ax1.set_title(f'Ratio vs $T_e$ (at $N_e = {Ne_val:.1e}$ m$^{{-3}}$)', fontsize=13)
 ax1.grid(True, alpha=0.3)
@@ -817,7 +891,7 @@ ax1.tick_params(axis='y', labelcolor='darkred')
 # Right: Metastable
 ax2.semilogy(Te, Metastable_4s3[Ne_idx, :], 's-', label='4s3', color='steelblue', linewidth=2.5, markersize=7)
 ax2.semilogy(Te, Metastable_4s4[Ne_idx, :], 's-', label='4s4', color='navy', linewidth=2.5, markersize=7, linestyle='--')
-ax2.set_xlabel(r'$T_e$ [eV]', fontsize=12)
+ax2.set_xlabel(TeLabel, fontsize=12)
 ax2.set_ylabel(r'Metastable density [m$^{-3}$]', fontsize=12, color='navy')
 ax2.set_title(f'Metastables vs $T_e$ (at $N_e = {Ne_val:.1e}$ m$^{{-3}}$)', fontsize=13)
 ax2.grid(True, alpha=0.3, which='both')

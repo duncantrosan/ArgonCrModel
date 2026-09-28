@@ -6,6 +6,7 @@ Created on Tue Jun 30 11:40:24 2026
 """
 
 import json 
+import re
 from pathlib import Path
 import numpy as np
 import math
@@ -52,6 +53,141 @@ def Te2EEPF(Te = 2,E = None):
         return EEPF, E
 
     
+
+#%% Electron Energy Distributions (Maxwellian or numerical, e.g. MultiBolt)
+# All electron-impact rates in the CR model come from an EEDF dict:
+#   'E'      : energy grid [eV]
+#   'EEDF'   : F(E) [eV^-1], int F dE = 1   (what Te2EEPF returns)
+#   'EEPF'   : f(E) = F(E)/sqrt(E) [eV^-3/2], int sqrt(E) f dE = 1   (MultiBolt's f0)
+#   'Te'     : Maxwellian temperature [eV], or None for a numerical EEDF
+#   'Te_eff' : 2/3 <E> [eV], temperature of the Maxwellian with the same mean energy
+#   'label'  : text for print-outs and plot legends
+# Rate coefficient of a cross section sigma(E) [m^2]:
+#   k = sqrt(2e/m_e) * int sqrt(E) sigma(E) F(E) dE   [m^3/s]
+
+def MaxwellianEEDF(Te, E=None):
+    """Maxwell-Boltzmann EEDF at Te [eV], on the Te2EEPF grid (0-40 eV) by default."""
+    if E is None:
+        E = np.linspace(0, 40, 1000)
+    E = np.asarray(E, dtype=float)
+    EEPF = 2*np.sqrt(1/math.pi) * Te**(-3/2) * np.exp(-E/Te)
+    return {'E': E, 'EEDF': Te2EEPF(Te, E), 'EEPF': EEPF,
+            'Te': float(Te), 'Te_eff': float(Te),
+            'label': f'Maxwellian, Te = {Te:.2f} eV'}
+
+
+def TabulatedEEDF(E_data, f_data, form='EEPF', E=None, dE=0.02, label='numerical EEDF'):
+    """
+    EEDF dict from a numerical distribution, e.g. Boltzmann-solver output.
+
+    form : 'EEPF' -> f_data is f(E) [eV^-3/2] (MultiBolt f0; BOLSIG+ uses the
+                     same normalisation)
+           'EEDF' -> f_data is F(E) [eV^-1]
+    E    : integration grid [eV]. Default: 0 to the last data point in steps of dE.
+
+    f is interpolated linearly in log(f), which follows exponential tails
+    between data points, held constant below the first point (f is flat as
+    E -> 0) and set to zero above the last point, then renormalised on E.
+    """
+    E_data = np.asarray(E_data, dtype=float)
+    f_data = np.asarray(f_data, dtype=float)
+    if form == 'EEDF':          # f(0) is not defined by F(0) = 0, so drop E = 0
+        keep = E_data > 0
+        E_data, f_data = E_data[keep], f_data[keep] / np.sqrt(E_data[keep])
+    elif form != 'EEPF':
+        raise ValueError("form must be 'EEPF' or 'EEDF'")
+    order = np.argsort(E_data)
+    E_data, f_data = E_data[order], f_data[order]
+
+    if E is None:
+        E = np.linspace(0.0, E_data[-1], int(round(E_data[-1] / dE)) + 1)
+    E = np.asarray(E, dtype=float)
+
+    floor = f_data.max() * 1e-100    # zeros / negative round-off -> effectively zero
+    logf = np.interp(E, E_data, np.log(np.clip(f_data, floor, None)))
+    EEPF = np.where(E <= E_data[-1], np.exp(logf), 0.0)
+    EEDF = np.sqrt(E) * EEPF
+
+    norm = np.trapezoid(EEDF, E)
+    if not np.isfinite(norm) or norm <= 0:
+        raise ValueError(f'{label}: EEDF has zero or non-finite integral on the grid')
+    EEPF, EEDF = EEPF / norm, EEDF / norm
+    Te_eff = 2/3 * np.trapezoid(E * EEDF, E)
+    return {'E': E, 'EEDF': EEDF, 'EEPF': EEPF,
+            'Te': None, 'Te_eff': float(Te_eff), 'label': label}
+
+
+def AsEEDF(eedf):
+    """EEDF dict as is; a number is taken as Te [eV] of a Maxwellian."""
+    return eedf if isinstance(eedf, dict) else MaxwellianEEDF(eedf)
+
+
+_NUMBER = r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?'
+
+def ReadMultiBoltEEDF(path):
+    """
+    Read one MultiBolt EEDF file, <run>/EEDFs_f0/f0_<i>.txt.
+
+    Returns E [eV], f0 [eV^-3/2] (int sqrt(E) f0 dE = 1), and the swept value
+    from the header as {'name', 'unit', 'value'}, e.g.
+    {'name': 'E_N', 'unit': 'Td', 'value': 100.0} (None if not in the header).
+    """
+    E, f0, sweep = [], [], None
+    with open(path, 'r') as file:
+        for line in file:
+            if line.startswith('#'):
+                # e.g. '# E_N [Td]\t1.00000e+02'
+                m = re.match(r'#\s*(.+?)\s*\[([^\]]*)\]\s*(' + _NUMBER + r')\s*$', line)
+                if m and sweep is None:
+                    sweep = {'name': m.group(1), 'unit': m.group(2),
+                             'value': float(m.group(3))}
+                continue
+            parts = line.split()
+            try:
+                e, f = float(parts[0]), float(parts[1])
+            except (ValueError, IndexError):
+                continue        # column-name line 'eV  f0', or blank
+            E.append(e)
+            f0.append(f)
+    if not E:
+        raise ValueError(f'No EEDF data found in {path}')
+    return np.array(E), np.array(f0), sweep
+
+
+def ImportMultiBoltEEDFs(RunFolder, E=None, dE=0.02, verbose=True):
+    """
+    EEDF dicts for every sweep point of a MultiBolt export, in sweep order.
+
+    RunFolder : the export folder that holds RUN_DETAILS.txt and EEDFs_f0/.
+                MultiBolt must be run without --LIMIT_EXPORT / --NO_EXPORT so
+                the f0 files are written.
+    E, dE     : integration grid, see TabulatedEEDF.
+    Each dict also carries 'sweep' ({'name','unit','value'}) and 'source'.
+    """
+    f0_dir = Path(RunFolder) / 'EEDFs_f0'
+    files = sorted((p for p in f0_dir.glob('f0_*.txt') if p.stem[3:].isdigit()),
+                   key=lambda p: int(p.stem[3:]))
+    if not files:
+        raise FileNotFoundError(f'No EEDFs_f0/f0_<i>.txt files in {RunFolder} - point '
+                                'MULTIBOLT_RUN at a MultiBolt export folder')
+    EEDFs = []
+    for path in files:
+        E_data, f0, sweep = ReadMultiBoltEEDF(path)
+        label = (f"MultiBolt {sweep['name']} = {sweep['value']:g} {sweep['unit']}"
+                 if sweep else f'MultiBolt {path.stem}')
+        eedf = TabulatedEEDF(E_data, f0, form='EEPF', E=E, dE=dE, label=label)
+        eedf['sweep'] = sweep
+        eedf['source'] = str(path)
+        EEDFs.append(eedf)
+
+    if verbose:
+        print(f'Imported {len(EEDFs)} MultiBolt EEDFs from {RunFolder}')
+        for eedf in EEDFs:
+            print(f"  {eedf['label']:<34} <E> = {1.5*eedf['Te_eff']:7.3f} eV   "
+                  f"Te_eff = {eedf['Te_eff']:6.3f} eV   E_max = {eedf['E'][-1]:6.1f} eV")
+    return EEDFs
+
+
 #%% Helpers for Radiation Trapping solve   
     
 ############
