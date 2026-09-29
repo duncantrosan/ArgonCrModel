@@ -378,6 +378,90 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
     return InputModel
 
 
+def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
+    """
+    The balance equations of all excited levels as one linear system,
+        sum_j G_ij n_j - L_i n_i = -S_i ,
+    with the same gain and loss terms as SolveLabelEquation (S_i is the
+    production from the fixed ground-state density). Solved directly, so it
+    does not slow down when the levels are strongly coupled (high Ne), where
+    the level-by-level iteration converges very slowly.
+
+    The escape factors are taken from the current densities; CRModel repeats
+    the solve until they are consistent. The metastable-collision loss
+    k_met * n_meta * n_i is quadratic in the densities, so it enters as a
+    Newton step (its derivative is included in the matrix) - a plain
+    fixed-point update of n_meta oscillates slowly when this loss dominates.
+
+    trap_lines : 'all'    - escape factor on every line, lower level as absorber
+                 'ground' - escape factor only on lines to the ground state, as
+                            in Bogaerts, Gijbels & Vlcek, J. Appl. Phys. 84, 121 (1998)
+    """
+    Levels = [lbl for lbl, s in InputModel.items() if s['kind'] != 'ground']
+    idx = {lbl: i for i, lbl in enumerate(Levels)}
+    M = np.zeros((len(Levels), len(Levels)))
+    S = np.zeros(len(Levels))
+    k_met = 6.4e-16   # m^3/s, Ferreira et al. (Ref 31 in Bogaerts)
+    n_meta = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'metastable')
+
+    def Eta(Upper, Lower, Rad):
+        if trap_lines == 'ground' and Lower['kind'] != 'ground':
+            return 1.0
+        if Lower['density_m^-3'] == 0:
+            return 1.0
+        Pt = he.Volume2Torr(Lower['density_m^-3'], T)
+        a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
+        return float(np.squeeze(GetEta(interp, tau, a)))
+
+    def Gain(i, partner, rate):
+        if partner in idx:
+            M[i, idx[partner]] += rate
+        else:                                  # ground state, density fixed
+            S[i] += rate * InputModel[partner]['density_m^-3']
+
+    for lbl in Levels:
+        US, i = InputModel[lbl], idx[lbl]
+        # ---- production: excitation from below, superelastic from above, cascades ----
+        for LS in US['Electron Impact CrossSections']['Products']:
+            Gain(i, LS['partner_label'], Ne * LS['Rate'])
+        for SE in US.get('Superelastic', []):
+            if SE['direction'] == 'gain':
+                Gain(i, SE['partner'], Ne * SE['coeff'])
+        for Rad in US['RadiativeDecay']:
+            if Rad['direction'] == 'gain':
+                Gain(i, Rad['partner'], Rad['coeff'] * Eta(InputModel[Rad['partner']], US, Rad))
+
+        # ---- loss frequency (same terms as SolveLabelEquation) ----
+        IonLoss = US['Ionization Data']['Rate_cm^3'] * Ne
+        SuperelasticLoss = Ne * sum(SE['coeff'] for SE in US.get('Superelastic', [])
+                                    if SE['direction'] == 'loss')
+        CollisionalLoss = Ne * sum(LS['Rate'] for LS in US['Electron Impact CrossSections']['Reactants'])
+        RadiativeLossSum = 0
+        if US['kind'] != 'metastable':
+            RadiativeLossSum = sum(Rad['coeff'] * Eta(US, InputModel[Rad['partner']], Rad)
+                                   for Rad in US['RadiativeDecay'] if Rad['direction'] == 'loss')
+            RadiativeLossSum += US.get('A_untracked_loss', 0.0)
+        DiffusionLoss = 1/(US['DiffusionLoss']) if US['kind'] == 'metastable' else 0
+        MetLoss = k_met * n_meta
+        US['Loss_s^-1'] = (IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss
+                           + DiffusionLoss + MetLoss)
+        M[i, i] -= US['Loss_s^-1']
+
+    # Newton step on F(n) = M n + S, where d/dn_m of -k_met n_meta n_i adds
+    # -k_met n_i to column m for each metastable m (M already holds -k_met n_meta)
+    n_old = np.array([InputModel[lbl]['density_m^-3'] for lbl in Levels], dtype=float)
+    J = M.copy()
+    for lbl in Levels:
+        if InputModel[lbl]['kind'] == 'metastable':
+            J[:, idx[lbl]] -= k_met * n_old
+    n = n_old - np.linalg.solve(J, M @ n_old + S)
+    for lbl in Levels:
+        US = InputModel[lbl]
+        US['density_m^-3'] = n[idx[lbl]]
+        US['Production_m^-3s^-1'] = US['Loss_s^-1'] * n[idx[lbl]]
+    return InputModel
+
+
 #%% Initilize State Densities and Extract Data
 def InitializeStateDensities(ModelData,P,T):
     for US in ModelData.values():
@@ -569,7 +653,8 @@ def PlotEEDFs(EEDFs):
 
 
 def CRModel(ModelData, eedf, Ne, P, T, R, interp,
-            max_iter=500, tol=1e-6, relax=1.0, verbose=False):
+            max_iter=500, tol=1e-6, relax=1.0, verbose=False,
+            solver='direct', trap_lines='all'):
     """
     Solve the CR balance to self-consistency.
 
@@ -577,9 +662,17 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
              Te [eV] for a Maxwell-Boltzmann EEDF, or an EEDF dict
              (he.MaxwellianEEDF, he.TabulatedEEDF, he.ImportMultiBoltEEDFs)
     tol    : convergence on max relative change in density between sweeps
-    relax  : under-relaxation factor. 1.0 = plain Gauss-Seidel. Drop to
-             ~0.5 if the metastable-metastable term makes it oscillate.
+    relax  : under-relaxation factor. 1.0 = no relaxation. Drop to ~0.5 if
+             the metastable-metastable term makes it oscillate.
+    solver : 'direct'       - linear solve of all levels at once (SolveDirect),
+                              repeated only to update escape factors and the
+                              metastable-collision loss
+             'gauss-seidel' - level-by-level iteration (SolveLabelEquation);
+                              slow to converge at high Ne
+    trap_lines : 'all' or 'ground', see SolveDirect ('direct' solver only)
     """
+    if solver == 'gauss-seidel' and trap_lines != 'all':
+        raise ValueError("trap_lines='ground' needs solver='direct'")
     eedf = he.AsEEDF(eedf)
     ModelData = CreateExcitationReactionRates(ModelData, eedf)
     ModelData = CreateIonizationReactionRates(ModelData, eedf)
@@ -594,7 +687,10 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
     for iteration in range(1, max_iter + 1):
         old = {lbl: Data[lbl]['density_m^-3'] for lbl in labels}
 
-        Data = SolveLabelEquation(Data, Ng, Ne, P, T, R, interp)
+        if solver == 'direct':
+            Data = SolveDirect(Data, Ne, T, R, interp, trap_lines)
+        else:
+            Data = SolveLabelEquation(Data, Ng, Ne, P, T, R, interp)
 
         if relax < 1.0:
             for lbl in labels:

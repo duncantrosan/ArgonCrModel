@@ -244,7 +244,7 @@
       "lxcat_lower": "Ar(3p5 4p J = 1 2p10)",
       "lxcat_upper": "Ar(3p5 5p J = 3 3p9)",
       "lower_label": "4p1",
-      "upper_label": null,
+      "upper_label": "4p2",
       "threshold_eV": 0.1687,
       "g_ratio": null,
       "energy_eV": [
@@ -3054,7 +3054,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p10)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p1",
       "threshold_eV": 2.7408,
       "g_ratio": null,
       "energy_eV": [
@@ -3084,7 +3084,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3p8)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p3",
       "threshold_eV": 2.7829,
       "g_ratio": null,
       "energy_eV": [
@@ -3114,7 +3114,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J = 1  3p7)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p4",
       "threshold_eV": 2.8017,
       "g_ratio": null,
       "energy_eV": [
@@ -3144,7 +3144,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3p6)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p5",
       "threshold_eV": 2.8057,
       "g_ratio": null,
       "energy_eV": [
@@ -3174,7 +3174,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J =0 3p5)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p6",
       "threshold_eV": 2.8527,
       "g_ratio": null,
       "energy_eV": [
@@ -3204,7 +3204,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J =1 3p4)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p7",
       "threshold_eV": 2.9574,
       "g_ratio": null,
       "energy_eV": [
@@ -3234,7 +3234,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J =1 3p3)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p8",
       "threshold_eV": 2.9639,
       "g_ratio": null,
       "energy_eV": [
@@ -3264,7 +3264,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J =2 3p2)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p9",
       "threshold_eV": 2.965,
       "g_ratio": null,
       "energy_eV": [
@@ -3294,7 +3294,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 0 1s3)",
       "lxcat_upper": "Ar(3p5 5p J =0 3p1)",
       "lower_label": "4s3",
-      "upper_label": null,
+      "upper_label": "5p10",
       "threshold_eV": 3.0149,
       "g_ratio": null,
       "energy_eV": [
@@ -4922,7 +4922,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p10)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p1",
       "threshold_eV": 2.916,
       "g_ratio": null,
       "energy_eV": [
@@ -4952,7 +4952,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J = 3 3p9)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p2",
       "threshold_eV": 2.951,
       "g_ratio": null,
       "energy_eV": [
@@ -4988,43 +4988,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J = 2  3p8)",
       "lower_label": "4s1",
-      "upper_label": null,
-      "threshold_eV": 2.9577,
-      "g_ratio": null,
-      "energy_eV": [
-        5.0,
-        10.0,
-        15.0,
-        20.0,
-        25.0,
-        30.0,
-        40.0,
-        50.0,
-        100.0,
-        200.0,
-        300.0
-      ],
-      "cross_section": [
-        4.89e-21,
-        3.01e-21,
-        2.3e-21,
-        1.85e-21,
-        1.54e-21,
-        1.32e-21,
-        1.03e-21,
-        8.46e-22,
-        4.51e-22,
-        2.39e-22,
-        1.64e-22
-      ]
-    },
-    {
-      "type": "excitation",
-      "lxcat_reaction": "Ar(3p5 4s J = 2 1s5) -> Ar(3p5 5p J = 2 3p8)",
-      "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
-      "lxcat_upper": "Ar(3p5 5p J = 2 3p8)",
-      "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p3",
       "threshold_eV": 2.9577,
       "g_ratio": null,
       "energy_eV": [
@@ -5060,7 +5024,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J = 1  3p7)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p4",
       "threshold_eV": 2.9765,
       "g_ratio": null,
       "energy_eV": [
@@ -5090,7 +5054,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3p6)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p5",
       "threshold_eV": 2.9805,
       "g_ratio": null,
       "energy_eV": [
@@ -5120,7 +5084,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J =0 3p5)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p6",
       "threshold_eV": 3.0275,
       "g_ratio": null,
       "energy_eV": [
@@ -5150,7 +5114,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J =1 3p4)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p7",
       "threshold_eV": 3.1322,
       "g_ratio": null,
       "energy_eV": [
@@ -5180,7 +5144,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J =1 3p3)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p8",
       "threshold_eV": 3.1387,
       "g_ratio": null,
       "energy_eV": [
@@ -5210,7 +5174,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J =2 3p2)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p9",
       "threshold_eV": 3.1398,
       "g_ratio": null,
       "energy_eV": [
@@ -5240,7 +5204,7 @@
       "lxcat_lower": "Ar(3p5 4s J = 2 1s5)",
       "lxcat_upper": "Ar(3p5 5p J =0 3p1)",
       "lower_label": "4s1",
-      "upper_label": null,
+      "upper_label": "5p10",
       "threshold_eV": 3.1897,
       "g_ratio": null,
       "energy_eV": [
@@ -7364,7 +7328,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p10)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p1",
       "threshold_eV": 14.464,
       "g_ratio": 3.0,
       "energy_eV": [
@@ -7404,7 +7368,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 3 3p9)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p2",
       "threshold_eV": 14.499,
       "g_ratio": 7.0,
       "energy_eV": [
@@ -7444,7 +7408,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3d8)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p3",
       "threshold_eV": 14.506,
       "g_ratio": 5.0,
       "energy_eV": [
@@ -7484,7 +7448,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p7)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p4",
       "threshold_eV": 14.525,
       "g_ratio": 3.0,
       "energy_eV": [
@@ -7524,7 +7488,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3p6)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p5",
       "threshold_eV": 14.529,
       "g_ratio": 5.0,
       "energy_eV": [
@@ -7564,7 +7528,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 0 3p5)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p6",
       "threshold_eV": 14.579,
       "g_ratio": 1.0,
       "energy_eV": [
@@ -7604,7 +7568,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p4)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p7",
       "threshold_eV": 14.681,
       "g_ratio": 3.0,
       "energy_eV": [
@@ -7644,7 +7608,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 1 3p2)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p8",
       "threshold_eV": 14.687,
       "g_ratio": 3.0,
       "energy_eV": [
@@ -7684,7 +7648,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 2 3p3)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p9",
       "threshold_eV": 14.688,
       "g_ratio": 5.0,
       "energy_eV": [
@@ -7724,7 +7688,7 @@
       "lxcat_lower": "Ar(3p6 J = 0)",
       "lxcat_upper": "Ar(3p5 5p J = 0 3p1)",
       "lower_label": "ground",
-      "upper_label": null,
+      "upper_label": "5p10",
       "threshold_eV": 14.738,
       "g_ratio": 1.0,
       "energy_eV": [
@@ -7766,7 +7730,7 @@
     "Ar(3p5 4p J = 1  2p2)": "4p9",
     "Ar(3p5 4p J = 0  2p1)": "4p10",
     "Ar(3p5 4p J = 1 2p10)": "4p1",
-    "Ar(3p5 5p J = 3 3p9)": null,
+    "Ar(3p5 5p J = 3 3p9)": "4p2",
     "Ar(3p5 4p J = 2  2p8)": "4p3",
     "Ar(3p5 4p J = 1  2p7)": "4p4",
     "Ar(3p5 4p J = 2  2p6)": "4p5",
@@ -7781,21 +7745,21 @@
     "Ar(3p5 4s J = 0 1s3)": "4s3",
     "Ar(3p5 4s J = 1  1s2)": "4s4",
     "Ar(3p5 4p J = 1  2p10)": "4p1",
-    "Ar(3p5 5p J = 1 3p10)": null,
-    "Ar(3p5 5p J = 2 3p8)": null,
-    "Ar(3p5 5p J = 1  3p7)": null,
-    "Ar(3p5 5p J = 2 3p6)": null,
-    "Ar(3p5 5p J =0 3p5)": null,
-    "Ar(3p5 5p J =1 3p4)": null,
-    "Ar(3p5 5p J =1 3p3)": null,
-    "Ar(3p5 5p J =2 3p2)": null,
-    "Ar(3p5 5p J =0 3p1)": null,
+    "Ar(3p5 5p J = 1 3p10)": "5p1",
+    "Ar(3p5 5p J = 2 3p8)": "5p3",
+    "Ar(3p5 5p J = 1  3p7)": "5p4",
+    "Ar(3p5 5p J = 2 3p6)": "5p5",
+    "Ar(3p5 5p J =0 3p5)": "5p6",
+    "Ar(3p5 5p J =1 3p4)": "5p7",
+    "Ar(3p5 5p J =1 3p3)": "5p8",
+    "Ar(3p5 5p J =2 3p2)": "5p9",
+    "Ar(3p5 5p J =0 3p1)": "5p10",
     "Ar(3p5 4s J = 1 1s4)": "4s2",
     "Ar(3p5 4s J = 0  1s3)": "4s3",
     "Ar(3p5 4p J = 3  2p9)": "4p2",
     "Ar(3p5 4s J = 2 1s5)": "4s1",
     "Ar(3p5 4s J = 1  1s4)": "4s2",
-    "Ar(3p5 5p J = 2  3p8)": null,
+    "Ar(3p5 5p J = 2  3p8)": "5p3",
     "Ar(3p5 4s J = 1 1s2)": "4s4",
     "Ar(3p5 4p j = 2 2p6)": "4p5",
     "Ar(3p6 J = 0)": "ground",
@@ -7816,12 +7780,15 @@
     "Ar(3p5 5s J = 0 2s3)": "5s3",
     "Ar(3p5 5s J = 1 2s2)": "5s4",
     "Ar(3p5 3d J = 1 3d1)": "3d12",
-    "Ar(3p5 5p J = 2 3d8)": null,
-    "Ar(3p5 5p J = 1 3p7)": null,
-    "Ar(3p5 5p J = 0 3p5)": null,
-    "Ar(3p5 5p J = 1 3p4)": null,
-    "Ar(3p5 5p J = 1 3p2)": null,
-    "Ar(3p5 5p J = 2 3p3)": null,
-    "Ar(3p5 5p J = 0 3p1)": null
-  }
+    "Ar(3p5 5p J = 2 3d8)": "5p3",
+    "Ar(3p5 5p J = 1 3p7)": "5p4",
+    "Ar(3p5 5p J = 0 3p5)": "5p6",
+    "Ar(3p5 5p J = 1 3p4)": "5p7",
+    "Ar(3p5 5p J = 1 3p2)": "5p8",
+    "Ar(3p5 5p J = 2 3p3)": "5p9",
+    "Ar(3p5 5p J = 0 3p1)": "5p10"
+  },
+  "duplicates_skipped": [
+    "Ar(3p5 4s J = 2 1s5) -> Ar(3p5 5p J = 2 3p8)"
+  ]
 }

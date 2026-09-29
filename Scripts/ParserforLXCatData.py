@@ -16,7 +16,11 @@ PASCHEN_TO_LABEL = {
     '2s5': '5s1', '2s4': '5s2', '2s3': '5s3', '2s2': '5s4',
 }
 
-UNTRACKED_MANIFOLDS = {'5p'}   # states in the file we deliberately don't model
+# The 5p names in the NGFSRDW file are not reliable: 3p2/3p3 swap J between the
+# ground-state and 4s blocks, one ground-state target is labelled '3d8', and one
+# '5p 3p9' target is really 2p9 (threshold 0.1687 eV from 2p10). These targets are
+# identified by J and energy (lower-level energy + threshold) instead of the name.
+ENERGY_MATCHED_MANIFOLDS = {'5p'}
 
 
 def resolve_label(lxcat_name):
@@ -24,7 +28,7 @@ def resolve_label(lxcat_name):
     Map an lxcat state string like 'Ar(3p5 4p J = 1  2p10)' to a model label.
     Handles the ground state ('Ar(3p6 J = 0)'), stray '<' characters left
     over from splitting '<->', inconsistent spacing, and lowercase 'j'.
-    Returns None for untracked states (e.g. 5p).
+    Returns None for 5p states (see resolve_by_energy) and unknown names.
     """
     if lxcat_name is None:
         return None
@@ -45,18 +49,34 @@ def resolve_label(lxcat_name):
     manifold = tokens[1]          # '4s', '4p', '3d', '5s', '5p'
     paschen  = tokens[-1]         # '1s5', '2p10', '3d12', '2s5', '3p9', ...
 
-    if manifold in UNTRACKED_MANIFOLDS:
-        return None               # e.g. all 5p targets, incl. the '3d8' typo block
+    if manifold in ENERGY_MATCHED_MANIFOLDS:
+        return None               # resolved by resolve_by_energy in parse_lxcat
     return PASCHEN_TO_LABEL.get(paschen)
 
 
-def parse_lxcat(path):
-    """Parse an LXCat cross-section text file into a CrossSectionList dict."""
+def resolve_by_energy(lxcat_name, E_target, levels, tol_eV=5e-3):
+    """Model label with the J in lxcat_name and energy within tol_eV of E_target."""
+    m = re.search(r'J\s*=\s*(\d+)', lxcat_name)
+    if m is None:
+        return None
+    cand = [lab for lab, v in levels.items()
+            if abs(v['energy_eV'] - E_target) < tol_eV and float(v['J']) == float(m.group(1))]
+    return cand[0] if len(cand) == 1 else None
+
+
+def parse_lxcat(path, levels=None):
+    """
+    Parse an LXCat cross-section text file into a CrossSectionList dict.
+
+    levels : the model level list (ArgonLevelList.json); needed to resolve 5p
+             targets by energy. Exact duplicate channels are kept once.
+    """
     with open(path) as f:
         lines = f.read().splitlines()
 
     cross_sections = []
     crosswalk = {}
+    seen, duplicates = set(), []
     i = 0
     while i < len(lines):
         if lines[i].strip() != 'EXCITATION':
@@ -93,8 +113,19 @@ def parse_lxcat(path):
 
         lower_label = resolve_label(lo_raw)
         upper_label = resolve_label(up_raw)
-        crosswalk[lo_raw] = lower_label
-        crosswalk[up_raw] = upper_label
+        if (upper_label is None and levels is not None and lower_label is not None
+                and ' 5p ' in up_raw):
+            upper_label = resolve_by_energy(up_raw, levels[lower_label]['energy_eV'] + threshold_eV,
+                                            levels)
+        crosswalk.setdefault(lo_raw, lower_label)
+        crosswalk.setdefault(up_raw, upper_label)
+
+        pair = (lower_label, upper_label)
+        if lower_label is not None and upper_label is not None and pair in seen:
+            duplicates.append(reaction)
+            i = j + 1
+            continue
+        seen.add(pair)
 
         cross_sections.append({
             'type':           'excitation',
@@ -110,11 +141,16 @@ def parse_lxcat(path):
         })
         i = j + 1
 
-    return {'cross_sections': cross_sections, 'crosswalk': crosswalk}
+    return {'cross_sections': cross_sections, 'crosswalk': crosswalk,
+            'duplicates_skipped': duplicates}
 
 
-def build_cross_sections_json(in_txt, out_json):
-    data = parse_lxcat(in_txt)
+def build_cross_sections_json(in_txt, out_json, levels_json=None):
+    levels = None
+    if levels_json is not None:
+        with open(levels_json) as f:
+            levels = json.load(f)
+    data = parse_lxcat(in_txt, levels)
     with open(out_json, 'w') as f:
         json.dump(data, f, indent=2)
     return data
@@ -125,7 +161,7 @@ if __name__ == '__main__':
     DataFolder = MainDir / 'InputData'
     InTXT   = DataFolder / 'LXCatPureArgon.txt'    # <- your LXCat file
     OutJSON = DataFolder / 'ArgonCrossSections.json'
-    d = build_cross_sections_json(InTXT, OutJSON)
+    d = build_cross_sections_json(InTXT, OutJSON, DataFolder / 'ArgonLevelList.json')
     n_total  = len(d['cross_sections'])
     n_ground = sum(1 for c in d['cross_sections'] if c['lower_label'] == 'ground')
     n_none   = sum(1 for c in d['cross_sections']
@@ -133,3 +169,5 @@ if __name__ == '__main__':
     print(f"Parsed {n_total} cross sections "
           f"({n_ground} from ground, {n_none} involving untracked levels) "
           f"-> {OutJSON}")
+    for r in d['duplicates_skipped']:
+        print(f"  duplicate block skipped: {r}")

@@ -23,10 +23,24 @@ E_ION = 15.7596     # eV, Ar first ionization energy (as in he.CreateIonizationC
 K_MET = 6.4e-16     # m^3/s, metastable-metastable collisions (SolveLabelEquation in MainFileV2)
 SIGMA_CAP = 1.0e-18 # m^2, cap on analytic cross sections (he.AddAnalyticExcitationCrossSections)
 
-# Numbered in order of first use in the tables
+# Numbered in this order in the tables
 REFERENCES = {
     'NIST': r'A.~Kramida, Yu.~Ralchenko, J.~Reader and NIST ASD Team, \emph{NIST Atomic Spectra '
             r'Database} (level energies, statistical weights, $A_{ki}$ and accuracy grades).',
+    'EstMultiplet': r'This work: $A_{ki}$ not tabulated by NIST, from the $jK$-coupling line strength '
+                    r'$S(KJ\rightarrow K^\prime J^\prime)=S(K,K^\prime)(2J+1)(2J^\prime+1)'
+                    r'\{K\;J\;s;\,J^\prime\;K^\prime\;1\}^2$ with $S(K,K^\prime)$ fitted to the NIST '
+                    r'components of the same $[K]\rightarrow[K^\prime]$ multiplet '
+                    r'(\texttt{Scripts/EstimateTransitionProbabilities.py}).',
+    'EstCoulomb': r'This work: $A_{ki}$ not tabulated by NIST, calculated in $jK$ coupling with '
+                  r'Coulomb-approximation radial integrals (Bates--Damgaard, effective quantum numbers '
+                  r'from the level energies and the $^2P_{3/2}$/$^2P_{1/2}$ limits), as the calculated '
+                  r'transition probabilities used by Bogaerts \emph{et al.} '
+                  r'(\texttt{Scripts/EstimateTransitionProbabilities.py}).',
+    'KatsonisDrawin80': r'K.~Katsonis and H.~W.~Drawin, J.~Quant.~Spectrosc.~Radiat.~Transf. '
+                        r'\textbf{23}, 1 (1980) ($jK$-coupling transition probabilities used by '
+                        r'Bogaerts \emph{et al.} where no measured data exist).',
+    'BatesDamgaard49': r'D.~R.~Bates and A.~Damgaard, Phil.~Trans.~R.~Soc.~Lond.~A \textbf{242}, 101 (1949).',
     'NGFSRDW': r'NGFSRDW database (relativistic distorted-wave cross sections), '
                r'\texttt{www.lxcat.net/NGFSRDW}, retrieved 1 July 2026.',
     'Khakoo04': r'M.~A.~Khakoo \emph{et al.}, J.~Phys.~B \textbf{37}, 247 (2004).',
@@ -35,6 +49,7 @@ REFERENCES = {
     'Gangwar10': r'R.~K.~Gangwar, L.~Sharma, R.~Srivastava and A.~D.~Stauffer, '
                  r'Phys.~Rev.~A \textbf{81}, 052707 (2010).',
     'Srivastava06': r'R.~Srivastava, A.~D.~Stauffer and L.~Sharma, Phys.~Rev.~A \textbf{74}, 012715 (2006).',
+    'Sharma07': r'L.~Sharma, R.~Srivastava and A.~D.~Stauffer, Phys.~Rev.~A \textbf{76}, 024701 (2007).',
     'Gangwar12': r'R.~K.~Gangwar, L.~Sharma, R.~Srivastava and A.~D.~Stauffer, '
                  r'J.~Appl.~Phys. \textbf{111}, 053307 (2012).',
     'Bogaerts98': r'A.~Bogaerts, R.~Gijbels and J.~Vl\v{c}ek, J.~Appl.~Phys. \textbf{84}, 121 (1998), '
@@ -52,6 +67,12 @@ REFERENCES = {
              r'input to MultiBolt for the EEDF.',
 }
 REF_NUM = {key: i + 1 for i, key in enumerate(REFERENCES)}
+
+
+# reference keys for each value of the 'source' field of a transition
+A_SOURCE = {'NIST ASD': ('NIST',),
+            'jK multiplet (NIST)': ('EstMultiplet',),
+            'jK + Coulomb approximation': ('EstCoulomb', 'BatesDamgaard49')}
 
 
 def cite(*keys):
@@ -72,31 +93,51 @@ def sci(x, digits=2, math=True):
 
 
 def paschen(label):
+    """Paschen notation for the 1s, 2p and 2s levels (the 3d names in the
+    parser are the NGFSRDW energy index, not Paschen notation)."""
     inverse = {v: k for k, v in PASCHEN_TO_LABEL.items()}
-    p = inverse.get(label)
-    if p is None:
-        return '--'
-    m = re.match(r'(\d)([spd])(\d+)$', p)
-    return rf'${m.group(1)}{m.group(2)}_{{{m.group(3)}}}$'
+    m = re.match(r'([12])([sp])(\d+)$', inverse.get(label, ''))
+    return rf'${m.group(1)}\mathrm{{{m.group(2)}}}_{{{m.group(3)}}}$' if m else '--'
+
+
+def config_tex(cfg):
+    """NIST configuration '3s2.3p5.(2P*<3/2>).4s' -> 3s^2 3p^5 (^2P^o_3/2) 4s (math, no $)."""
+    parts = []
+    for p in cfg.split('.'):
+        core = re.fullmatch(r'\((\d)([SPDF])(\*?)<(.+?)>\)', p)
+        if core:
+            mult, L, odd, j = core.groups()
+            parts.append(rf'({{}}^{{{mult}}}\mathrm{{{L}}}' + (r'^{\circ}' if odd else '') + rf'_{{{j}}})')
+            continue
+        shell = re.fullmatch(r'(\d+)([spdfg])(\d*)', p)
+        if shell is None:
+            raise ValueError(f'unrecognised configuration {cfg!r}')
+        n, l, occ = shell.groups()
+        parts.append(rf'{n}\mathrm{{{l}}}' + (rf'^{{{occ}}}' if occ else ''))
+    return ''.join(parts)
+
+
+def term_tex(term, J=None):
+    """NIST term '2[3/2]*' -> ^2[3/2]^o (jK) or '1S' -> ^1S (LS), with J as subscript."""
+    m = re.fullmatch(r'(\d)(\[.+?\]|[SPDFGHIK])(\*?)', term)
+    if m is None:
+        raise ValueError(f'unrecognised term {term!r}')
+    mult, K, odd = m.groups()
+    K = K if K.startswith('[') else rf'\mathrm{{{K}}}'
+    J = '' if J is None else rf'_{{{int(J) if float(J).is_integer() else J}}}'
+    return rf'{{}}^{{{mult}}}{K}' + (r'^{\circ}' if odd else '') + J
 
 
 def designation(level):
-    """Racah notation, e.g. 4s[3/2]o_2; a prime marks the 2P_1/2 core."""
-    if level['kind'] == 'ground':
-        return r'$3p^6\;{}^1S_0$'
-    cfg, term = level['configuration'], level['term']
-    nl = cfg.split('.')[-1]
-    prime = "'" if '<1/2>' in cfg else ''
-    K = re.search(r'\[(.+?)\]', term).group(1)
-    parity = r'^{\circ}' if term.endswith('*') else ''
-    return rf'$\mathrm{{{nl}}}{prime}[{K}]{parity}_{{{int(level["J"])}}}$'
+    """Full NIST level designation, configuration + term + J, as inline math."""
+    return '$' + config_tex(level['configuration']) + r'\;' + term_tex(level['term'], level['J']) + '$'
 
 
 def longtable(colspec, header, rows, caption, label):
     """rows: lists of cell strings, or the string 'midrule' for a separator."""
     ncols = len(header)
     head = ' & '.join(header) + r' \\'
-    out = [r'\begingroup\small',
+    out = [r'\begingroup\small\setlength{\tabcolsep}{4pt}',
            r'\begin{longtable}{' + colspec + '}',
            r'\caption{' + caption + r'}\label{' + label + r'}\\',
            r'\toprule', head, r'\midrule', r'\endfirsthead',
@@ -120,9 +161,11 @@ def rdw_reference(MD, lo, up):
     """Paper behind each NGFSRDW channel, per the database description."""
     mlo, mup = MD[lo]['manifold'], MD[up]['manifold']
     if mlo == 'ground':
-        return {'4s': 'Khakoo04', '4p': 'Kaur98'}.get(mup, 'Gangwar10')   # 3d, 5s
+        return {'4s': 'Khakoo04', '4p': 'Kaur98'}.get(mup, 'Gangwar10')   # 3d, 5s, 5p
     if mlo == '4s' and mup == '4p':
         return 'Srivastava06' if MD[lo]['kind'] == 'metastable' else 'Gangwar12'
+    if mlo == '4s' and mup == '5p':
+        return 'Sharma07'                                                 # metastable 4s -> 5p
     return 'Gangwar12'                                                    # 4s-4s, 4p-4p
 
 
@@ -152,8 +195,9 @@ def build(MD):
     update = he.combine(LevelList, he.ImportReactionList()['transitions'])
     lines = [t for t in update['transitions_in_set'] if t['Aki'] is not None]
     lines.sort(key=lambda t: (-by_energy[t['upper_label']], t['wl_nm']))
-    no_decay = [v['label'] for v in levels if v['kind'] not in ('ground', 'metastable')
+    no_decay = [designation(v) for v in levels if v['kind'] not in ('ground', 'metastable')
                 and not any(t['upper_label'] == v['label'] for t in lines)]
+    D = {label: designation(v) for label, v in MD.items()}    # model label -> NIST designation
 
     n_ion = sum(1 for v in levels if v['kind'] != 'ground')
     ND_s3, ND_s5 = (D * he.Torr2Volume(1, 300) for D in he.FindDiffusionCoeff(1, 300))
@@ -164,18 +208,16 @@ def build(MD):
            r'% Requires \usepackage{booktabs,longtable}.', '']
 
     # ---- 1. levels --------------------------------------------------------
-    rows = [[v['label'], paschen(v['label']), designation(v), f"{int(v['J'])}", f"{int(v['g'])}",
-             f"{v['energy_eV']:.4f}", kind_name[v['kind']],
-             '--' if v['kind'] == 'ground' else f"{E_ION - v['energy_eV']:.3f}"] for v in levels]
+    rows = [['$' + config_tex(v['configuration']) + '$', '$' + term_tex(v['term']) + '$',
+             f"{int(v['J'])}", f"{int(v['g'])}", f"{v['energy_eV']:.4f}", paschen(v['label']),
+             kind_name[v['kind']]] for v in levels]
     tex.append(longtable(
-        'llllrrlr',
-        ['Label', 'Paschen', 'Designation', '$J$', '$g$', '$E$ (eV)', 'Type', r'$E_\mathrm{ion}-E$ (eV)'],
+        'llrrrll',
+        ['Configuration', 'Term', '$J$', '$g$', '$E$ (eV)', 'Paschen', 'Type'],
         rows,
-        rf'Argon levels in the CR model ({len(levels)} levels). Energies and statistical weights from '
-        rf'NIST {cite("NIST")}; designations in Racah notation, where a prime marks the '
-        r'$^2P^\circ_{1/2}$ ion core. For the 3d levels the Paschen column gives the NGFSRDW '
-        r'energy index ($3d_{12}$ lowest), not Paschen notation. $E_\mathrm{ion}-E$ is the threshold for electron-impact '
-        rf'ionization out of the level ($E_\mathrm{{ion}} = {E_ION}$~eV).',
+        rf'Argon levels in the CR model ({len(levels)} levels): configuration, term, $J$, statistical '
+        rf'weight $g$ and energy $E$ above the ground state, from NIST {cite("NIST")}. '
+        r'Paschen notation is given for the $1\mathrm{s}$, $2\mathrm{p}$ and $2\mathrm{s}$ levels.',
         'tab:ar_levels'))
 
     # ---- 2. summary of processes -----------------------------------------
@@ -192,21 +234,23 @@ def build(MD):
          r'$\sigma_{ji}$ integrated over the EEDF', 'from the two rows above'],
         ['Electron-impact ionization', r'$e+\mathrm{Ar}_i\rightarrow 2e+\mathrm{Ar}^+$', f'{n_ion}',
          r'Vriens--Smeets $\sigma(\varepsilon)$ integrated over the EEDF; all excited levels '
-         r'(not the ground state)', cite('Vriens80')],
+         rf'(not the ground state), threshold $E_\mathrm{{ion}}-E_i$ with $E_\mathrm{{ion}}={E_ION}$~eV',
+         cite('Vriens80')],
         ['Spontaneous emission', r'$\mathrm{Ar}_k\rightarrow\mathrm{Ar}_i+h\nu$', f'{len(lines)}',
-         r'$A_{ki}\Lambda_{ki}$', cite('NIST')],
+         r'$A_{ki}\Lambda_{ki}$; NIST where available, otherwise $jK$-coupling estimates',
+         cite('NIST', 'EstMultiplet', 'EstCoulomb', 'KatsonisDrawin80')],
         ['Radiation trapping', 'all emission lines', f'{len(lines)}',
          r'Escape factor $\Lambda(\tau_0,a)$ from a Monte Carlo hemisphere calculation, Voigt '
          r'profile (Doppler and resonance broadening), lower level as absorber',
          'this work, ' + cite('BK97')],
-        ['Metastable diffusion', r'$\mathrm{Ar}(1s_5,1s_3)\rightarrow$ wall', '2',
+        ['Metastable diffusion', r'$\mathrm{Ar}(1\mathrm{s}_5,1\mathrm{s}_3)\rightarrow$ wall', '2',
          rf'$\tau_D^{{-1}}=D\,(4.493/R)^2$, $ND={sci(ND_s3, 1, False)}$ and '
          rf'${sci(ND_s5, 1, False)}$~m$^{{-1}}$\,s$^{{-1}}$', cite('SAB07')],
         ['Metastable--metastable collisions', r'$\mathrm{Ar}^m+\mathrm{Ar}^m\rightarrow$ products', '1',
          rf'$k={sci(K_MET, 1, False)}$~m$^3$\,s$^{{-1}}$', cite('Ferreira85')],
     ]
     tex.append(longtable(
-        'p{3.1cm}p{3.3cm}rp{5.2cm}p{1.9cm}',
+        r'p{0.19\linewidth}p{0.2\linewidth}rp{0.33\linewidth}p{0.12\linewidth}',
         ['Process', 'Reaction', '$N$', 'Rate coefficient', 'Source'], rows,
         r'Processes for argon in the CR model. Electron-impact rates are '
         r'$k=\sqrt{2e/m_e}\int\sqrt{\varepsilon}\,\sigma(\varepsilon)F(\varepsilon)\,d\varepsilon$, '
@@ -219,7 +263,7 @@ def build(MD):
     for lo, up, thr, ref in rdw:
         if prev is not None and MD[lo]['manifold'] != MD[prev]['manifold']:
             rows.append('midrule')
-        rows.append([lo, up, f'{thr:.4f}', cite(ref)])
+        rows.append([D[lo], D[up], f'{thr:.4f}', cite(ref)])
         prev = lo
     tex.append(longtable(
         'llrl', ['Lower', 'Upper', r'$\varepsilon_\mathrm{th}$ (eV)', 'Source'], rows,
@@ -229,26 +273,29 @@ def build(MD):
         'tab:ar_rdw'))
 
     # ---- 4. analytic, optically allowed ------------------------------------
-    rows = [[lo, up + (r'$^*$' if capped else ''), f'{thr:.4f}', sci(f, 2)]
+    rows = [[D[lo], D[up] + (r'\textsuperscript{*}' if capped else ''), f'{thr:.4f}', sci(f, 2)]
             for lo, up, thr, f, capped in allowed]
     tex.append(longtable(
         'llrr', ['Lower', 'Upper', r'$\Delta E$ (eV)', r'$f_{ij}$'], rows,
         rf'Optically allowed excitation channels without RDW data ({len(allowed)} channels): Drawin '
         rf'cross section $\sigma=4\pi a_0^2(E_H/\Delta E)^2 f_{{ij}}\,\alpha\,(u-1)u^{{-2}}\ln(1.25\beta u)$, '
         rf'$u=\varepsilon/\Delta E$, $\alpha=\beta=1$ {cite("Bogaerts98")}, with the oscillator strength '
-        rf'$f_{{ij}}$ from the NIST $A_{{ki}}$ {cite("NIST")}. $^*$Peak cross section capped at '
+        rf'$f_{{ij}}$ from $A_{{ki}}$ (Table~\ref{{tab:ar_radiative}}; NIST {cite("NIST")} or the '
+        rf'estimates of {cite("EstMultiplet", "EstCoulomb")}). $^*$Peak cross section capped at '
         rf'{sci(SIGMA_CAP, 0)}~m$^2$. Each channel is also included as its superelastic reverse process.',
         'tab:ar_allowed'))
 
     # ---- 5. analytic, forbidden ------------------------------------------
-    rows = [[lo, str(len(forbidden[lo])), ', '.join(sorted(forbidden[lo], key=by_energy.get))]
+    rows = [[D[lo], str(len(forbidden[lo])), ', '.join(D[u] for u in sorted(forbidden[lo], key=by_energy.get))]
             for lo in sorted(forbidden, key=lambda l: by_energy[l])]
     tex.append(longtable(
-        'lrp{11.2cm}', ['Lower', '$N$', 'Upper levels'], rows,
-        rf'Optically forbidden excitation channels ({n_forb} channels): all remaining pairs of levels '
+        r'lrp{0.58\linewidth}', ['Lower', '$N$', 'Upper levels'], rows,
+        rf'Optically forbidden excitation channels ({n_forb} channels): the remaining pairs of levels '
         r'without RDW data or a radiative transition, with the Drawin forbidden cross section '
-        rf'$\sigma=4\pi a_0^2\,\alpha\,(u-1)u^{{-2}}$, $\alpha=0.01$ {cite("Bogaerts98")}. Each channel '
-        r'is also included as its superelastic reverse process.',
+        rf'$\sigma=4\pi a_0^2\,\alpha\,(u-1)u^{{-2}}$, $\alpha=0.01$ {cite("Bogaerts98")}. As in '
+        rf'{cite("Bogaerts98")}, parity-forbidden channels ($\Delta l\neq\pm1$) between the primed '
+        r'($^2P_{1/2}$ core) and unprimed ($^2P_{3/2}$ core) systems are neglected, except among the '
+        r'$4\mathrm{s}$ levels. Each channel is also included as its superelastic reverse process.',
         'tab:ar_forbidden'))
 
     # ---- 6. radiative transitions ------------------------------------------
@@ -257,24 +304,33 @@ def build(MD):
         up, lo = t['upper_label'], t['lower_label']
         if prev is not None and up != prev:
             rows.append('midrule')
-        rows.append([up if up != prev else '', lo + (r'$^\dagger$' if lo == 'ground' else ''),
-                     f"{t['wl_nm']:.3f}", sci(t['Aki'], 2), t['acc'] or '--'])
+        rows.append([D[up] if up != prev else '', D[lo] + (r'\textsuperscript{\dag}' if lo == 'ground' else ''),
+                     f"{t['wl_nm']:.3f}", sci(t['Aki'], 2), t['acc'] or '--',
+                     cite(*A_SOURCE[t.get('source', 'NIST ASD')])])
         prev = up
+    n_src = {s: sum(1 for t in lines if t.get('source', 'NIST ASD') == s) for s in A_SOURCE}
     tex.append(longtable(
-        'llrrl', ['Upper', 'Lower', r'$\lambda$ (nm)', r'$A_{ki}$ (s$^{-1}$)', 'Acc.'], rows,
-        rf'Spontaneous emission lines in the CR model ({len(lines)} lines), from NIST {cite("NIST")}; '
+        'llrrll', ['Upper', 'Lower', r'$\lambda$ (nm)', r'$A_{ki}$ (s$^{-1}$)', 'Acc.', 'Source'], rows,
+        rf'Spontaneous emission lines in the CR model ({len(lines)} lines): {n_src["NIST ASD"]} from '
+        rf'NIST {cite("NIST")}; where NIST gives no $A_{{ki}}$, {n_src["jK multiplet (NIST)"]} completed '
+        rf'from the NIST components of the same $jK$ multiplet {cite("EstMultiplet")} and '
+        rf'{n_src["jK + Coulomb approximation"]} calculated in $jK$ coupling with Coulomb-approximation '
+        rf'radial integrals {cite("EstCoulomb", "BatesDamgaard49")}, following Bogaerts \emph{{et al.}} '
+        rf'{cite("Bogaerts98")}; '
         r'$\lambda$ in vacuum below 200~nm and in air above. Accuracy of $A_{ki}$: AA $\le1\%$, '
         r'A$+$ $\le2\%$, A $\le3\%$, B$+$ $\le7\%$, B $\le10\%$, C$+$ $\le18\%$, C $\le25\%$, '
-        r'D$+$ $\le40\%$, D $\le50\%$, E $>50\%$. Every line is reduced by an escape factor '
-        r'$\Lambda$ computed with the lower-level density as absorber. $^\dagger$Resonance line to '
-        r'the ground state (VUV). The metastables 4s1 and 4s3 have no radiative decay'
-        + (', and ' + ', '.join(no_decay) + ' have no tabulated decay to a modelled level' if no_decay else '')
+        r'D$+$ $\le40\%$, D $\le50\%$, E $>50\%$. Lines are reduced by an escape factor $\Lambda$ '
+        r'computed with the lower-level density as absorber, on every line or, as in '
+        rf'{cite("Bogaerts98")}, only on lines to the ground state. $^\dagger$Resonance line to '
+        r'the ground state (VUV). The metastable $1\mathrm{s}_5$ and $1\mathrm{s}_3$ levels have no '
+        r'radiative decay'
+        + (', and ' + ' and '.join(no_decay) + ' have no tabulated decay to a modelled level' if no_decay else '')
         + '.',
         'tab:ar_radiative'))
 
     # ---- 7. references -----------------------------------------------------
     rows = [[f'[{n}]', text] for text, n in ((REFERENCES[k], REF_NUM[k]) for k in REFERENCES)]
-    tex.append(longtable('lp{14cm}', ['', 'Source'], rows,
+    tex.append(longtable(r'lp{0.9\linewidth}', ['', 'Source'], rows,
                          'Data sources for Tables~\\ref{tab:ar_levels}--\\ref{tab:ar_radiative}.',
                          'tab:ar_sources'))
     return '\n'.join(tex), dict(levels=len(levels), rdw=len(rdw), allowed=len(allowed),

@@ -485,7 +485,8 @@ def ImportLevelList():
         LevelList = json.load(file)
         return LevelList
 
-def ImportReactionList():
+def ImportReactionList(IncludeSupplement=True):
+    # IncludeSupplement=False returns the NIST export alone (used to build the supplement)
     # 1. Get the directory
     MainDir = Path(__file__).resolve().parent.parent
     
@@ -496,7 +497,22 @@ def ImportReactionList():
     # 3. Open the file directly using the Path object
     with open(ReactionListPath, 'r') as file:
         ReactionList = json.load(file)
-        return ReactionList
+    for t in ReactionList['transitions']:
+        t.setdefault('source', 'NIST ASD')
+
+    # 4. Add transitions NIST has no A for (ArgonReactionListSupplement.json);
+    #    a line that is also in the NIST file keeps the NIST value
+    SupplementPath = DataFolder / 'ArgonReactionListSupplement.json'
+    if IncludeSupplement and SupplementPath.exists():
+        with open(SupplementPath, 'r') as file:
+            Supplement = json.load(file)
+        in_nist = {(_key_of(t['upper']), _key_of(t['lower'])) for t in ReactionList['transitions']}
+        for t in Supplement['transitions']:
+            if (_key_of(t['upper']), _key_of(t['lower'])) in in_nist:
+                print(f"Supplement line {t['wl_nm']} nm is also in the NIST list - keeping NIST")
+                continue
+            ReactionList['transitions'].append(t)
+    return ReactionList
 
 def BuildRateModel(LevelList, LevelList_Update):
     Model = {label: dict(info) for label, info in LevelList.items()}
@@ -652,6 +668,7 @@ def combine(levels, transitions):
             'wl_nm':       t.get('wl_nm'),
             'Aki':         t.get('Aki'),
             'acc':         t.get('acc'),
+            'source':      t.get('source'),
         }
  
         if up is not None and lo is not None:
@@ -889,6 +906,14 @@ def _Is4sLevel(lvl):
     return ('4s' in cfg) and (11.0 < float(Ee) < 12.0)
 
 
+def _CoreAndL(lvl):
+    """(ion core '3/2' or '1/2', outer-electron l) of an excited level; (None, None) for the ground state."""
+    parts = str(lvl.get('configuration', '')).split('.')
+    if lvl.get('kind') == 'ground' or len(parts) < 2 or '<' not in parts[-2]:
+        return None, None
+    return ('1/2' if '<1/2>' in parts[-2] else '3/2'), 'spdfg'.index(parts[-1][-1])
+
+
 def _Build4sIndexMap(ModelData):
     """
     Map your labels onto Bogaerts' effective level numbers n = 2,3,4,5 for the
@@ -922,6 +947,7 @@ def AddAnalyticExcitationCrossSections(ModelData,
                                        only_missing=True,
                                        sigma_cap_m2=1.0e-18,
                                        exclude_labels=(),
+                                       neglect_intercombination_forbidden=True,
                                        verbose=True):
     """
     Fill in every lower -> upper electron-impact excitation channel that does
@@ -960,6 +986,12 @@ def AddAnalyticExcitationCrossSections(ModelData,
         real atomic excitation cross section. Set None to disable.
     exclude_labels : iterable
         Level labels to leave out entirely.
+    neglect_intercombination_forbidden : bool
+        Leave out parity-forbidden channels (outer electron dl != +-1) between
+        the primed (2P1/2 core) and unprimed (2P3/2 core) systems, except among
+        the 4s levels, as Bogaerts, Gijbels & Vlcek, J. Appl. Phys. 84, 121
+        (1998) do: these break two selection rules and are expected to be
+        very small.
 
     Returns
     -------
@@ -989,7 +1021,7 @@ def AddAnalyticExcitationCrossSections(ModelData,
     existing = _ExistingExcitationPairs(ModelData) if only_missing else set()
     map4s = _Build4sIndexMap(ModelData) if use_4s_special else {}
 
-    added, skipped, tally = 0, 0, {'allowed': 0, 'forbidden': 0, '4s': 0}
+    added, skipped, tally = 0, 0, {'allowed': 0, 'forbidden': 0, '4s': 0, 'neglected': 0}
 
     for i, low in enumerate(levels):
         for up in levels[i + 1:]:
@@ -1003,6 +1035,14 @@ def AddAnalyticExcitationCrossSections(ModelData,
 
             g_lo, g_up = float(low['g']), float(up['g'])
             Aki = _FindAki(ModelData, up_lbl, lo_lbl)
+
+            if neglect_intercombination_forbidden and Aki is None:
+                (core_lo, l_lo), (core_up, l_up) = _CoreAndL(low), _CoreAndL(up)
+                if (core_lo is not None and core_up is not None and core_lo != core_up
+                        and abs(l_lo - l_up) != 1
+                        and not (lo_lbl in map4s and up_lbl in map4s)):
+                    tally['neglected'] += 1
+                    continue
 
             # --- pick the branch -------------------------------------------
             if lo_lbl in map4s and up_lbl in map4s and Aki is None:
@@ -1071,6 +1111,7 @@ def AddAnalyticExcitationCrossSections(ModelData,
         print(f"    optically allowed   : {tally['allowed']}")
         print(f"    forbidden           : {tally['forbidden']}")
         print(f"    4s manifold special : {tally['4s']}")
+        print(f"  neglected (parity-forbidden between the primed and unprimed systems): {tally['neglected']}")
         print(f"  channels already present (left alone): {skipped}")
         print(f"  grid: {E[0]:.2f} - {E[-1]:.1f} eV, {len(E)} points, sigma in m^2")
         print("=" * 68 + "\n")
