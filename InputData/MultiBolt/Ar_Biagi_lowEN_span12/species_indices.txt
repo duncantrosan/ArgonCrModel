@@ -1,0 +1,4 @@
+# The indices for particular species
+# col_1: species_idx [count], col_2: species_name
+species_idx	species_name
+0	Ar

@@ -196,7 +196,7 @@ MULTIBOLT_FOLDER = Path(__file__).resolve().parent.parent / 'InputData' / 'Multi
 def RunMultiBolt(XsecFiles, Name, EN_Td, species='Ar', P_Torr=1, T_K=300,
                  Nu=1000, N_terms=6, model='HD+GE', export_xsecs=False,
                  overwrite=False, ExportFolder=MULTIBOLT_FOLDER, exe=MULTIBOLT_EXE,
-                 verbose=True):
+                 remap_span=10, verbose=True):
     """
     Run MultiBolt for an E/N sweep and return the EEDFs (ImportMultiBoltEEDFs).
 
@@ -207,6 +207,8 @@ def RunMultiBolt(XsecFiles, Name, EN_Td, species='Ar', P_Torr=1, T_K=300,
     EN_Td     : E/N values [Td], one EEDF each
     species   : 'Ar' (fraction 1), or {'Ar': 0.9, 'N2': 0.1}; names as in the files
     export_xsecs : also save the cross sections MultiBolt used in the run folder
+    remap_span : decades of the EEDF kept by the energy remap; at low E/N 10
+                 decades can cut the tail off below the excitation thresholds
     overwrite : MultiBolt silently replaces an existing run folder, so by default
                 an existing Name is refused
 
@@ -239,7 +241,7 @@ def RunMultiBolt(XsecFiles, Name, EN_Td, species='Ar', P_Torr=1, T_K=300,
             '--model', model, '--N_terms', str(N_terms), '--Nu', str(Nu),
             '--p_Torr', f'{P_Torr:g}', '--T_K', f'{T_K:g}', '--EN_Td', f'{EN_Td[0]:g}',
             '--initial_eV_max', '100', '--USE_ENERGY_REMAP',
-            '--remap_target_order_span', '10', '--remap_grid_trial_max', '10',
+            '--remap_target_order_span', f'{remap_span:g}', '--remap_grid_trial_max', '10',
             '--conv_err', '1e-6', '--weight_f0', '1.0', '--iter_max', '100', '--iter_min', '4']
     if export_xsecs:
         cmd.append('--EXPORT_XSECS')

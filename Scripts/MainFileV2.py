@@ -26,9 +26,9 @@ import matplotlib.pyplot as plt
 
 Pressure = 1 # Pressure in Torr 
 Tg = 300 # Temperature in K
-Te = np.linspace(2,8,20) # Electron Temperature in ev
+Te = np.linspace(0.5,3,20) # Electron Temperature in ev
 Ne = np.linspace(1,100,10)*10**17 # electron Density in m^-3
-R = 4/100 # Radius in meters
+R = 2/100 # Radius in meters
 
 # Electron energy distribution for all electron-impact rates
 #   'maxwell'   : Maxwell-Boltzmann EEDF at each Te above
@@ -38,7 +38,7 @@ R = 4/100 # Radius in meters
 #                 what the plots use as their x-axis.
 #                 New run with your own cross sections (lands in InputData/MultiBolt):
 #                 he.RunMultiBolt(r'path\to\Ar_set.txt', 'Ar_MySet_EN_sweep', [5, 10, 30, 100])
-EEDF_MODE = 'maxwell'
+EEDF_MODE = 'multibolt'
 MULTIBOLT_RUN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..',
                              'InputData', 'MultiBolt', 'Ar_Biagi_EN_sweep')
 
@@ -840,8 +840,11 @@ PlotEEDFs(EEDFs)
 Ratio_a = np.zeros((len(Ne), len(Te)))   # 4p'[1/2]0 / 4p[1/2]0
 Ratio_b = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
 Ratio_c = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
+Metastable_4s1 = np.zeros((len(Ne), len(Te)))  # ADD THIS
 Metastable_4s3 = np.zeros((len(Ne), len(Te)))  # ADD THIS
-Metastable_4s4 = np.zeros((len(Ne), len(Te)))  # ADD THIS
+Resonant_4s2  = np.zeros((len(Ne), len(Te))) 
+Resonant_4s4  = np.zeros((len(Ne), len(Te))) 
+
 
 for j,eedf in enumerate(EEDFs) :
     for i,n in enumerate(Ne):
@@ -864,8 +867,10 @@ for j,eedf in enumerate(EEDFs) :
         Ratio_b[i, j] = I_4d / I_4p6 if I_4p6 != 0 else np.nan
         Ratio_c[i, j] = I_4d3 / I_4p6 if I_4p6 != 0 else np.nan
         # Metastables (ADD THESE LINES)
+        Metastable_4s1[i, j] = Data['4s1']['density_m^-3']
+        Resonant_4s2[i, j] = Data['4s2']['density_m^-3']
         Metastable_4s3[i, j] = Data['4s3']['density_m^-3']
-        Metastable_4s4[i, j] = Data['4s4']['density_m^-3']
+        Resonant_4s4[i, j] = Data['4s4']['density_m^-3']
 PlotEmissionIntensities(EI,1000)
 PlotStateDensities(SD)
     
@@ -955,7 +960,7 @@ plt.show()
 fig, ax = plt.subplots(figsize=(12, 7))
  
 for i in range(0, len(Ne), step):
-    n_meta_total = Metastable_4s3[i, :] + Metastable_4s4[i, :]
+    n_meta_total = Metastable_4s1[i, :] + Metastable_4s3[i, :]
     ax.semilogy(Te, n_meta_total, 's-',
                 label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
                 linewidth=2.5, markersize=6)
@@ -969,7 +974,42 @@ ax.legend(fontsize=11, loc='best')
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, 'metastable_vs_Te_multiNe.png'), dpi=300)
 plt.show()
+
  
+ 
+# ====================================================================
+# PLOT 2: Resonant density vs Te (multiple lines, one per Ne)
+# ====================================================================
+ 
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+ 
+ 
+# 
+
+for i in range(0, len(Ne), step):
+    # Left axis 1 Resonant 4s2 
+    ax1.semilogy(Te, Resonant_4s2[i,:], 's-',
+                label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
+                linewidth=2.5, markersize=6)
+    
+    
+    ax2.semilogy(Te, Resonant_4s4[i,:], 's-',
+                label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
+                linewidth=2.5, markersize=6)
+ 
+ax1.set_xlabel(TeLabel, fontsize=13)
+ax2.set_xlabel(TeLabel, fontsize=13)
+ax1.set_ylabel(r'Resonant density: ', fontsize=13)
+ax.set_title('Metastable population vs electron temperature', fontsize=14, fontweight='bold')
+ax.grid(True, alpha=0.3, which='both')
+ax.legend(fontsize=11, loc='best')
+ 
+plt.tight_layout()
+plt.savefig(os.path.join(OUTPUT_DIR, 'metastable_vs_Te_multiNe.png'), dpi=300)
+plt.show()
+
+
+
 # ====================================================================
 # PLOT 3: Side-by-side comparison at one representative Ne
 # ====================================================================
@@ -988,7 +1028,7 @@ ax1.tick_params(axis='y', labelcolor='darkred')
  
 # Right: Metastable
 ax2.semilogy(Te, Metastable_4s3[Ne_idx, :], 's-', label='4s3', color='steelblue', linewidth=2.5, markersize=7)
-ax2.semilogy(Te, Metastable_4s4[Ne_idx, :], 's-', label='4s4', color='navy', linewidth=2.5, markersize=7, linestyle='--')
+ax2.semilogy(Te, Metastable_4s1[Ne_idx, :], 's-', label='4s4', color='navy', linewidth=2.5, markersize=7, linestyle='--')
 ax2.set_xlabel(TeLabel, fontsize=12)
 ax2.set_ylabel(r'Metastable density [m$^{-3}$]', fontsize=12, color='navy')
 ax2.set_title(f'Metastables vs $T_e$ (at $N_e = {Ne_val:.1e}$ m$^{{-3}}$)', fontsize=13)
@@ -1017,8 +1057,8 @@ for i in range(0, len(Ne), step):
     ratio_range = (np.nanmin(Ratio_a[i, :]), np.nanmax(Ratio_a[i, :]))
     ratio_change = (ratio_range[1] - ratio_range[0]) / ratio_range[0] * 100
     
-    meta_range = (np.nanmin(Metastable_4s3[i, :] + Metastable_4s4[i, :]),
-                  np.nanmax(Metastable_4s3[i, :] + Metastable_4s4[i, :]))
+    meta_range = (np.nanmin(Metastable_4s3[i, :] + Metastable_4s1[i, :]),
+                  np.nanmax(Metastable_4s3[i, :] + Metastable_4s3[i, :]))
     meta_change = (meta_range[1] - meta_range[0]) / meta_range[0] * 100
     
     print(f"\nNe = {Ne[i]:.1e} cm^-3:")
