@@ -102,6 +102,9 @@ shows what drives the fit there (pure Ar and 2.4 % N2 at 85 W, both EEDFs):
 - **Worse** (Ne to the grid top): BSR excitation out of the 4p levels (weaker 4p <-> 4p mixing
   than RDW), tested but not added to the code.
 
+Update: heavy-particle 2p mixing has since been tested with measured rates and does not change this
+(`../2026-10-04_Ar_atom_2p_transfer/`).
+
 So the electron density from the line ratios is set by a model shortfall in how the primed-core
 2p levels are populated (candidates: cascades from 2s/3d' levels, heavy-particle 2p mixing, the
 1s3/1s2 densities), not by the plasma. Until that is resolved, Ne should come from elsewhere

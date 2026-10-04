@@ -1187,6 +1187,54 @@ def ImportArQuenchingData(quencher='N2', choose='median', verbose=True):
     return out
 
 
+# Paschen names -> CR-model labels: 1s5-1s2 = 4s1-4s4, 2p10-2p1 = 4p1-4p10 (both in order of
+# energy), with the J of each level as a check of the mapping
+PASCHEN_LABELS = {'1s5': ('4s1', 2), '1s4': ('4s2', 1), '1s3': ('4s3', 0), '1s2': ('4s4', 1),
+                  '2p10': ('4p1', 1), '2p9': ('4p2', 3), '2p8': ('4p3', 2), '2p7': ('4p4', 1),
+                  '2p6': ('4p5', 2), '2p5': ('4p6', 0), '2p4': ('4p7', 1), '2p3': ('4p8', 2),
+                  '2p2': ('4p9', 1), '2p1': ('4p10', 0)}
+ATOM_TRANSFER_FILE = Path(__file__).resolve().parent.parent / 'InputData' / 'Ar_2p_atom_transfer.csv'
+
+
+def AtomTransferRates(ModelData, Tg, path=ATOM_TRANSFER_FILE):
+    """
+    Rate coefficients of population transfer between excited levels by collisions with
+    ground-state Ar atoms, Ar(x) + Ar -> Ar(y) + Ar, from path (default
+    InputData/Ar_2p_atom_transfer.csv: the 2p -> 2p and 2p -> 1s rates of X.-M. Zhu and
+    Y.-K. Pu, J. Phys. D 43, 015204 (2010), Table 3; measured at 300 K, Refs. therein).
+    The file lists the downhill rates, k = k_300K (Tg/300)^Tg_exponent; the uphill rates follow
+    from detailed balance at Tg,
+        k(y -> x) = k(x -> y) (g_x / g_y) exp(-(E_x - E_y) / kTg).
+    A transfer to '1s' (level not given) is shared among the four 1s levels in proportion
+    to their statistical weights.
+    Returns a list of (from label, to label, k [m^3/s]) with both directions.
+    """
+    import csv
+    for name, (label, J) in PASCHEN_LABELS.items():
+        if float(ModelData[label]['J']) != J:
+            raise ValueError(f'Paschen {name} -> {label}: J = {ModelData[label]["J"]}, expected {J}')
+    with open(path, newline='', encoding='utf-8-sig') as file:
+        rows = list(csv.DictReader(line for line in file if not line.startswith('#')))
+    kTg = constants.k * Tg / constants.e                    # eV
+    one_s = [lbl for name, (lbl, _) in PASCHEN_LABELS.items() if name.startswith('1s')]
+    g_1s = sum(ModelData[lbl]['g'] for lbl in one_s)
+    out = []
+    for r in rows:
+        k = float(r['k_cm3_s_300K']) * 1e-6 * (Tg / 300.0) ** float(r['Tg_exponent'])   # m^3/s
+        x = PASCHEN_LABELS[r['from'].strip()][0]
+        if r['to'].strip() == '1s':
+            targets = [(lbl, k * ModelData[lbl]['g'] / g_1s) for lbl in one_s]
+        else:
+            targets = [(PASCHEN_LABELS[r['to'].strip()][0], k)]
+        for y, k_xy in targets:
+            X, Y = ModelData[x], ModelData[y]
+            if X['energy_eV'] <= Y['energy_eV']:
+                raise ValueError(f'{path.name}: {r["from"]} -> {r["to"]} is not downhill')
+            k_yx = k_xy * X['g'] / Y['g'] * np.exp(-(X['energy_eV'] - Y['energy_eV']) / kTg)
+            out += [(x, y, k_xy), (y, x, k_yx)]
+    return out
+
+
 #%% Parsing data an helper lookups
 
 def _level_lookup(levels):

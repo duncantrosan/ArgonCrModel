@@ -53,6 +53,9 @@ A Maxwellian EEDF fits these spectra only at Te ~0.6-1 eV (its tail above the
 
 Cross sections out of the 4s levels: BSR by default (CONFIG['xsec_4s'], he.XSEC_4S); the
 CR tables are cached per set, output folders get '_RDW4s' for the RDW set.
+Population transfer between the 4p (2p) levels and 2p -> 1s by collisions with ground-state Ar
+(Zhu & Pu 2010, InputData/Ar_2p_atom_transfer.csv) is in the CR model by default
+(CONFIG['atom_transfer']); output folders get '_noAT' without it.
 
 Run from Spyder: edit CONFIG, press F5.  Results in Experimental_Data/Output/CRFit.
 """
@@ -101,9 +104,12 @@ CONFIG = dict(
     # --- CR model ------------------------------------------------------------
     P_Torr=1.0, Tg=300.0, R=0.04,       # both sweeps are at 1 Torr
     trap_lines="all",                   # see SolveDirect in MainFileV2
+    atom_transfer=True,                 # 2p <-> 2p and 2p -> 1s transfer by collisions with ground-state Ar
+                                        # (Zhu & Pu 2010, InputData/Ar_2p_atom_transfer.csv; AttachAtomTransfer
+                                        # in MainFileV2). Output folders get '_noAT' for False (model_suffix)
     xsec_4s="BSR",                      # excitation out of the 4s levels: 'BSR' (B-spline R-matrix) or
                                         # 'RDW' (the cross sections before Oct 2026), see he.XSEC_4S.
-                                        # Output folders get a suffix for 'RDW' (xsec_suffix)
+                                        # Output folders get a suffix for 'RDW' (model_suffix)
     xsec_ground="RDW",                  # excitation out of the ground state: 'RDW' or 'BSR' (4s, 4p, 3d,
                                         # 5s from threshold; see he.XSEC_GROUND). Suffix '_BSRgnd' for 'BSR'
     N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
@@ -131,7 +137,7 @@ CONFIG = dict(
     birge=True,                         # widen the posterior by chi^2_min/dof when > 1
     fine_n=(240, 220),                  # fine (EEDF axis, Ne) grid for the posterior
     # --- output --------------------------------------------------------------
-    outdir=None,                        # None = Experimental_Data/Output/CRFit (+ xsec_suffix)
+    outdir=None,                        # None = Experimental_Data/Output/CRFit (+ model_suffix)
 )
 
 
@@ -146,16 +152,23 @@ def xsec_ground(cfg=CONFIG):
     return cfg.get("xsec_ground", "RDW")
 
 
-def xsec_suffix(cfg=CONFIG):
-    """Suffix for output names: '' for BSR out of the 4s levels and RDW out of the ground state
-    (the default), '_RDW4s' and/or '_BSRgnd' otherwise."""
+def atom_transfer(cfg=CONFIG):
+    """Ar-atom transfer between excited levels in the CR model of cfg; a cfg without the key
+    follows CONFIG."""
+    return bool(cfg.get("atom_transfer", CONFIG.get("atom_transfer", True)))
+
+
+def model_suffix(cfg=CONFIG):
+    """Suffix for output names: '' for the default model (BSR out of the 4s levels, RDW out of
+    the ground state, Ar-atom transfer on); '_RDW4s', '_BSRgnd' and/or '_noAT' otherwise."""
     return (("" if xsec_4s(cfg) == "BSR" else f"_{xsec_4s(cfg)}4s")
-            + ("" if xsec_ground(cfg) == "RDW" else f"_{xsec_ground(cfg)}gnd"))
+            + ("" if xsec_ground(cfg) == "RDW" else f"_{xsec_ground(cfg)}gnd")
+            + ("" if atom_transfer(cfg) else "_noAT"))
 
 
 def output_dir(name, cfg=CONFIG):
-    """Experimental_Data/Output/<name> with the cross-section suffix of cfg."""
-    return os.path.join(ROOT_DIR, "Experimental_Data", "Output", name + xsec_suffix(cfg))
+    """Experimental_Data/Output/<name> with the model suffix of cfg."""
+    return os.path.join(ROOT_DIR, "Experimental_Data", "Output", name + model_suffix(cfg))
 
 
 CONFIG["outdir"] = CONFIG["outdir"] or output_dir("CRFit")
@@ -216,7 +229,8 @@ def cr_density_solver(cfg=CONFIG):
     def solve(eedf, Ne):
         with contextlib.redirect_stdout(io.StringIO()):
             D, _, _, _ = cr["CRModel"](MD, eedf, float(Ne), P_Ar, cfg["Tg"], cfg["R"],
-                                       interp, trap_lines=cfg["trap_lines"])
+                                       interp, trap_lines=cfg["trap_lines"],
+                                       atom_transfer=atom_transfer(cfg))
         return {lbl: s["density_m^-3"] for lbl, s in D.items()}
     return solve
 
@@ -285,6 +299,8 @@ def _table_path(cfg):
         tag += f"_{xsec_4s(cfg)}4s"
     if xsec_ground(cfg) != "RDW":
         tag += f"_{xsec_ground(cfg)}gnd"
+    if not atom_transfer(cfg):
+        tag += "_noAT"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -299,7 +315,9 @@ def _cached_subset(tab, cfg, x):
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
                 and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
                 and str(tab["xsec_4s"] if "xsec_4s" in tab else "RDW") == xsec_4s(cfg)
-                and str(tab["xsec_ground"] if "xsec_ground" in tab else "RDW") == xsec_ground(cfg))
+                and str(tab["xsec_ground"] if "xsec_ground" in tab else "RDW") == xsec_ground(cfg)
+                # tables from before the Ar-atom transfer was added are without it
+                and bool(tab["atom_transfer"] if "atom_transfer" in tab else False) == atom_transfer(cfg))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -352,7 +370,7 @@ def build_model_table(cfg=CONFIG):
             eedf = eedf_row[j] if isinstance(eedf_row, list) else eedf_row   # E/N x Ne library
             with contextlib.redirect_stdout(io.StringIO()):     # rates depend on the EEDF only
                 D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp,
-                                                trap_lines=cfg["trap_lines"],
+                                                trap_lines=cfg["trap_lines"], atom_transfer=atom_transfer(cfg),
                                                 compute_rates=isinstance(eedf_row, list) or j == 0)
             conv[i, j] = solver["converged"]
             ng = D["ground"]["density_m^-3"]
@@ -372,7 +390,7 @@ def build_model_table(cfg=CONFIG):
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
-               xsec_4s=xsec_4s(cfg), xsec_ground=xsec_ground(cfg),
+               xsec_4s=xsec_4s(cfg), xsec_ground=xsec_ground(cfg), atom_transfer=atom_transfer(cfg),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),

@@ -46,6 +46,22 @@ Sources:
 - [39] Nguyen & Sadeghi, Phys. Rev. A 18, 1388 (1978)
 - [23] Zhu et al., J. Phys. D 42, 142003 (2009)
 
+**Used in the CR model** since 4 Oct 2026: rows 9-26 are in `InputData/Ar_2p_atom_transfer.csv`.
+The 2p -> 1s rate is shared among 1s2-1s5 by g, and uphill rates come from detailed balance at Tg
+(he.AtomTransferRates, AttachAtomTransfer in MainFileV2; switch: CRModel(atom_transfer=...)).
+Rows 27-30 (lumped 3p / 2s3d / hl levels) are not used.
+Results: `Experimental_Data/Results/2026-10-04_Ar_atom_2p_transfer/`.
+
+## Digitised figures
+
+`InputData/References/ZhuPu2010_digitized.csv` has their Fig. 2 and Fig. 1, from pixel analysis of
+the page images:
+- Fig. 2: n_2p/g_2p of the ten 2p levels, normalised to a sum of 100; read to about +-0.3.
+- Fig. 1: n_1s/g_1s/n_g in ppm; read to about +-3 %.
+
+Both figures have CRM and OES values for EBP 1 Pa, ICP 1 Pa, CCP 100 Pa and SRR 1e5 Pa (SRR has no
+1s OES). `SmallAnalysisScripts/ZhuPuComparison.py` uses them.
+
 ## Other rates useful here (Table 3, electron rows)
 
 - e + Ar(2p) <-> e + Ar(2p), lumped: 4e-7 Te^-0.6 cm^3/s (Pokrzywka 2002).

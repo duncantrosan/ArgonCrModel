@@ -77,7 +77,7 @@ CONFIG = dict(
     rel_err_xs_N=0.20, rel_err_xs_Ar=0.15,   # cross sections (BSR N I, Ar I), systematic
     k_margin_eV=1.0,                    # k valid only where the EEDF reaches threshold + this
     min_valid_mass=0.9,                 # posterior mass with a valid result needed per pair
-    outdir=crf.output_dir("ActinometryN2Content"),     # + "_RDW4s" with the RDW 4s cross sections
+    outdir=crf.output_dir("ActinometryN2Content"),     # + crf.model_suffix: "_RDW4s", "_noAT", ... for other models
 )
 
 

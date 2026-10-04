@@ -6,9 +6,10 @@ Why does the CR fit put Ne at ~1e19 m^-3 (BSR 4s cross sections)? For pure Ar (8
 Ar + 2.4 % N2 (85 W), microwave and DC EEDF, the chi^2 profile over Ne (profiled over E/N) and the
 fit results for
 
-  model variants   baseline (CRFitNeTe.CONFIG), no trapping of the 4p -> 4s lines (escape factor
-                   only on lines to the ground state), Tg = 700 K, R = 1 cm, and the ground-state
-                   excitation from BSR (he.XSEC_GROUND)
+  model variants   baseline (CRFitNeTe.CONFIG, incl. the Ar-atom 2p transfer), without the Ar-atom
+                   2p transfer (the model before Oct 2026), no trapping of the 4p -> 4s lines
+                   (escape factor only on lines to the ground state), Tg = 700 K, R = 1 cm, and
+                   the ground-state excitation from BSR (he.XSEC_GROUND)
   line subsets     the baseline fitted without the primed-core 2p lines (2p1-2p4: 750.4, 727.3,
                    706.7, 794.8 nm), without 750.4 nm (2p1) alone, without 2p2-2p4 (keeping
                    750.4 nm), without the 5p lines, without 800.6 / 801.5 nm
@@ -41,6 +42,7 @@ CASES = [   # EEDF, % N2 of the model, sweep, condition
 ]
 VARIANTS = {   # name: CRFitNeTe settings that differ from the baseline
     "baseline": {},
+    "no atom transfer": dict(atom_transfer=False),
     "no 4p-4s trapping": dict(trap_lines="ground"),
     "Tg = 700 K": dict(Tg=700.0),
     "R = 1 cm": dict(R=0.01),
@@ -110,7 +112,8 @@ def plot(profiles, path):
                               + "\n" + r"$\Delta\chi^2/s^2$ (profiled over E/N)")
             if j == len(CASES) - 1:
                 ax.legend(fontsize=8)
-    fig.suptitle("What drives the CR fit to high $N_e$? (BSR 4s cross sections; vertical line: $n_c$ at 2.42 GHz)")
+    fig.suptitle("What drives the CR fit to high $N_e$? (BSR 4s cross sections, Ar-atom 2p transfer; "
+                 "vertical line: $n_c$ at 2.42 GHz)")
     fig.tight_layout(rect=(0, 0, 1, 0.96))
     fig.savefig(path, dpi=140)
     plt.close(fig)

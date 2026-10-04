@@ -18,7 +18,8 @@ The pure-Ar condition (0 % N2) is fitted here with the EEDFPhysics tables (BOLSI
 microwave and DC; profile and pinned fit only, no N lines).
 
 Output in Experimental_Data/Output/CriticalDensity/ (CriticalDensity_RDW4s/ with the RDW 4s cross
-sections, CRFitNeTe.CONFIG['xsec_4s']), incl. chi2_profiles.csv.  Run from Spyder: edit the settings, press F5.
+sections, CRFitNeTe.CONFIG['xsec_4s']; CriticalDensity_noAT/ without the Ar-atom 2p transfer,
+CONFIG['atom_transfer']), incl. chi2_profiles.csv.  Run from Spyder: edit the settings, press F5.
 """
 import contextlib
 import io
@@ -48,7 +49,7 @@ N_C = constants.epsilon_0 * constants.m_e * (2 * np.pi * FREQ_HZ) ** 2 / constan
 MEASURED_1S5 = (1e17, 8e17)                         # m^-3, absorption estimate (path length uncertain)
 PURE_AR = [("microwave", he.BOLSIG_FOLDER / "Ar_Biagi_bolsig_mw"), ("dc", he.BOLSIG_FOLDER / "Ar_Biagi_bolsig")]
 ECOL = {"microwave": "C3", "dc": "C0"}
-OUTDIR = crf.output_dir("CriticalDensity")          # + "_RDW4s" with the RDW 4s cross sections
+OUTDIR = crf.output_dir("CriticalDensity")          # + crf.model_suffix: "_RDW4s", "_noAT", ... for other models
 
 
 # ---- fits -----------------------------------------------------------------------
