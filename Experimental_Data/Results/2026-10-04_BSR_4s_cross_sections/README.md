@@ -91,8 +91,8 @@ shows what drives the fit there (pure Ar and 2.4 % N2 at 85 W, both EEDFs):
   distribution only through electron-collision mixing at ~1e19.
 - **Not the cause** (minimum stays at Ne >= 2e18): radiation trapping of the 4p -> 4s lines
   (switched off), Tg = 700 K, R = 1 cm, the 5p lines (dropped), 800.6/801.5 nm (dropped).
-- **Partly** (Ne down ~1.5-3x, Delta chi^2 at n_c down 30-45 %): ground-state excitation from
-  BSR (`xsec_ground = "BSR"`). The RDW ground -> 4s/4p cross sections are 10-100x above both
+- **Partly** (best-fit Ne at most 1.7x lower, not at all with the DC EEDF; Delta chi^2/s^2 at n_c
+  down 10-40 %): ground-state excitation from BSR (`xsec_ground = "BSR"`). The RDW ground -> 4s/4p cross sections are 10-100x above both
   BSR and the Biagi set (which the BOLSIG+ EEDFs use) within ~8 eV of threshold.
 - **Worse** (Ne to the grid top): BSR excitation out of the 4p levels (weaker 4p <-> 4p mixing
   than RDW), tested but not added to the code.
