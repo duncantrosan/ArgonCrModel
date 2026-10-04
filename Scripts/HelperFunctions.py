@@ -958,8 +958,15 @@ def FindRadiationTrapping(RadiationTrappingMatrix,Tau,a):
 XSEC_4S = 'BSR'
 FOUR_S = ('4s1', '4s2', '4s3', '4s4')
 
+# Electron-impact excitation from the ground state:
+#   'RDW' : NGFSRDW (ArgonCrossSections.json). Within ~8 eV of threshold these are 10-100x above
+#           both BSR and the Biagi set the BOLSIG+ EEDFs are computed with; 3d, 5s, 5p start at 20 eV
+#   'BSR' : BSR-500 ground -> 4s, 4p, 3d, 5s from threshold (ArgonCrossSectionsBSR.json);
+#           ground -> 5p (not in BSR) stays RDW
+XSEC_GROUND = 'RDW'
 
-def ImportCrossSections(xsec_4s=XSEC_4S):
+
+def ImportCrossSections(xsec_4s=XSEC_4S, xsec_ground=XSEC_GROUND):
     # 1. Get the directory
     MainDir = Path(__file__).resolve().parent.parent
 
@@ -970,19 +977,21 @@ def ImportCrossSections(xsec_4s=XSEC_4S):
     # 3. Open the file directly using the Path object
     with open(CSPath, 'r') as file:
         CrossSectionList = json.load(file)
-    if xsec_4s == 'RDW':
+    for name, value in (('xsec_4s', xsec_4s), ('xsec_ground', xsec_ground)):
+        if value not in ('BSR', 'RDW'):
+            raise ValueError(f"{name} must be 'BSR' or 'RDW', not {value!r}")
+    lower = ([*FOUR_S] if xsec_4s == 'BSR' else []) + (['ground'] if xsec_ground == 'BSR' else [])
+    if not lower:
         return CrossSectionList
-    if xsec_4s != 'BSR':
-        raise ValueError(f"xsec_4s must be 'BSR' or 'RDW', not {xsec_4s!r}")
 
-    # 4. Excitation out of the 4s levels from the BSR set, replacing the RDW channels it covers
+    # 4. Excitation out of these lower levels from the BSR set, replacing the RDW channels it covers
     with open(DataFolder / 'ArgonCrossSectionsBSR.json', 'r') as file:
         BSR = json.load(file)['cross_sections']
-    From4s = [CS for CS in BSR if CS['lower_label'] in FOUR_S and CS['upper_label'] is not None]
-    Covered = {(CS['lower_label'], CS['upper_label']) for CS in From4s}
+    New = [CS for CS in BSR if CS['lower_label'] in lower and CS['upper_label'] is not None]
+    Covered = {(CS['lower_label'], CS['upper_label']) for CS in New}
     Kept = [CS for CS in CrossSectionList['cross_sections']
             if (CS['lower_label'], CS['upper_label']) not in Covered]
-    return dict(CrossSectionList, cross_sections=Kept + From4s, xsec_4s='BSR')
+    return dict(CrossSectionList, cross_sections=Kept + New, xsec_4s=xsec_4s, xsec_ground=xsec_ground)
 
 def ImportLevelList():
     # 1. Get the directory
@@ -1760,8 +1769,9 @@ def BroadenWithSlit(wl, intensity, slit_file=SLIT_FUNCTION_FILE,
 
 
 #%% Create Final Data
-def GetData(xsec_4s=XSEC_4S):
-    # xsec_4s: cross sections out of the 4s levels, 'BSR' or 'RDW' (see XSEC_4S)
+def GetData(xsec_4s=XSEC_4S, xsec_ground=XSEC_GROUND):
+    # xsec_4s / xsec_ground: cross sections out of the 4s levels / the ground state,
+    # 'BSR' or 'RDW' (see XSEC_4S, XSEC_GROUND)
     #import all levels taken into consideration JSON file includes type of level
     # Leveltypes -- ground, resonant, metastable,normal
     LevelList = ImportLevelList()
@@ -1772,8 +1782,8 @@ def GetData(xsec_4s=XSEC_4S):
     # Combine level list to make radiative loss
     LevelList_Update = combine(LevelList,RadiationReactions['transitions'])
     # Import JSON cross section from LXcat
-    CrossSectionList = ImportCrossSections(xsec_4s)
-    print(f'Cross sections out of the 4s levels: {xsec_4s}')
+    CrossSectionList = ImportCrossSections(xsec_4s, xsec_ground)
+    print(f'Cross sections out of the 4s levels: {xsec_4s}, out of the ground state: {xsec_ground}')
     print('Importing Reaction List...')
     CrossSectionRates = MaxweillianReactionRates(CrossSectionList['cross_sections'])
     #Combines Radiative transition into ModelData

@@ -199,6 +199,9 @@ def build(MD):
             else:
                 forbidden.setdefault(lo, []).append(up)
     tabulated = sorted(rdw + bsr, key=lambda c: (by_energy[c[0]], by_energy[c[1]]))
+    bsr_lower = {lo for lo, _, _, _ in bsr}
+    bsr_from = ' and '.join(([r'ground state'] if 'ground' in bsr_lower else [])
+                            + ([r'$4\mathrm{s}$ levels'] if bsr_lower - {'ground'} else []))
     allowed.sort(key=lambda c: (by_energy[c[0]], by_energy[c[1]]))
 
     LevelList = he.ImportLevelList()
@@ -237,7 +240,7 @@ def build(MD):
          r'$\sigma(\varepsilon)$ integrated over the EEDF',
          cite('NGFSRDW', 'Khakoo04', 'Kaur98', 'Gangwar10', 'Srivastava06', 'Gangwar12')],
         ['Electron-impact excitation, BSR', R_exc, f'{len(bsr)}',
-         r'$\sigma(\varepsilon)$ integrated over the EEDF; out of the $4\mathrm{s}$ levels',
+         r'$\sigma(\varepsilon)$ integrated over the EEDF; out of the ' + bsr_from,
          cite('BSR', 'Zatsarinny14')],
         ['Electron-impact excitation, analytic', R_exc, f'{len(allowed) + n_forb}',
          rf'Drawin $\sigma(\varepsilon)$ integrated over the EEDF; {len(allowed)} optically allowed, '
@@ -289,7 +292,7 @@ def build(MD):
         rf'Electron-impact excitation channels with tabulated cross sections: relativistic distorted '
         rf'wave from the NGFSRDW database {cite("NGFSRDW")} ({len(rdw)} channels; thresholds as '
         rf'tabulated)'
-        + (rf' and, out of the $4\mathrm{{s}}$ levels, B-spline R-matrix from the BSR database '
+        + (rf' and, out of the {bsr_from}, B-spline R-matrix from the BSR database '
            rf'{cite("BSR", "Zatsarinny14")} ({len(bsr)} channels; shifted in energy from the BSR level '
            r'energies to the NIST thresholds)' if bsr else '')
         + '. Each channel is also included as its superelastic reverse process.',

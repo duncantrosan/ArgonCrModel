@@ -210,10 +210,12 @@ def parse_bsr_lxcat(path, levels, align_thresholds=True):
     lookup = bsr_level_lookup(levels)
 
     cross_sections, crosswalk, seen, duplicates = [], {}, set(), []
-    dataset, i = None, 0
+    dataset, i, prev = None, 0, ''
     while i < len(lines):
         s = lines[i].strip()
-        if lines[i].startswith('COMMENT:'):          # data-set comment (outside the blocks)
+        if s:
+            prev, last = s, prev                     # last: the previous non-empty line
+        if lines[i].startswith('COMMENT:') and last.startswith('*****'):   # data-set comment
             text = [s[len('COMMENT:'):].strip()]
             while i + 1 < len(lines) and lines[i + 1].startswith(' ') and lines[i + 1].strip():
                 i += 1

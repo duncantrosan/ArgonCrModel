@@ -3,7 +3,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4s[3/2]2, 3P2, 1s5)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4s[3/2]2, 3P2, 1s5)",
@@ -691,7 +691,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4s[3/2]1, 3P1, 1s4)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4s[3/2]1, 3P1, 1s4)",
@@ -1367,7 +1367,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4s![1/2]0, 3P0, 1s3)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4s![1/2]0, 3P0, 1s3)",
@@ -2029,7 +2029,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4s![1/2]1, 1P1, 1s2)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4s![1/2]1, 1P1, 1s2)",
@@ -2675,7 +2675,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p[1/2]1, 3S1, p10)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p[1/2]1, 3S1, p10)",
@@ -3139,7 +3139,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p[5/2]3, 3D3, p9)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p[5/2]3, 3D3, p9)",
@@ -3583,7 +3583,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p[5/2]2, 3D2, p8)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p[5/2]2, 3D2, p8)",
@@ -4023,7 +4023,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p[3/2]1, 1P1, p7)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p[3/2]1, 1P1, p7)",
@@ -4457,7 +4457,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p[3/2]2, 3P2, p6)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p[3/2]2, 3P2, p6)",
@@ -4887,7 +4887,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p [1/2]0, 3P0, p5)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p [1/2]0, 3P0, p5)",
@@ -5303,7 +5303,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p![3/2]1, 3D1, p4)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p![3/2]1, 3D1, p4)",
@@ -5719,7 +5719,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p![3/2]2, 1D2, p3)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p![3/2]2, 1D2, p3)",
@@ -6131,7 +6131,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p![1/2]1, 3P1, p2)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p![1/2]1, 3P1, p2)",
@@ -6541,7 +6541,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(4p![1/2]0, 1S0, p1)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(4p![1/2]0, 1S0, p1)",
@@ -6927,7 +6927,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[1/2]0, 3P0, 3d6)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[1/2]0, 3P0, 3d6)",
@@ -7243,7 +7243,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[1/2]1, 3P1, 3d5)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[1/2]1, 3P1, 3d5)",
@@ -7559,7 +7559,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[3/2]2, 3P2, 3d3)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[3/2]2, 3P2, 3d3)",
@@ -7871,7 +7871,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[7/2]4, 3F4, 3d4!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[7/2]4, 3F4, 3d4!)",
@@ -8177,7 +8177,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[7/2]3, 3F3, 3d4)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[7/2]3, 3F3, 3d4)",
@@ -8479,7 +8479,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(5s[3/2]2, 3P2, 2s5)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(5s[3/2]2, 3P2, 2s5)",
@@ -8781,7 +8781,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(5s[3/2]1, 3P1, 2s4)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(5s[3/2]1, 3P1, 2s4)",
@@ -9081,7 +9081,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d [5/2]2, 3F2, 3d1!!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d [5/2]2, 3F2, 3d1!!)",
@@ -9379,7 +9379,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d[5/2]3, 1F3, 3d1!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d[5/2]3, 1F3, 3d1!)",
@@ -9675,7 +9675,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d [3/2]1, 3D1, 3d2)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d [3/2]1, 3D1, 3d2)",
@@ -9969,7 +9969,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(5s![1/2]0, 3P0, 2s3)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(5s![1/2]0, 3P0, 2s3)",
@@ -10251,7 +10251,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(5s![1/2]1, 1P1, 2s2)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(5s![1/2]1, 1P1, 2s2)",
@@ -10529,7 +10529,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d![5/2]2, 3D2, 3s1!!!!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d![5/2]2, 3D2, 3s1!!!!)",
@@ -10807,7 +10807,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d![3/2]2, 1D2, 3s1!!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d![3/2]2, 1D2, 3s1!!)",
@@ -11083,7 +11083,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d![5/2]3, 3D3, 3s1!!!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d![5/2]3, 3D3, 3s1!!!)",
@@ -11359,7 +11359,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(3d![3/2]1, 1P1, 3s1!)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(3d![3/2]1, 1P1, 3s1!)",
@@ -11631,7 +11631,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "BSR-500, mt.",
+   "dataset": "Last update on February 18, 2013. Results from the BSR-500 model: B-spline R-matrix calculations in the 500 target state approximation, including 78 bounds states and 422 continuum pseudo-states.",
    "lxcat_reaction": "Ar <-> Ar(nl>5s)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(nl>5s)",
@@ -11875,7 +11875,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar -> Ar(Rydberg)",
    "lxcat_lower": "Ar",
    "lxcat_upper": "Ar(Rydberg)",
@@ -12117,7 +12117,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d'[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -12417,7 +12417,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d'[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -12713,7 +12713,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[5/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d'[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -13013,7 +13013,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[5/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d'[5/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -13313,7 +13313,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[5/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d'[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -13609,7 +13609,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d'[5/2]3) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d'[5/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -13905,7 +13905,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -14245,7 +14245,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -14581,7 +14581,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -14911,7 +14911,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -15237,7 +15237,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -15563,7 +15563,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -15887,7 +15887,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -16209,7 +16209,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -16529,7 +16529,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -16847,7 +16847,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -17153,7 +17153,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -17455,7 +17455,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -17757,7 +17757,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -18057,7 +18057,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -18357,7 +18357,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]0) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -18653,7 +18653,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -18989,7 +18989,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -19319,7 +19319,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -19645,7 +19645,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -19971,7 +19971,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -20295,7 +20295,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -20617,7 +20617,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -20937,7 +20937,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -21255,7 +21255,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -21561,7 +21561,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -21863,7 +21863,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -22165,7 +22165,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -22465,7 +22465,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -22765,7 +22765,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[1/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -23061,7 +23061,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -23367,7 +23367,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -23669,7 +23669,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -23971,7 +23971,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -24271,7 +24271,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -24571,7 +24571,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -24867,7 +24867,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -25197,7 +25197,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -25523,7 +25523,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -25849,7 +25849,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -26173,7 +26173,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -26495,7 +26495,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -26815,7 +26815,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -27133,7 +27133,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -27439,7 +27439,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -27741,7 +27741,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -28043,7 +28043,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -28343,7 +28343,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -28643,7 +28643,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -28939,7 +28939,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -29259,7 +29259,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -29577,7 +29577,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -29883,7 +29883,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -30185,7 +30185,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -30487,7 +30487,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -30787,7 +30787,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -31087,7 +31087,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -31383,7 +31383,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -31701,7 +31701,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -32007,7 +32007,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -32309,7 +32309,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -32611,7 +32611,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -32911,7 +32911,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -33211,7 +33211,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[5/2]3) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[5/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -33507,7 +33507,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -33831,7 +33831,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -34153,7 +34153,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -34473,7 +34473,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -34791,7 +34791,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -35097,7 +35097,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -35399,7 +35399,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -35701,7 +35701,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -36001,7 +36001,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -36301,7 +36301,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]3) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -36597,7 +36597,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -36923,7 +36923,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -37249,7 +37249,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -37573,7 +37573,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -37895,7 +37895,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -38215,7 +38215,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -38533,7 +38533,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -38839,7 +38839,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -39141,7 +39141,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -39443,7 +39443,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -39743,7 +39743,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -40043,7 +40043,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(3d[7/2]4) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(3d[7/2]4)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -40339,7 +40339,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -40679,7 +40679,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -41019,7 +41019,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -41355,7 +41355,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -41685,7 +41685,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -42011,7 +42011,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -42337,7 +42337,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -42661,7 +42661,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -42983,7 +42983,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -43303,7 +43303,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -43621,7 +43621,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -43927,7 +43927,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -44229,7 +44229,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -44531,7 +44531,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -44831,7 +44831,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -45131,7 +45131,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]0) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -45427,7 +45427,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -45837,7 +45837,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -46177,7 +46177,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -46517,7 +46517,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -46853,7 +46853,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -47183,7 +47183,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -47509,7 +47509,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -47835,7 +47835,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -48159,7 +48159,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -48481,7 +48481,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -48801,7 +48801,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -49119,7 +49119,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -49425,7 +49425,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -49727,7 +49727,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -50029,7 +50029,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -50329,7 +50329,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -50629,7 +50629,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[1/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -50925,7 +50925,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -51361,7 +51361,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -51795,7 +51795,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -52205,7 +52205,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -52545,7 +52545,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -52885,7 +52885,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -53221,7 +53221,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -53551,7 +53551,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -53877,7 +53877,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -54203,7 +54203,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -54527,7 +54527,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -54849,7 +54849,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -55169,7 +55169,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -55487,7 +55487,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -55793,7 +55793,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -56095,7 +56095,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -56397,7 +56397,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -56697,7 +56697,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -56997,7 +56997,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -57293,7 +57293,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -57727,7 +57727,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -58137,7 +58137,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -58477,7 +58477,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -58817,7 +58817,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -59153,7 +59153,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -59483,7 +59483,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -59809,7 +59809,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -60135,7 +60135,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -60459,7 +60459,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -60781,7 +60781,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -61101,7 +61101,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -61419,7 +61419,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -61725,7 +61725,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -62027,7 +62027,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -62329,7 +62329,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -62629,7 +62629,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -62929,7 +62929,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p'[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p'[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -63225,7 +63225,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -63665,7 +63665,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -64101,7 +64101,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -64535,7 +64535,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -64945,7 +64945,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -65285,7 +65285,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -65625,7 +65625,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -65961,7 +65961,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -66291,7 +66291,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -66617,7 +66617,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -66943,7 +66943,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -67267,7 +67267,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -67589,7 +67589,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -67909,7 +67909,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -68227,7 +68227,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -68533,7 +68533,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -68835,7 +68835,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -69137,7 +69137,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -69437,7 +69437,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -69737,7 +69737,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]0) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -70033,7 +70033,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p[5/2]3)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p[5/2]3)",
@@ -70501,7 +70501,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -70965,7 +70965,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -71423,7 +71423,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -71877,7 +71877,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -72317,7 +72317,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -72757,7 +72757,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -73193,7 +73193,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -73627,7 +73627,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -74037,7 +74037,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -74377,7 +74377,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -74717,7 +74717,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -75053,7 +75053,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -75383,7 +75383,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -75709,7 +75709,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -76035,7 +76035,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -76359,7 +76359,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -76681,7 +76681,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -77001,7 +77001,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -77319,7 +77319,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -77625,7 +77625,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -77927,7 +77927,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -78229,7 +78229,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -78529,7 +78529,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -78829,7 +78829,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[1/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -79125,7 +79125,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -79579,7 +79579,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -80019,7 +80019,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -80459,7 +80459,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -80895,7 +80895,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -81329,7 +81329,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -81739,7 +81739,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -82079,7 +82079,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -82419,7 +82419,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -82755,7 +82755,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -83085,7 +83085,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -83411,7 +83411,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -83737,7 +83737,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -84061,7 +84061,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -84383,7 +84383,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -84703,7 +84703,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -85021,7 +85021,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -85327,7 +85327,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -85629,7 +85629,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -85931,7 +85931,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -86231,7 +86231,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -86531,7 +86531,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -86827,7 +86827,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -87267,7 +87267,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -87707,7 +87707,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -88143,7 +88143,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -88577,7 +88577,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -88987,7 +88987,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -89327,7 +89327,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -89667,7 +89667,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -90003,7 +90003,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -90333,7 +90333,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -90659,7 +90659,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -90985,7 +90985,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -91309,7 +91309,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -91631,7 +91631,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -91951,7 +91951,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -92269,7 +92269,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -92575,7 +92575,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -92877,7 +92877,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -93179,7 +93179,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -93479,7 +93479,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -93779,7 +93779,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -94075,7 +94075,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -94533,7 +94533,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -94987,7 +94987,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -95427,7 +95427,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -95867,7 +95867,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -96303,7 +96303,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -96737,7 +96737,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -97147,7 +97147,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -97487,7 +97487,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -97827,7 +97827,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -98163,7 +98163,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -98493,7 +98493,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -98819,7 +98819,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -99145,7 +99145,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -99469,7 +99469,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -99791,7 +99791,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -100111,7 +100111,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -100429,7 +100429,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -100735,7 +100735,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -101037,7 +101037,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -101339,7 +101339,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -101639,7 +101639,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -101939,7 +101939,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -102235,7 +102235,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -102699,7 +102699,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -103157,7 +103157,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -103611,7 +103611,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -104051,7 +104051,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -104491,7 +104491,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -104927,7 +104927,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -105361,7 +105361,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -105771,7 +105771,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -106111,7 +106111,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -106451,7 +106451,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -106787,7 +106787,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -107117,7 +107117,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -107443,7 +107443,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -107769,7 +107769,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -108093,7 +108093,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -108415,7 +108415,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -108735,7 +108735,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -109053,7 +109053,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -109359,7 +109359,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -109661,7 +109661,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -109963,7 +109963,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -110263,7 +110263,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -110563,7 +110563,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4p[5/2]3) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4p[5/2]3)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -110859,7 +110859,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4s'[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4s'[1/2]1)",
@@ -111529,7 +111529,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[1/2]1)",
@@ -112017,7 +112017,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[5/2]3)",
@@ -112485,7 +112485,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -112949,7 +112949,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -113407,7 +113407,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -113861,7 +113861,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -114301,7 +114301,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -114741,7 +114741,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -115177,7 +115177,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -115611,7 +115611,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -116021,7 +116021,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -116361,7 +116361,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -116701,7 +116701,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -117037,7 +117037,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -117367,7 +117367,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -117693,7 +117693,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -118019,7 +118019,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -118343,7 +118343,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -118665,7 +118665,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -118985,7 +118985,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -119303,7 +119303,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -119609,7 +119609,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -119911,7 +119911,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -120213,7 +120213,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -120513,7 +120513,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -120813,7 +120813,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]0) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -121109,7 +121109,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[1/2]1)",
@@ -121597,7 +121597,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[5/2]3)",
@@ -122065,7 +122065,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -122529,7 +122529,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -122987,7 +122987,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -123441,7 +123441,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -123881,7 +123881,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -124321,7 +124321,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -124757,7 +124757,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -125191,7 +125191,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -125601,7 +125601,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -125941,7 +125941,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -126281,7 +126281,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -126617,7 +126617,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -126947,7 +126947,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -127273,7 +127273,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -127599,7 +127599,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -127923,7 +127923,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -128245,7 +128245,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -128565,7 +128565,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -128883,7 +128883,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -129189,7 +129189,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -129491,7 +129491,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -129793,7 +129793,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -130093,7 +130093,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -130393,7 +130393,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s'[1/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -130689,7 +130689,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4s'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4s'[1/2]0)",
@@ -131375,7 +131375,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4s'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4s'[1/2]1)",
@@ -132045,7 +132045,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[1/2]1)",
@@ -132533,7 +132533,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[5/2]3)",
@@ -133001,7 +133001,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -133465,7 +133465,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -133923,7 +133923,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -134377,7 +134377,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -134817,7 +134817,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -135257,7 +135257,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -135693,7 +135693,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -136127,7 +136127,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -136537,7 +136537,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -136877,7 +136877,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -137217,7 +137217,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -137553,7 +137553,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -137883,7 +137883,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -138209,7 +138209,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -138535,7 +138535,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -138859,7 +138859,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -139181,7 +139181,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -139501,7 +139501,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -139819,7 +139819,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -140125,7 +140125,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -140427,7 +140427,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -140729,7 +140729,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -141029,7 +141029,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -141329,7 +141329,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -141625,7 +141625,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4s[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4s[3/2]1)",
@@ -142325,7 +142325,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4s'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4s'[1/2]0)",
@@ -143011,7 +143011,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4s'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4s'[1/2]1)",
@@ -143681,7 +143681,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[1/2]1)",
@@ -144169,7 +144169,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[5/2]3)",
@@ -144637,7 +144637,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[5/2]2)",
@@ -145101,7 +145101,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[3/2]1)",
@@ -145559,7 +145559,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[3/2]2)",
@@ -146013,7 +146013,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p[1/2]0)",
@@ -146453,7 +146453,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p'[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]1)",
@@ -146893,7 +146893,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p'[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p'[3/2]2)",
@@ -147329,7 +147329,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]1)",
@@ -147763,7 +147763,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(4p'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(4p'[1/2]0)",
@@ -148173,7 +148173,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]0)",
@@ -148513,7 +148513,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[1/2]1)",
@@ -148853,7 +148853,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]2)",
@@ -149189,7 +149189,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[7/2]4)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]4)",
@@ -149519,7 +149519,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(5s[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]2)",
@@ -149845,7 +149845,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -150171,7 +150171,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -150495,7 +150495,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -150817,7 +150817,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -151137,7 +151137,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -151455,7 +151455,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -151761,7 +151761,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -152063,7 +152063,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -152365,7 +152365,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -152665,7 +152665,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -152965,7 +152965,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(4s[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(4s[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -153261,7 +153261,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]0) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(5s'[1/2]0)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -153563,7 +153563,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]0) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(5s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -153865,7 +153865,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]0) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(5s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -154165,7 +154165,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]0) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(5s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -154465,7 +154465,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]0) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(5s'[1/2]0)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -154761,7 +154761,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(5s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -155063,7 +155063,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(5s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -155363,7 +155363,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(5s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -155663,7 +155663,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s'[1/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(5s'[1/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -155959,7 +155959,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -156281,7 +156281,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -156601,7 +156601,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -156919,7 +156919,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -157225,7 +157225,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -157527,7 +157527,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -157829,7 +157829,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -158129,7 +158129,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -158429,7 +158429,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]1) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(5s[3/2]1)",
    "lxcat_upper": "Ar(3d'[3/2]1)",
@@ -158725,7 +158725,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d[7/2]3)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d[7/2]3)",
@@ -159051,7 +159051,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(5s[3/2]1)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(5s[3/2]1)",
@@ -159375,7 +159375,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d[5/2]2)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]2)",
@@ -159697,7 +159697,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d[5/2]3)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d[5/2]3)",
@@ -160017,7 +160017,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d[3/2]1)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d[3/2]1)",
@@ -160335,7 +160335,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(5s'[1/2]0)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]0)",
@@ -160641,7 +160641,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(5s'[1/2]1)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(5s'[1/2]1)",
@@ -160943,7 +160943,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d'[5/2]2)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]2)",
@@ -161245,7 +161245,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d'[3/2]2)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]2)",
@@ -161545,7 +161545,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d'[5/2]3)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d'[5/2]3)",
@@ -161845,7 +161845,7 @@
   {
    "type": "excitation",
    "database": "BSR",
-   "dataset": "momentum.",
+   "dataset": "O. Zatsarinny, Y. Wang, and K. Bartschat, Electron-impact excitation of argon at intermediate energies, Physical Review A 89, 022706 (2014).",
    "lxcat_reaction": "Ar(5s[3/2]2) -> Ar(3d'[3/2]1)",
    "lxcat_lower": "Ar(5s[3/2]2)",
    "lxcat_upper": "Ar(3d'[3/2]1)",

@@ -104,6 +104,8 @@ CONFIG = dict(
     xsec_4s="BSR",                      # excitation out of the 4s levels: 'BSR' (B-spline R-matrix) or
                                         # 'RDW' (the cross sections before Oct 2026), see he.XSEC_4S.
                                         # Output folders get a suffix for 'RDW' (xsec_suffix)
+    xsec_ground="RDW",                  # excitation out of the ground state: 'RDW' or 'BSR' (4s, 4p, 3d,
+                                        # 5s from threshold; see he.XSEC_GROUND). Suffix '_BSRgnd' for 'BSR'
     N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
                                         # levels by N2 and dilution of the Ar ground state, as in
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
@@ -139,9 +141,16 @@ def xsec_4s(cfg=CONFIG):
     return cfg.get("xsec_4s", "RDW")
 
 
+def xsec_ground(cfg=CONFIG):
+    """Cross sections out of the ground state of cfg ('RDW' unless set)."""
+    return cfg.get("xsec_ground", "RDW")
+
+
 def xsec_suffix(cfg=CONFIG):
-    """Suffix for output names: '' for the BSR 4s cross sections, '_RDW4s' for the RDW ones."""
-    return "" if xsec_4s(cfg) == "BSR" else f"_{xsec_4s(cfg)}4s"
+    """Suffix for output names: '' for BSR out of the 4s levels and RDW out of the ground state
+    (the default), '_RDW4s' and/or '_BSRgnd' otherwise."""
+    return (("" if xsec_4s(cfg) == "BSR" else f"_{xsec_4s(cfg)}4s")
+            + ("" if xsec_ground(cfg) == "RDW" else f"_{xsec_ground(cfg)}gnd"))
 
 
 def output_dir(name, cfg=CONFIG):
@@ -164,9 +173,10 @@ def _helpers():
     return he
 
 
-def load_cr_model(outdir, xsec=None):
+def load_cr_model(outdir, xsec=None, xsec_gnd=None):
     """CR-model functions of MainFileV2, ModelData and the escape-factor interpolator;
-    xsec: cross sections out of the 4s levels ('BSR' / 'RDW', default he.XSEC_4S)."""
+    xsec / xsec_gnd: cross sections out of the 4s levels / the ground state ('BSR' / 'RDW',
+    default he.XSEC_4S / he.XSEC_GROUND)."""
     he = _helpers()
     path = os.path.join(SCRIPTS_DIR, "MainFileV2.py")
     tree = ast.parse(open(path, encoding="utf-8").read())
@@ -174,7 +184,7 @@ def load_cr_model(outdir, xsec=None):
     cr = {"__file__": path, "OUTPUT_DIR": outdir, "plt": plt}
     exec(compile(defs, path, "exec"), cr)
     with contextlib.redirect_stdout(io.StringIO()):
-        ModelData, RTM = he.GetData(xsec or he.XSEC_4S)
+        ModelData, RTM = he.GetData(xsec or he.XSEC_4S, xsec_gnd or he.XSEC_GROUND)
     tau = np.unique([d["Tau_R"] for d in RTM])
     shape = np.unique([d["Shape"] for d in RTM])
     eta = np.array([d["EscapeFactor"][0] for d in RTM]).reshape(len(tau), len(shape))
@@ -199,7 +209,7 @@ def apply_nitrogen(MD, cfg, he):
 def cr_density_solver(cfg=CONFIG):
     """Function (eedf, Ne) -> {level: density [m^-3]} of the CR model with the
     settings of cfg, e.g. for the superelastic populations of he.BuildBolsigLibrary."""
-    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg))
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg), xsec_ground(cfg))
     MD = he.AddDiffusionLoss(MD, cfg["P_Torr"], cfg["Tg"], cfg["R"])
     P_Ar = apply_nitrogen(MD, cfg, he)
 
@@ -273,6 +283,8 @@ def _table_path(cfg):
         tag += f"_N2_{cfg['N2_percent']:g}pct"
     if xsec_4s(cfg) != "RDW":                       # tables from before the switch are RDW
         tag += f"_{xsec_4s(cfg)}4s"
+    if xsec_ground(cfg) != "RDW":
+        tag += f"_{xsec_ground(cfg)}gnd"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -286,7 +298,8 @@ def _cached_subset(tab, cfg, x):
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
                 and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
-                and str(tab["xsec_4s"] if "xsec_4s" in tab else "RDW") == xsec_4s(cfg))
+                and str(tab["xsec_4s"] if "xsec_4s" in tab else "RDW") == xsec_4s(cfg)
+                and str(tab["xsec_ground"] if "xsec_ground" in tab else "RDW") == xsec_ground(cfg))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -305,7 +318,7 @@ def build_model_table(cfg=CONFIG):
         if tab is not None:
             print(f"reusing {path}")
             return tab
-    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg))
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg), xsec_ground(cfg))
     P, Tg, R = cfg["P_Torr"], cfg["Tg"], cfg["R"]
     MD = he.AddDiffusionLoss(MD, P, Tg, R)
     P_Ar = apply_nitrogen(MD, cfg, he)
@@ -359,7 +372,7 @@ def build_model_table(cfg=CONFIG):
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
-               xsec_4s=xsec_4s(cfg),
+               xsec_4s=xsec_4s(cfg), xsec_ground=xsec_ground(cfg),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),

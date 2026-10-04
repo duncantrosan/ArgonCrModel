@@ -32,6 +32,7 @@ then go to folders ending in `_RDW4s`.
 | `scale_posteriors.png` | Likelihood of s from each condition alone and the posterior of one common s per sweep |
 | `trends.csv` | Numbers behind the trend figures |
 | `fit_changes.csv`, `pinned_fits_BSR.csv`, `pinned_fits_RDW.csv` | Free and pinned fit results per condition, RDW vs BSR |
+| `high_ne_diagnostics.png`, `.csv` | chi^2 vs Ne for model variants and line subsets: what drives the fit to Ne ~ 1e19 |
 
 ## Results
 
@@ -76,10 +77,31 @@ volume at higher power (which a common s cannot tell apart) would also fit. 45 W
 intensity-calibrated spectra, and the two 35 W spectra differ by 2.2x in intensity (35W_1 was
 exported with header flags 1-1-1-1, 35W_2 with 1-0-1-1).
 
-## Caveat: ground → 5p below 20 eV
+## Why the fit wants Ne ~ 1e19 (`SmallAnalysisScripts/HighNeDiagnostics.py`)
 
-The RDW tables for ground → 3d / 5s / 5p start at 20 eV, and 4s → 5p at 5-6 eV. The model sets
-sigma = 0 below the first tabulated point. So at Te_eff ≤ 1.3 eV the 5p3/5p5 levels (upper levels
-of the fitted 415.9 and 430.0 nm lines) get ~0 % of their production directly from the ground
-state, and the blue lines are modelled as purely stepwise. This is the likely next thing to fix
-(BSR has ground → 3d / 5s from threshold, but not 5p). It can affect the Ne conclusions above.
+Ne ~ 1e19 m^-3 is not a credible density for this discharge, and the absorption 1s5 density
+(1-8e17 m^-3) is reproduced by the model only near Ne ~ n_c - 1e18. `high_ne_diagnostics.png`
+shows what drives the fit there (pure Ar and 2.4 % N2 at 85 W, both EEDFs):
+
+- **The four primed-core 2p lines** (2p1-2p4: 750.4, 727.3, 706.7, 794.8 nm). Without them the
+  chi^2 profile over Ne is nearly flat: Delta chi^2/s^2 at n_c drops from 30-59 to 2-7, and
+  1e18 is fully consistent. At realistic Ne the CR model underpopulates the 2p levels of the
+  2P1/2 core relative to the 2P3/2 ones (750.4 nm ~e^1 too weak, 800.6/801.5 nm ~e^0.8 too
+  strong at n_c, also without any trapping). It reaches the observed, strongly mixed 4p
+  distribution only through electron-collision mixing at ~1e19.
+- **Not the cause** (minimum stays at Ne >= 2e18): radiation trapping of the 4p -> 4s lines
+  (switched off), Tg = 700 K, R = 1 cm, the 5p lines (dropped), 800.6/801.5 nm (dropped).
+- **Partly** (Ne down ~1.5-3x, Delta chi^2 at n_c down 30-45 %): ground-state excitation from
+  BSR (`xsec_ground = "BSR"`). The RDW ground -> 4s/4p cross sections are 10-100x above both
+  BSR and the Biagi set (which the BOLSIG+ EEDFs use) within ~8 eV of threshold.
+- **Worse** (Ne to the grid top): BSR excitation out of the 4p levels (weaker 4p <-> 4p mixing
+  than RDW), tested but not added to the code.
+
+So the electron density from the line ratios is set by a model shortfall in how the primed-core
+2p levels are populated (candidates: cascades from 2s/3d' levels, heavy-particle 2p mixing, the
+1s3/1s2 densities), not by the plasma. Until that is resolved, Ne should come from elsewhere
+(critical density, absorption, power balance), with Te_eff fitted at that Ne.
+
+Separate known gap: the RDW ground -> 3d / 5s / 5p tables start at 20 eV and 4s -> 5p at 5-6 eV
+(sigma = 0 below), so the 5p upper levels of 415.9/430.0 nm get ~0 % direct excitation at
+Te_eff <= 1.3 eV. Dropping the 5p lines does not lower Ne, so this is not the Ne driver.
