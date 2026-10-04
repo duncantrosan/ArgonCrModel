@@ -16,6 +16,10 @@ CRFitNeTe.py), all from the Biagi Ar cross sections that the MultiBolt runs use:
   InputData/Bolsig/Ar_Biagi_bolsig_ee_se  both                                  (E/N x Ne)
   InputData/Bolsig/Ar_Biagi_bolsig_mw     2.45 GHz microwave field, no e-e      (E/N sweep)
   InputData/Bolsig/Ar_Biagi_bolsig_mw_ee  2.45 GHz microwave field + e-e        (E/N x Ne)
+  InputData/Bolsig/Ar_Biagi_bolsig_ee_lowEN, Ar_Biagi_bolsig_mw_ee_lowEN
+        the two e-e libraries extended to lower E/N, on Ne >= 1e16 m^-3 (the pure-Ar fits
+        with e-e sit at the lowest E/N of the libraries above; at Ne = 1e15 the low-E/N
+        tails do not reach the 4s threshold, which drops those rows for every Ne)
 
 The E/N x Ne libraries are built on NE_GRID, which the fit must then use as its
 Ne_grid (CRFitNeTe checks). Existing folders are kept - delete one to rebuild it.
@@ -52,6 +56,9 @@ CR_CFG = dict(crf.CONFIG, Ne_grid=NE_GRID)         # P, Tg, R and trapping of th
 MW_FREQ_HZ = 2.45e9
 OMEGA_N = 2 * np.pi * MW_FREQ_HZ / he.Torr2Volume(CR_CFG["P_Torr"], CR_CFG["Tg"])   # m^3/s
 EN_MICROWAVE = [6, 8, 10, 12, 15, 20, 25, 30, 40, 50, 60, 80, 100, 130, 170, 250, 400, 700]   # Td
+EN_BOLSIG_LOW = [0.3, 0.4, 0.5, 0.6] + EN_BOLSIG          # Td, e-e libraries down to lower E/N
+EN_MICROWAVE_LOW = [1, 1.5, 2, 3, 4, 5] + EN_MICROWAVE     # Td
+NE_GRID_LOW = NE_GRID[NE_GRID >= 0.95e16]                  # m^-3, 1e16-3e18 (subset of NE_GRID)
 SUPERELASTIC = {k: lbl for k, (lbl, _) in he.AR_PASCHEN_4S.items()}    # Ar(1S5) -> 4s1, ...
 BOLSIG_SETTINGS = dict(n_grid=500, precision=1e-25, max_iter=20000)
 N_WORKERS = 12
@@ -89,19 +96,23 @@ def main():
             print(f"\n== BOLSIG+: {name}")
             he.RunBolsig(plain, name, EN, **BOLSIG_SETTINGS, **extra)
 
-    builds = [("Ar_Biagi_bolsig_ee", plain, dict(electron_electron=True)),
-              ("Ar_Biagi_bolsig_mw_ee", plain, dict(electron_electron=True, omega_N=OMEGA_N)),
-              ("Ar_Biagi_bolsig_se", se_file, dict(electron_electron=False, superelastic=SUPERELASTIC)),
-              ("Ar_Biagi_bolsig_ee_se", se_file, dict(electron_electron=True, superelastic=SUPERELASTIC))]
+    builds = [   # name, cross sections, physics, E/N [Td], Ne [m^-3]
+        ("Ar_Biagi_bolsig_ee", plain, dict(electron_electron=True), EN_BOLSIG, NE_GRID),
+        ("Ar_Biagi_bolsig_mw_ee", plain, dict(electron_electron=True, omega_N=OMEGA_N), EN_MICROWAVE, NE_GRID),
+        ("Ar_Biagi_bolsig_ee_lowEN", plain, dict(electron_electron=True), EN_BOLSIG_LOW, NE_GRID_LOW),
+        ("Ar_Biagi_bolsig_mw_ee_lowEN", plain, dict(electron_electron=True, omega_N=OMEGA_N), EN_MICROWAVE_LOW,
+         NE_GRID_LOW),
+        ("Ar_Biagi_bolsig_se", se_file, dict(electron_electron=False, superelastic=SUPERELASTIC), EN_BOLSIG, NE_GRID),
+        ("Ar_Biagi_bolsig_ee_se", se_file, dict(electron_electron=True, superelastic=SUPERELASTIC), EN_BOLSIG,
+         NE_GRID)]
     cr_solve = None
-    for name, xsec, physics in builds:
+    for name, xsec, physics, EN, Ne in builds:
         if exists(os.path.join(he.BOLSIG_FOLDER, name)):
             continue
         print(f"\n== BOLSIG+ E/N x Ne library: {name} ({time.time() - t0:.0f} s)")
         if physics.get("superelastic") and cr_solve is None:
             cr_solve = crf.cr_density_solver(CR_CFG)
-        EN = EN_MICROWAVE if "omega_N" in physics else EN_BOLSIG
-        he.BuildBolsigLibrary(xsec, name, EN, NE_GRID, P_Torr=CR_CFG["P_Torr"],
+        he.BuildBolsigLibrary(xsec, name, EN, Ne, P_Torr=CR_CFG["P_Torr"],
                               Tg=CR_CFG["Tg"], cr_solve=cr_solve, n_iter=8, tol=0.03,
                               n_workers=N_WORKERS, **physics, **BOLSIG_SETTINGS)
     print(f"\nall libraries done ({time.time() - t0:.0f} s)")
