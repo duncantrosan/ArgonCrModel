@@ -39,6 +39,9 @@ discharge is ignored for now (pure-Ar CR model at the total pressure).
    The linear nuisances (s, R) are profiled out analytically and chi^2 is
    evaluated on a fine ln x - ln Ne grid -> posterior (log-uniform prior).  If
    chi^2_min/dof > 1 the posterior is widened by that factor (Birge ratio).
+   s is reported per spectrum and per condition (s_best, 16-84 % over the
+   posterior): ln(measured / model) at 775 nm.  common_scale_fit fits several
+   conditions with one s, i.e. with their absolute intensities.
 
 The 5p -> 4s lines (415-470 nm) carry the most EEDF information (thresholds
 ~1.3 eV above the 4p).  The intensity calibration is checked within each range
@@ -47,6 +50,9 @@ by same-upper-level branching ratios (within ~0.2 in ln for the clean 5p and
 
 A Maxwellian EEDF fits these spectra only at Te ~0.6-1 eV (its tail above the
 11.5 eV thresholds is far too full at 1 Torr); use the MultiBolt EEDFs.
+
+Cross sections out of the 4s levels: BSR by default (CONFIG['xsec_4s'], he.XSEC_4S); the
+CR tables are cached per set, output folders get '_RDW4s' for the RDW set.
 
 Run from Spyder: edit CONFIG, press F5.  Results in Experimental_Data/Output/CRFit.
 """
@@ -60,6 +66,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
+from scipy.special import ndtr
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ActinometryLineSelection as als              # noqa: E402
@@ -94,6 +101,9 @@ CONFIG = dict(
     # --- CR model ------------------------------------------------------------
     P_Torr=1.0, Tg=300.0, R=0.04,       # both sweeps are at 1 Torr
     trap_lines="all",                   # see SolveDirect in MainFileV2
+    xsec_4s="BSR",                      # excitation out of the 4s levels: 'BSR' (B-spline R-matrix) or
+                                        # 'RDW' (the cross sections before Oct 2026), see he.XSEC_4S.
+                                        # Output folders get a suffix for 'RDW' (xsec_suffix)
     N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
                                         # levels by N2 and dilution of the Ar ground state, as in
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
@@ -119,8 +129,29 @@ CONFIG = dict(
     birge=True,                         # widen the posterior by chi^2_min/dof when > 1
     fine_n=(240, 220),                  # fine (EEDF axis, Ne) grid for the posterior
     # --- output --------------------------------------------------------------
-    outdir=os.path.join(ROOT_DIR, "Experimental_Data", "Output", "CRFit"),
+    outdir=None,                        # None = Experimental_Data/Output/CRFit (+ xsec_suffix)
 )
+
+
+def xsec_4s(cfg=CONFIG):
+    """Cross sections out of the 4s levels of cfg; a cfg without the key (from before the
+    BSR set) means the RDW ones."""
+    return cfg.get("xsec_4s", "RDW")
+
+
+def xsec_suffix(cfg=CONFIG):
+    """Suffix for output names: '' for the BSR 4s cross sections, '_RDW4s' for the RDW ones."""
+    return "" if xsec_4s(cfg) == "BSR" else f"_{xsec_4s(cfg)}4s"
+
+
+def output_dir(name, cfg=CONFIG):
+    """Experimental_Data/Output/<name> with the cross-section suffix of cfg."""
+    return os.path.join(ROOT_DIR, "Experimental_Data", "Output", name + xsec_suffix(cfg))
+
+
+CONFIG["outdir"] = CONFIG["outdir"] or output_dir("CRFit")
+CONFIG["measure_dir"] = CONFIG["measure_dir"] or os.path.join(ROOT_DIR, "Experimental_Data", "Output", "CRFit")
+                                        # line measurements do not depend on the cross sections
 
 
 # ----------------------------------------------------------------------------
@@ -133,7 +164,9 @@ def _helpers():
     return he
 
 
-def load_cr_model(outdir):
+def load_cr_model(outdir, xsec=None):
+    """CR-model functions of MainFileV2, ModelData and the escape-factor interpolator;
+    xsec: cross sections out of the 4s levels ('BSR' / 'RDW', default he.XSEC_4S)."""
     he = _helpers()
     path = os.path.join(SCRIPTS_DIR, "MainFileV2.py")
     tree = ast.parse(open(path, encoding="utf-8").read())
@@ -141,7 +174,7 @@ def load_cr_model(outdir):
     cr = {"__file__": path, "OUTPUT_DIR": outdir, "plt": plt}
     exec(compile(defs, path, "exec"), cr)
     with contextlib.redirect_stdout(io.StringIO()):
-        ModelData, RTM = he.GetData()
+        ModelData, RTM = he.GetData(xsec or he.XSEC_4S)
     tau = np.unique([d["Tau_R"] for d in RTM])
     shape = np.unique([d["Shape"] for d in RTM])
     eta = np.array([d["EscapeFactor"][0] for d in RTM]).reshape(len(tau), len(shape))
@@ -166,7 +199,7 @@ def apply_nitrogen(MD, cfg, he):
 def cr_density_solver(cfg=CONFIG):
     """Function (eedf, Ne) -> {level: density [m^-3]} of the CR model with the
     settings of cfg, e.g. for the superelastic populations of he.BuildBolsigLibrary."""
-    cr, he, MD, interp = load_cr_model(cfg["outdir"])
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg))
     MD = he.AddDiffusionLoss(MD, cfg["P_Torr"], cfg["Tg"], cfg["R"])
     P_Ar = apply_nitrogen(MD, cfg, he)
 
@@ -238,6 +271,8 @@ def _table_path(cfg):
     tag = "maxwell" if cfg["eedf"] == "maxwell" else os.path.basename(os.path.normpath(cfg["eedf"]))
     if cfg.get("N2_percent", 0.0):
         tag += f"_N2_{cfg['N2_percent']:g}pct"
+    if xsec_4s(cfg) != "RDW":                       # tables from before the switch are RDW
+        tag += f"_{xsec_4s(cfg)}4s"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -250,7 +285,8 @@ def _cached_subset(tab, cfg, x):
         same = (np.allclose(tab["Ne_grid"], cfg["Ne_grid"])
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
-                and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0)))
+                and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
+                and str(tab["xsec_4s"] if "xsec_4s" in tab else "RDW") == xsec_4s(cfg))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -269,7 +305,7 @@ def build_model_table(cfg=CONFIG):
         if tab is not None:
             print(f"reusing {path}")
             return tab
-    cr, he, MD, interp = load_cr_model(cfg["outdir"])
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], xsec_4s(cfg))
     P, Tg, R = cfg["P_Torr"], cfg["Tg"], cfg["R"]
     MD = he.AddDiffusionLoss(MD, P, Tg, R)
     P_Ar = apply_nitrogen(MD, cfg, he)
@@ -283,22 +319,28 @@ def build_model_table(cfg=CONFIG):
     fdir = np.zeros_like(dens)
     conv = np.zeros(shp, bool)
 
-    def escape(up, lo, rad):          # same escape factor as SolveDirect
-        if cfg["trap_lines"] == "ground" and lo["kind"] != "ground":
-            return 1.0
-        if lo["density_m^-3"] == 0:
-            return 1.0
-        a, tau = he.FindTauInModel(up, lo, rad, he.Volume2Torr(lo["density_m^-3"], Tg), Tg, R)
-        return float(np.squeeze(cr["GetEta"](interp, tau, a)))
+    def escape(D):                    # escape factor of every line, as in SolveDirect (one call)
+        eta, k_trap, tau_a = np.ones(len(lines)), [], []
+        for k, (u, l, _, _) in enumerate(lines):
+            lo = D[l]
+            if (cfg["trap_lines"] == "ground" and lo["kind"] != "ground") or lo["density_m^-3"] == 0:
+                continue
+            a, tau = he.FindTauInModel(D[u], lo, rad_of[(u, l)], he.Volume2Torr(lo["density_m^-3"], Tg), Tg, R)
+            k_trap.append(k)
+            tau_a.append((np.log10(tau), a))
+        if k_trap:
+            eta[k_trap] = 10 ** interp(np.array(tau_a, dtype=float))
+        return eta
 
     rad_of = {(u, l): next(r for r in MD[u]["RadiativeDecay"] if r["direction"] == "loss" and r["partner"] == l)
               for u, l, _, _ in lines}
     for i, eedf_row in enumerate(eedfs):
         for j, ne in enumerate(Ne):
             eedf = eedf_row[j] if isinstance(eedf_row, list) else eedf_row   # E/N x Ne library
-            with contextlib.redirect_stdout(io.StringIO()):
+            with contextlib.redirect_stdout(io.StringIO()):     # rates depend on the EEDF only
                 D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp,
-                                                trap_lines=cfg["trap_lines"])
+                                                trap_lines=cfg["trap_lines"],
+                                                compute_rates=isinstance(eedf_row, list) or j == 0)
             conv[i, j] = solver["converged"]
             ng = D["ground"]["density_m^-3"]
             for k, lbl in enumerate(levels):
@@ -310,13 +352,14 @@ def build_model_table(cfg=CONFIG):
                 fdir[i, j, k] = direct / prod if prod > 0 else np.nan
             for k, (u, l, wl, A) in enumerate(lines):
                 I_thin[i, j, k] = D[u]["density_m^-3"] * A
-                I_obs[i, j, k] = I_thin[i, j, k] * escape(D[u], D[l], rad_of[(u, l)])
+            I_obs[i, j] = I_thin[i, j] * escape(D)
         te = (f"{Te_eff[i]:.2f}" if np.ndim(Te_eff) == 1
               else f"{np.min(Te_eff[i]):.2f}-{np.max(Te_eff[i]):.2f}")
         print(f"  CR grid: {x_name} = {x[i]:.3g} (Te_eff {te} eV) done ({i + 1}/{len(x)}), "
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
+               xsec_4s=xsec_4s(cfg),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),
@@ -468,10 +511,13 @@ def hpd_level(post, mass=0.68):
     return p[np.searchsorted(c, mass)]
 
 
-def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
-    """Joint fit of the rows in d (one or more spectra).  Returns summary dict,
-    posterior (nX, nNe) and per-row best-fit residuals."""
-    fX, fN = grid
+def gls_block(d, M, feats, cfg=CONFIG):
+    """Generalized least squares of the rows in d (one or more spectra) at every point of the
+    fine grid, with the linear nuisances (scale per spectrum, response) profiled out:
+      chi2   (nX, nNe)
+      s_grid (nX, nNe) mean scale s of the spectra, ln(measured / model) at 775 nm
+      s_var  variance of that mean scale (the same at every grid point)
+    plus the design X, beta = G @ D[point] and the residuals D (nX, nNe, rows)."""
     fidx = {f: k for k, f in enumerate(feats.feature)}
     li = d.feature.map(fidx).to_numpy()
     si = pd.factorize(d.file)[0]
@@ -485,16 +531,20 @@ def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
     C = np.diag(d.rel_err.to_numpy() ** 2 + cfg["sigma_fit_floor"] ** 2)
     C += cfg["sigma_model"] ** 2 * (li[:, None] == li[None, :])
     W = np.linalg.inv(C)
-    G = np.linalg.pinv(X.T @ W @ X) @ X.T @ W          # beta = G @ resid
+    F = np.linalg.pinv(X.T @ W @ X)
+    G = F @ X.T @ W                                    # beta = G @ resid
     Pm = W - W @ X @ G
     D = y[None, None, :] - M[:, :, li]
     chi2 = np.einsum("abi,ij,abj->ab", D, Pm, D)
-    dof = n - np.linalg.matrix_rank(X) - 2
-    ib = np.unravel_index(np.argmin(chi2), chi2.shape)
-    chi2_min = float(chi2[ib])
-    s2 = max(1.0, chi2_min / dof) if (cfg["birge"] and dof > 0) else 1.0
-    post = np.exp(-0.5 * (chi2 - chi2_min) / s2)
-    post /= post.sum()
+    a = np.r_[np.full(n_spec, 1.0 / n_spec), np.zeros(X.shape[1] - n_spec)]
+    return dict(li=li, n=n, n_spec=n_spec, files=pd.unique(d.file), X=X, G=G, D=D, chi2=chi2,
+                s_grid=np.einsum("j,abj->ab", a @ G, D), s_var=float(a @ F @ a))
+
+
+def posterior_summary(post, grid, Te_f, ib):
+    """Te_eff, EEDF-axis and Ne quantiles (16/50/84 %) of a posterior on the fine grid; ib is
+    the grid index of the best fit."""
+    fX, fN = grid
     pX, pN = post.sum(1), post.sum(0)
     qX = _wquantile(fX, pX, [0.16, 0.5, 0.84])
     qN = np.exp(_wquantile(fN, pN, [0.16, 0.5, 0.84]))
@@ -509,25 +559,48 @@ def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
     mX, mN = (pX * fX).sum(), (pN * fN).sum()
     cov = (post * (fX[:, None] - mX) * (fN[None, :] - mN)).sum()
     corr = cov / np.sqrt((pX * (fX - mX) ** 2).sum() * (pN * (fN - mN) ** 2).sum())
-    beta = G @ D[ib]
-    resid = D[ib] - X @ beta
     edge = lambda p: p[:3].sum() + p[-3:].sum()
-    out = dict(n_spec=n_spec, n_points=n, n_feat=len(np.unique(li)),
-               Te_best=Te_best, Te_lo=qT[0], Te_med=qT[1], Te_hi=qT[2],
-               x_best=float(np.exp(fX[ib[0]])), x_lo=np.exp(qX[0]), x_med=np.exp(qX[1]), x_hi=np.exp(qX[2]),
-               Ne_best=float(np.exp(fN[ib[1]])), Ne_lo=qN[0], Ne_med=qN[1], Ne_hi=qN[2],
-               corr_lnx_lnNe=corr, chi2_min=chi2_min, dof=dof,
+    return dict(Te_best=Te_best, Te_lo=qT[0], Te_med=qT[1], Te_hi=qT[2],
+                x_best=float(np.exp(fX[ib[0]])), x_lo=np.exp(qX[0]), x_med=np.exp(qX[1]), x_hi=np.exp(qX[2]),
+                Ne_best=float(np.exp(fN[ib[1]])), Ne_lo=qN[0], Ne_med=qN[1], Ne_hi=qN[2],
+                corr_lnx_lnNe=corr, edge_x=edge(pX) > 0.05, edge_Ne=edge(pN) > 0.05)
+
+
+def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
+    """Joint fit of the rows in d (one or more spectra).  Returns summary dict,
+    posterior (nX, nNe) and per-row best-fit residuals."""
+    g = gls_block(d, M, feats, cfg)
+    chi2, n, n_spec = g["chi2"], g["n"], g["n_spec"]
+    dof = n - np.linalg.matrix_rank(g["X"]) - 2
+    ib = np.unravel_index(np.argmin(chi2), chi2.shape)
+    chi2_min = float(chi2[ib])
+    s2 = max(1.0, chi2_min / dof) if (cfg["birge"] and dof > 0) else 1.0
+    post = np.exp(-0.5 * (chi2 - chi2_min) / s2)
+    post /= post.sum()
+    beta = g["G"] @ g["D"][ib]
+    resid = g["D"][ib] - g["X"] @ beta
+    # scale s = ln(measured / model) at 775 nm (the response term is 0 there): beta[:n_spec] at
+    # the best fit, and the mean over the spectra on the whole grid -> posterior quantiles.
+    # s and Ne trade off (the model intensity grows with Ne), so s is only as sharp as Ne.
+    o = np.argsort(g["s_grid"], axis=None)
+    qS = _wquantile(g["s_grid"].ravel()[o], post.ravel()[o], [0.16, 0.5, 0.84])
+    out = dict(n_spec=n_spec, n_points=n, n_feat=len(np.unique(g["li"])),
+               **posterior_summary(post, grid, Te_f, ib), chi2_min=chi2_min, dof=dof,
                chi2_red=chi2_min / dof if dof > 0 else np.nan, birge=np.sqrt(s2),
-               edge_x=edge(pX) > 0.05, edge_Ne=edge(pN) > 0.05)
+               s_best=float(beta[:n_spec].mean()), s_lo=qS[0], s_med=qS[1], s_hi=qS[2],
+               s_sd_fit=np.sqrt(g["s_var"]),
+               s_rep_sd=float(np.std(beta[:n_spec], ddof=1)) if n_spec > 1 else np.nan,
+               scales=dict(zip(g["files"], beta[:n_spec].astype(float))))
     if cfg["response_deg"]:
         out["response_slope_per_100nm"] = float(beta[n_spec])
     return out, post, resid
 
 
 def fit_all(ft, feats, M, grid, Te_f, cfg=CONFIG, verbose=True):
-    cond_rows, spec_rows, res_rows, posts = [], [], [], {}
+    cond_rows, spec_rows, res_rows, posts, s_joint = [], [], [], {}, {}
     for (sweep, x), d in ft.groupby(["sweep", "x"]):
         s, post, r = fit_block(d, M, feats, grid, Te_f, cfg)
+        s_joint.update({(sweep, f): v for f, v in s.pop("scales").items()})
         cond_rows.append(dict(sweep=sweep, x=x, **s))
         posts[f"{sweep}|{x:g}"] = post
         for f, g in d.assign(r=r).groupby("feature"):
@@ -538,8 +611,107 @@ def fit_all(ft, feats, M, grid, Te_f, cfg=CONFIG, verbose=True):
                   f"chi2/dof = {s['chi2_red']:.2f}  ({s['n_spec']} spectra, {s['n_feat']} lines)")
     for (sweep, f), d in ft.groupby(["sweep", "file"]):
         s, _, _ = fit_block(d, M, feats, grid, Te_f, cfg)
-        spec_rows.append(dict(sweep=sweep, file=f, x=d.x.iloc[0], rep=d.rep.iloc[0], **s))
+        s.pop("scales")
+        spec_rows.append(dict(sweep=sweep, file=f, x=d.x.iloc[0], rep=d.rep.iloc[0], **s,
+                              s_condition_fit=s_joint[sweep, f]))   # s of this spectrum in the joint fit
     return pd.DataFrame(cond_rows), pd.DataFrame(spec_rows), pd.DataFrame(res_rows), posts
+
+
+def _logsumexp(a, axis):
+    m = np.max(a, axis=axis, keepdims=True)
+    m = np.where(np.isfinite(m), m, 0.0)
+    with np.errstate(divide="ignore"):
+        return np.squeeze(m, axis) + np.log(np.sum(np.exp(a - m), axis=axis))
+
+
+def common_scale_fit(blocks, s_scatter=0.10, ds=None, chunk=40):
+    """
+    Conditions fitted together with ONE scale s = ln(measured / model) at 775 nm, i.e. using the
+    absolute line intensities: valid if the optics, calibration, exposure normalisation and the
+    emitting volume seen by the spectrometer are the same for every spectrum. The model intensity
+    depends on Ne and E/N, so a common s ties these between conditions beyond the line ratios
+    of each condition alone (the free-s fit) - how much depends on how s varies along each fit
+    valley (for the Oct 2026 sweeps mostly with E/N: Ne stays about as wide as with free s).
+
+    blocks    : one dict per condition, keys key, d (its rows of the feature table), M, feats,
+                grid, Te_f, cfg (as fit_block); conditions may come from different CR tables,
+                e.g. each N2 fraction with its own model, since they only share s
+    s_scatter : ln-scale scatter allowed between the condition means and s (Gaussian), e.g. a
+                plasma volume that changes with the condition; the repeats of a condition keep
+                free scales around their mean (exposure, flicker)
+    ds        : step of the s axis; default a quarter of the narrowest penalty width
+    Each condition's chi2 is widened by the Birge factor of its free fit, as in fit_block:
+        p(s, x_c, Ne_c) ~ prod_c exp(-chi2_c / (2 b_c^2)) N(s; s_c, b_c^2 V_c)
+    with s_c(x, Ne) the condition-mean scale profiled at each grid point and V_c = v_c + s_scatter^2.
+    s_c can change by more than the penalty width between neighbouring grid points (steep low-E/N
+    end), so the Gaussian is averaged over the range of s_c within each grid cell (from its
+    gradient) - otherwise the likelihood of s is a comb of the grid points.
+    Returns (rows: per-condition summary with the posterior marginalised over s and the other
+    conditions, {key: posterior}, s axis, posterior of s, dchi2 = joint chi2 minimum - sum of
+    the free minima, in raw chi2 units, {key: likelihood of s from that condition alone} - the
+    conditions agree on one s where these overlap).
+    """
+    prep = []
+    for b in blocks:
+        g = gls_block(b["d"], b["M"], b["feats"], b["cfg"])
+        dof = g["n"] - np.linalg.matrix_rank(g["X"]) - 2
+        c0 = float(g["chi2"].min())
+        b2 = max(1.0, c0 / dof) if (b["cfg"]["birge"] and dof > 0) else 1.0
+        post0 = np.exp(-0.5 * (g["chi2"] - c0) / b2)
+        o = np.argsort(g["s_grid"], axis=None)
+        lo, hi = _wquantile(g["s_grid"].ravel()[o], post0.ravel()[o] / post0.sum(), [1e-4, 1 - 1e-4])
+        gx, gn = np.gradient(g["s_grid"])  # change of s per grid step
+        prep.append(dict(b, g=g, c0=c0, b2=b2, V=g["s_var"] + s_scatter ** 2, h=0.5 * np.hypot(gx, gn),
+                         s_rng=(lo, hi)))
+    ds = ds or 0.25 * np.sqrt(min(p["V"] for p in prep))
+    s_ax = np.arange(min(p["s_rng"][0] for p in prep) - 1.0, max(p["s_rng"][1] for p in prep) + 1.0 + ds, ds)
+    n_s = len(s_ax)
+
+    def terms(p, s):                       # (len(s), nX, nNe): ln of the likelihood of (s, x, Ne)
+        g = p["g"]
+        sig = np.sqrt(p["V"] * p["b2"])
+        u = (s[:, None, None] - g["s_grid"][None]) / sig
+        a = (p["h"] / sig)[None]           # cell half-range of s in units of sig
+        lo, hi = u - a, u + a              # Gaussian averaged over the cell: [Phi(hi) - Phi(lo)] / 2a
+        diff = np.where(lo > 0, ndtr(-lo) - ndtr(-hi), ndtr(hi) - ndtr(lo))
+        with np.errstate(divide="ignore", invalid="ignore"):
+            lnf = np.where(a > 1e-3, np.log(diff) - np.log(2 * a) + 0.5 * np.log(2 * np.pi), -0.5 * u ** 2)
+        return -0.5 * (g["chi2"] - p["c0"])[None] / p["b2"] + lnf
+
+    def chi2_pen(p, s):                    # min over the cell: chi2 - chi2_min + penalty, raw units
+        g = p["g"]
+        out = np.maximum(np.abs(s[:, None, None] - g["s_grid"][None]) - p["h"][None], 0.0)
+        return (g["chi2"] - p["c0"])[None] + out ** 2 / p["V"]
+
+    lnL, best = [], []
+    for p in prep:                         # ln of the likelihood of s per condition, and its best chi2
+        a, m = [], []
+        for k in range(0, n_s, chunk):
+            sk = s_ax[k:k + chunk]
+            a.append(_logsumexp(terms(p, sk).reshape(len(sk), -1), 1))
+            m.append(np.min(chi2_pen(p, sk).reshape(len(sk), -1), 1))
+        lnL.append(np.concatenate(a))
+        best.append(np.concatenate(m))     # min(chi2 + penalty) - chi2_min, raw chi2 units
+    lnL, best = np.array(lnL), np.array(best)
+    tot = lnL.sum(0)
+    p_s = np.exp(tot - tot.max())
+    p_s /= p_s.sum()
+    dchi2 = float(best.sum(0).min())       # joint minimum - sum of the free minima
+    rows, posts = [], {}
+    for i, p in enumerate(prep):
+        w = np.where(np.isfinite(lnL[i]), tot - lnL[i], -np.inf)    # the other conditions' likelihood of s
+        w = np.exp(w - np.max(w))
+        post = np.zeros_like(p["g"]["chi2"])
+        for k in range(0, n_s, chunk):
+            t = terms(p, s_ax[k:k + chunk])
+            post += np.tensordot(w[k:k + chunk], np.exp(np.where(np.isfinite(t), t, -np.inf)), axes=1)
+        post /= post.sum()
+        ib = np.unravel_index(np.argmax(post), post.shape)
+        rows.append(dict(key=p["key"], **posterior_summary(post, p["grid"], p["Te_f"], ib),
+                         birge=np.sqrt(p["b2"]), s_sd_fit=np.sqrt(p["g"]["s_var"])))
+        posts[p["key"]] = post
+    p_cond = {p["key"]: np.exp(l - np.max(l)) / np.exp(l - np.max(l)).sum() for p, l in zip(prep, lnL)}
+    return rows, posts, s_ax, p_s, dchi2, p_cond
 
 
 def posterior_mean(tab, post, values, cfg=CONFIG):

@@ -47,7 +47,7 @@ CONFIG = dict(
     quantiles=(0.16, 0.5, 0.84),
     k_margin_eV=1.0,                    # MultiBolt k valid only where the EEDF export reaches threshold + this
     min_valid_mass=0.9,                 # posterior mass with a valid k needed to quote a k ratio
-    outdir=os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "ActinometryTe"),
+    outdir=crf.output_dir("ActinometryTe"),            # + "_RDW4s" with the RDW 4s cross sections
 )
 
 

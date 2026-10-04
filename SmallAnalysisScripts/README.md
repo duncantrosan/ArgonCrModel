@@ -11,6 +11,7 @@ Run any of them from Spyder (F5) or `python SmallAnalysisScripts/<name>.py`.
 | `ActinometryPairFlatness.py` | How much k_N/k_Ar of each actinometry pair swings over a Te window (Maxwellian vs MultiBolt) | `Output/` |
 | `ActinometryWalkthrough.py` | Step-by-step figures of what ActinometryTeUncertainty does for one condition and pair | `Output/Walkthrough/` |
 | `CriticalDensityFit.py` | The CR fits (saved by ActinometryNitrogenContent) with Ne pinned at the 2.42 GHz critical density: chi^2 profile over Ne, pinned Te_eff, CR 1s5 density vs absorption, N-atom density | `Output/CriticalDensity/` |
+| `CrossSection4sComparison.py` | Excitation out of the 4s levels: BSR (used now) vs RDW and the analytic Drawin fill-ins (used before) - rate coefficients, cross sections, and the CR-model density change over Ne | `Output/CrossSections4s/` |
 | `CrossSectionRatios.py` | sigma_N(E)/sigma_Ar(E) for every selected actinometry pair (flat = ideal) | `Output/cross_section_ratios.png` |
 | `CRFitSpectrumOverlay.py` | CR-model spectrum at the best-fit (Te_eff, Ne), slit-broadened, over the measured spectrum, plus line-integral residuals vs wavelength | `Output/CRFit/` |
 | `EEDFComparison.py` | Ground-state rate coefficients for MultiBolt EEDFs with 2-8 Legendre terms (Ar/N2) vs a Maxwellian | `Output/EEDFComparison.png` |
@@ -20,5 +21,11 @@ Run any of them from Spyder (F5) or `python SmallAnalysisScripts/<name>.py`.
 | `FitSensitivity.py` | How much the fitted Ar I line pattern changes per decade of Ne and per 0.1 eV of Te_eff (after the free scale and response tilt), against the detection limit of the fit | `Output/FitSensitivity/` |
 | `NitrogenAdmixture.py` | 1s5 / 1s3 metastable densities and Ar I line ratios vs N2 admixture (0-10 %), at fixed Te (Maxwellian) or fixed E/N (BOLSIG+ per mixture), with the N2 physics of Scripts/MainFileWithNitrogen.py | `Output/NitrogenAdmixture/` |
 | `Plot_Slit_Function_Slides.py` | Slide figures of the echelle slit function (Hg 435.8 nm vs a delta line) and FWHM vs wavelength | `MolecularFitting/Slit_Functions/Figures/Slides/` |
+| `SweepTrends.py` | Te_eff, Ne and the scale factor s of the CR fit along the N2-fraction and power sweeps (each N2 fraction with its own mixture EEDF and CR model; microwave and DC), Ne also with one common s per sweep (absolute intensities), BSR vs RDW 4s cross sections | `Output/SweepTrends/` |
 
 The EEDF libraries the two EEDF scripts use are made by `Scripts/CreateEEDFLibraries.py`.
+
+Cross sections out of the 4s levels: the CR model uses the BSR set (`he.XSEC_4S = 'BSR'`,
+`CRFitNeTe.CONFIG['xsec_4s']`). Set `xsec_4s = 'RDW'` in `CRFitNeTe.CONFIG` for the cross
+sections used before October 2026; the CR tables are cached per set, and the output folders of
+the CR-fit scripts get the suffix `_RDW4s`.

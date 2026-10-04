@@ -428,14 +428,29 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
     n_meta = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'metastable')
     Ng = next(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'ground')
 
+    # Escape factors of every line at the current densities, with one interpolator call for
+    # all lines (GetEta line by line took most of the solve time). A line's escape factor
+    # depends on its upper and lower level and A, so the gain entry of the lower level gets
+    # the value of the loss entry of the upper level.
+    EtaOf, keys, tau_a = {}, [], []
+    for Upper in InputModel.values():
+        for Rad in Upper['RadiativeDecay']:
+            if Rad['direction'] != 'loss':
+                continue
+            Lower = InputModel[Rad['partner']]
+            key = (Upper['label'], Lower['label'], Rad['coeff'])
+            if (trap_lines == 'ground' and Lower['kind'] != 'ground') or Lower['density_m^-3'] == 0:
+                EtaOf[key] = 1.0
+                continue
+            Pt = he.Volume2Torr(Lower['density_m^-3'], T)
+            a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
+            keys.append(key)
+            tau_a.append((np.log10(tau), a))
+    if keys:
+        EtaOf.update(zip(keys, 10**interp(np.array(tau_a, dtype=float))))
+
     def Eta(Upper, Lower, Rad):
-        if trap_lines == 'ground' and Lower['kind'] != 'ground':
-            return 1.0
-        if Lower['density_m^-3'] == 0:
-            return 1.0
-        Pt = he.Volume2Torr(Lower['density_m^-3'], T)
-        a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
-        return float(np.squeeze(GetEta(interp, tau, a)))
+        return float(EtaOf[Upper['label'], Lower['label'], Rad['coeff']])
 
     def Gain(i, partner, rate):
         if partner in idx:
@@ -680,7 +695,7 @@ def PlotEEDFs(EEDFs):
 
 def CRModel(ModelData, eedf, Ne, P, T, R, interp,
             max_iter=500, tol=1e-6, relax=1.0, verbose=False,
-            solver='direct', trap_lines='all'):
+            solver='direct', trap_lines='all', compute_rates=True):
     """
     Solve the CR balance to self-consistency.
 
@@ -696,13 +711,16 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
              'gauss-seidel' - level-by-level iteration (SolveLabelEquation);
                               slow to converge at high Ne
     trap_lines : 'all' or 'ground', see SolveDirect ('direct' solver only)
+    compute_rates : False reuses the electron-impact rates already in ModelData, i.e. from a
+             previous call with the same EEDF (a sweep over Ne): they depend on the EEDF only
     """
     if solver == 'gauss-seidel' and trap_lines != 'all':
         raise ValueError("trap_lines='ground' needs solver='direct'")
     eedf = he.AsEEDF(eedf)
-    ModelData = CreateExcitationReactionRates(ModelData, eedf)
-    ModelData = CreateIonizationReactionRates(ModelData, eedf)
-    ModelData = CreateSuperelasticRates(ModelData, eedf)   # was `t` - global leak
+    if compute_rates:
+        ModelData = CreateExcitationReactionRates(ModelData, eedf)
+        ModelData = CreateIonizationReactionRates(ModelData, eedf)
+        ModelData = CreateSuperelasticRates(ModelData, eedf)   # was `t` - global leak
 
     Ng = he.Torr2Volume(P, T)
     Data = InitializeStateDensities(ModelData, P, T)

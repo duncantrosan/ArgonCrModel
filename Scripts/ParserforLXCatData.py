@@ -156,6 +156,139 @@ def build_cross_sections_json(in_txt, out_json, levels_json=None):
     return data
 
 
+# --- BSR database (B-spline R-matrix, Zatsarinny & Bartschat; www.lxcat.net/BSR) ---------
+# States are named in jK coupling: 'Ar(4s[3/2]2)', "Ar(4p'[1/2]0)" (prime = 2P1/2 ion core),
+# and in the BSR-500 ground-state set also 'Ar(4s![1/2]0, 3P0, 1s3)' ('!' = prime) or
+# 'Ar(4p [1/2]0, 3P0, p5)'. They are matched to the model levels on (core, nl, K, J).
+# The tabulated thresholds are BSR's own level energies: the 4s levels agree with NIST, the
+# 4p levels lie 0.11-0.17 eV and the 3d levels up to 0.22 eV above NIST. The model uses the
+# NIST energies (ArgonLevelList.json), so each cross section is shifted in energy to start
+# at the model threshold (same cross section at the same energy above threshold).
+_BSR_STATE = re.compile(r"^Ar\((\d+[spdfg])\s*(['!]?)\s*\[(\d+/2)\]\s*(\d+)")
+
+
+def bsr_level_lookup(levels):
+    """(ion core '3/2' or '1/2', nl, K, J) -> model label, for the excited levels."""
+    lookup = {}
+    for label, v in levels.items():
+        parts = v['configuration'].split('.')
+        if v.get('kind') == 'ground' or len(parts) < 2 or '<' not in parts[-2]:
+            continue
+        core = '1/2' if '<1/2>' in parts[-2] else '3/2'
+        K = re.search(r'\[(\d+/2)\]', v['term']).group(1)
+        lookup[(core, parts[-1], K, int(round(float(v['J']))))] = label
+    return lookup
+
+
+def resolve_bsr_label(name, lookup):
+    """Model label of a BSR state name; 'ground' for 'Ar', None for 'Ar(nl>5s)',
+    'Ar(Rydberg)' and levels the model does not have."""
+    name = name.strip()
+    if name == 'Ar':
+        return 'ground'
+    m = _BSR_STATE.match(name)
+    if m is None:
+        return None
+    nl, prime, K, J = m.groups()
+    return lookup.get(('1/2' if prime else '3/2', nl, K, int(J)))
+
+
+def parse_bsr_lxcat(path, levels, align_thresholds=True):
+    """
+    Parse an LXCat download of the BSR database into a CrossSectionList dict, like
+    parse_lxcat. The file holds two data sets (top-level COMMENT lines): BSR-500 from the
+    ground state (2013), and the ground state again plus excitation out of the 4s, 4p, 3d
+    and 5s levels (Zatsarinny, Wang & Bartschat 2014). A channel in both is kept once
+    (first occurrence, listed in 'duplicates_skipped').
+
+    align_thresholds : shift each cross section by (model dE - BSR threshold) so it starts
+                       at the model threshold; 'threshold_lxcat_eV' and 'energy_shift_eV'
+                       keep the original.
+    """
+    with open(path, encoding='utf-8', errors='replace') as f:
+        lines = f.read().splitlines()
+    lookup = bsr_level_lookup(levels)
+
+    cross_sections, crosswalk, seen, duplicates = [], {}, set(), []
+    dataset, i = None, 0
+    while i < len(lines):
+        s = lines[i].strip()
+        if lines[i].startswith('COMMENT:'):          # data-set comment (outside the blocks)
+            text = [s[len('COMMENT:'):].strip()]
+            while i + 1 < len(lines) and lines[i + 1].startswith(' ') and lines[i + 1].strip():
+                i += 1
+                text.append(lines[i].strip())
+            dataset = ' '.join(text)
+            i += 1
+            continue
+        if s != 'EXCITATION':
+            i += 1
+            continue
+
+        reaction = lines[i + 1].strip()
+        lo_raw, up_raw = (x.strip() for x in re.split(r'\s*<?->\s*', reaction))
+        nums = [float(x) for x in lines[i + 2].split()]
+        threshold_eV = nums[0]
+        g_ratio = nums[1] if len(nums) > 1 else None
+
+        j = i + 3
+        while not lines[j].strip().startswith('-----'):
+            j += 1
+        j += 1
+        energy, sigma = [], []
+        while not lines[j].strip().startswith('-----'):
+            parts = lines[j].split()
+            if len(parts) >= 2:
+                energy.append(float(parts[0]))
+                sigma.append(float(parts[1]))
+            j += 1
+        i = j + 1
+
+        lower_label = resolve_bsr_label(lo_raw, lookup)
+        upper_label = resolve_bsr_label(up_raw, lookup)
+        crosswalk.setdefault(lo_raw, lower_label)
+        crosswalk.setdefault(up_raw, upper_label)
+        pair = (lower_label, upper_label)
+        if lower_label is not None and upper_label is not None and pair in seen:
+            duplicates.append(reaction)
+            continue
+        seen.add(pair)
+
+        shift = 0.0
+        if align_thresholds and lower_label is not None and upper_label is not None:
+            dE = levels[upper_label]['energy_eV'] - (0.0 if lower_label == 'ground'
+                                                     else levels[lower_label]['energy_eV'])
+            shift = dE - threshold_eV
+            energy = [e + shift for e in energy]
+        cross_sections.append({
+            'type':              'excitation',
+            'database':          'BSR',
+            'dataset':           dataset,
+            'lxcat_reaction':    reaction,
+            'lxcat_lower':       lo_raw,
+            'lxcat_upper':       up_raw,
+            'lower_label':       lower_label,
+            'upper_label':       upper_label,
+            'threshold_eV':      threshold_eV + shift,
+            'threshold_lxcat_eV': threshold_eV,
+            'energy_shift_eV':   shift,
+            'g_ratio':           g_ratio,
+            'energy_eV':         energy,
+            'cross_section':     sigma,
+        })
+    return {'cross_sections': cross_sections, 'crosswalk': crosswalk,
+            'duplicates_skipped': duplicates}
+
+
+def build_bsr_cross_sections_json(in_txt, out_json, levels_json, align_thresholds=True):
+    with open(levels_json) as f:
+        levels = json.load(f)
+    data = parse_bsr_lxcat(in_txt, levels, align_thresholds)
+    with open(out_json, 'w') as f:
+        json.dump(data, f, indent=1)
+    return data
+
+
 if __name__ == '__main__':
     MainDir = Path(__file__).resolve().parent.parent
     DataFolder = MainDir / 'InputData'
@@ -171,3 +304,17 @@ if __name__ == '__main__':
           f"-> {OutJSON}")
     for r in d['duplicates_skipped']:
         print(f"  duplicate block skipped: {r}")
+
+    # BSR (B-spline R-matrix) set, incl. excitation out of the 4s levels
+    InBSR   = DataFolder / 'ArgonLxCatPureArgonUpdated.txt'
+    OutBSR  = DataFolder / 'ArgonCrossSectionsBSR.json'
+    d = build_bsr_cross_sections_json(InBSR, OutBSR, DataFolder / 'ArgonLevelList.json')
+    from collections import Counter
+    n_from = Counter(c['lower_label'] for c in d['cross_sections']
+                     if c['lower_label'] is not None and c['upper_label'] is not None)
+    n_none = sum(1 for c in d['cross_sections']
+                 if c['lower_label'] is None or c['upper_label'] is None)
+    print(f"Parsed {len(d['cross_sections'])} BSR cross sections ({n_none} involving untracked "
+          f"levels) -> {OutBSR}")
+    print('  by lower level: ' + ', '.join(f'{k} {v}' for k, v in sorted(n_from.items())))
+    print(f"  {len(d['duplicates_skipped'])} ground-state blocks in both BSR data sets kept once")

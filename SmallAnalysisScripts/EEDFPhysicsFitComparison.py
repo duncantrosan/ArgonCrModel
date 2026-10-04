@@ -56,7 +56,7 @@ VARIANTS = [   # label, library folder, colour
 LOW_5P = ("5p6", "5p8", "5p9")                      # the 5p levels the MultiBolt fit underpredicted
 RATIO_LINES = (420.0674, 750.3869)                  # nm, 5p2 -> 4s1 and 4p10 -> 4s4
 MEASURED_N_1S5 = (1e17, 8e17)                       # m^-3, absorption (path length uncertain)
-OUTDIR = os.path.join(ROOT_DIR, "Experimental_Data", "Output", "EEDFPhysics")
+OUTDIR = crf.output_dir("EEDFPhysics")             # + "_RDW4s" with the RDW 4s cross sections
 CFG = dict(crf.CONFIG, Ne_grid=libs.NE_GRID, outdir=OUTDIR)
 
 

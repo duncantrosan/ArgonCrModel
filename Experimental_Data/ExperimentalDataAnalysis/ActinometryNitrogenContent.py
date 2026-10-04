@@ -41,7 +41,8 @@ line list).  With the N2 feed fraction f, n_N2/n_Ar = f/(1-f) if little N2 is
 dissociated, so the dissociation degree is n_N/(2 n_N2) = (n_N/n_Ar)(1-f)/(2f), and the
 N-atom density is n_N = (n_N/n_Ar)(1-f) N, N from P_Torr and Tg of the fit (300 K).
 
-Run from Spyder: edit CONFIG, press F5.  Results in Experimental_Data/Output/ActinometryN2Content.
+Run from Spyder: edit CONFIG, press F5.  Results in Experimental_Data/Output/ActinometryN2Content
+(ActinometryN2Content_RDW4s with the RDW 4s cross sections, CRFitNeTe.CONFIG['xsec_4s']).
 """
 import os
 import sys
@@ -76,7 +77,7 @@ CONFIG = dict(
     rel_err_xs_N=0.20, rel_err_xs_Ar=0.15,   # cross sections (BSR N I, Ar I), systematic
     k_margin_eV=1.0,                    # k valid only where the EEDF reaches threshold + this
     min_valid_mass=0.9,                 # posterior mass with a valid result needed per pair
-    outdir=os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "ActinometryN2Content"),
+    outdir=crf.output_dir("ActinometryN2Content"),     # + "_RDW4s" with the RDW 4s cross sections
 )
 
 
@@ -88,8 +89,11 @@ def n2_percent(sweep, x, cfg=CONFIG):
 
 
 def mixture_library(pct, eedf, cfg=CONFIG):
-    """Folder of the BOLSIG+ E/N sweep for pct % N2 in Ar with EEDF `eedf` (built if missing)."""
+    """Folder of the BOLSIG+ E/N sweep for pct % N2 in Ar with EEDF `eedf` (built if missing);
+    0 % is pure Ar, the Biagi Ar libraries of Scripts/CreateEEDFLibraries.py."""
     e = cfg["eedfs"][eedf]
+    if pct == 0:
+        return he.BOLSIG_FOLDER / f"Ar_Biagi_bolsig{e['suffix']}"
     name = f"ArN2_{pct:g}pct_bolsig{e['suffix']}"
     folder = he.BOLSIG_FOLDER / name
     if not he.IsBolsigLibrary(folder):
@@ -105,13 +109,17 @@ def mixture_library(pct, eedf, cfg=CONFIG):
     return folder
 
 
-def mixture_fit(pct, eedf, cfg=CONFIG):
-    """CR fit of all conditions with the EEDFs and the CR model of pct % N2."""
-    lib = mixture_library(pct, eedf, cfg)
-    fcfg = dict(cfg["fit"], eedf=str(lib), N2_percent=pct, Ne_grid=cfg["Ne_grid"],
+def fit_config(pct, eedf, cfg=CONFIG):
+    """CRFitNeTe settings of the fit with the EEDFs and the CR model of pct % N2."""
+    return dict(cfg["fit"], eedf=str(mixture_library(pct, eedf, cfg)), N2_percent=pct, Ne_grid=cfg["Ne_grid"],
                 outdir=os.path.join(cfg["outdir"], f"fit_{eedf}_{pct:g}pct_N2"),
                 measure_dir=cfg["fit"].get("measure_dir") or cfg["fit"]["outdir"])
-    print(f"\n=== CR fit, {eedf} EEDF, {pct:g} % N2 ({lib.name}) ===")
+
+
+def mixture_fit(pct, eedf, cfg=CONFIG):
+    """CR fit of all conditions with the EEDFs and the CR model of pct % N2."""
+    fcfg = fit_config(pct, eedf, cfg)
+    print(f"\n=== CR fit, {eedf} EEDF, {pct:g} % N2 ({os.path.basename(fcfg['eedf'])}) ===")
     return crf.run(fcfg)
 
 

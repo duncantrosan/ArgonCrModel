@@ -947,18 +947,42 @@ def FindRadiationTrapping(RadiationTrappingMatrix,Tau,a):
 #%%  Level List
 ###############################################################################
 ## Import JSON Files and Build Dicts
-def ImportCrossSections():
+
+# Electron-impact excitation out of the four 4s levels (stepwise excitation):
+#   'BSR' : B-spline R-matrix, Zatsarinny & Bartschat (LXCat BSR database,
+#           InputData/ArgonLxCatPureArgonUpdated.txt -> ArgonCrossSectionsBSR.json):
+#           4s -> 4s, 4p, 3d, 5s, shifted to the NIST thresholds (ParserforLXCatData)
+#   'RDW' : relativistic distorted wave (LXCat NGFSRDW, ArgonCrossSections.json): 4s -> 4s, 4p, 5p
+# With 'BSR', the 4s -> 5p channels (not in the BSR set) keep their RDW data. Everything
+# else is the same either way: ground state and 4p -> 4p from RDW, other channels analytic.
+XSEC_4S = 'BSR'
+FOUR_S = ('4s1', '4s2', '4s3', '4s4')
+
+
+def ImportCrossSections(xsec_4s=XSEC_4S):
     # 1. Get the directory
     MainDir = Path(__file__).resolve().parent.parent
-    
+
     # 2. Join using the / operator
     DataFolder = MainDir / 'InputData'
     CSPath = DataFolder / 'ArgonCrossSections.json'
-    
+
     # 3. Open the file directly using the Path object
     with open(CSPath, 'r') as file:
         CrossSectionList = json.load(file)
+    if xsec_4s == 'RDW':
         return CrossSectionList
+    if xsec_4s != 'BSR':
+        raise ValueError(f"xsec_4s must be 'BSR' or 'RDW', not {xsec_4s!r}")
+
+    # 4. Excitation out of the 4s levels from the BSR set, replacing the RDW channels it covers
+    with open(DataFolder / 'ArgonCrossSectionsBSR.json', 'r') as file:
+        BSR = json.load(file)['cross_sections']
+    From4s = [CS for CS in BSR if CS['lower_label'] in FOUR_S and CS['upper_label'] is not None]
+    Covered = {(CS['lower_label'], CS['upper_label']) for CS in From4s}
+    Kept = [CS for CS in CrossSectionList['cross_sections']
+            if (CS['lower_label'], CS['upper_label']) not in Covered]
+    return dict(CrossSectionList, cross_sections=Kept + From4s, xsec_4s='BSR')
 
 def ImportLevelList():
     # 1. Get the directory
@@ -1062,6 +1086,7 @@ def AddElectronExcitation(ModelData, CrossSectionList):
                     'threshold_eV': CS['threshold_eV'],
                     'energy_eV': CS['energy_eV'],
                     'cross_section': CS['cross_section'],
+                    'database': CS.get('database', 'NGFSRDW'),
                 })
             if UpperLevel == label:
                 level['Electron Impact CrossSections']['Products'].append({
@@ -1069,6 +1094,7 @@ def AddElectronExcitation(ModelData, CrossSectionList):
                     'threshold_eV': CS['threshold_eV'],
                     'energy_eV': CS['energy_eV'],
                     'cross_section': CS['cross_section'],
+                    'database': CS.get('database', 'NGFSRDW'),
                 })
     return ModelData
 
@@ -1734,7 +1760,8 @@ def BroadenWithSlit(wl, intensity, slit_file=SLIT_FUNCTION_FILE,
 
 
 #%% Create Final Data
-def GetData():
+def GetData(xsec_4s=XSEC_4S):
+    # xsec_4s: cross sections out of the 4s levels, 'BSR' or 'RDW' (see XSEC_4S)
     #import all levels taken into consideration JSON file includes type of level
     # Leveltypes -- ground, resonant, metastable,normal
     LevelList = ImportLevelList()
@@ -1742,10 +1769,11 @@ def GetData():
     # Import Radiative Reaction list from Nistdatabase
     RadiationReactions = ImportReactionList()
     print('Importing Reaction List...')
-    # Combine level list to make radiative loss 
+    # Combine level list to make radiative loss
     LevelList_Update = combine(LevelList,RadiationReactions['transitions'])
-    # Import JSON cross section from LXcat 
-    CrossSectionList = ImportCrossSections()
+    # Import JSON cross section from LXcat
+    CrossSectionList = ImportCrossSections(xsec_4s)
+    print(f'Cross sections out of the 4s levels: {xsec_4s}')
     print('Importing Reaction List...')
     CrossSectionRates = MaxweillianReactionRates(CrossSectionList['cross_sections'])
     #Combines Radiative transition into ModelData

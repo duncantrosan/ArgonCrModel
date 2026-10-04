@@ -17,7 +17,8 @@ chi^2 = chi^2_min + 2 s^2 ln(p_max / p) with s the Birge factor of the fit. Then
 The pure-Ar condition (0 % N2) is fitted here with the EEDFPhysics tables (BOLSIG+
 microwave and DC; profile and pinned fit only, no N lines).
 
-Output in Experimental_Data/Output/CriticalDensity/.  Run from Spyder: edit the settings, press F5.
+Output in Experimental_Data/Output/CriticalDensity/ (CriticalDensity_RDW4s/ with the RDW 4s cross
+sections, CRFitNeTe.CONFIG['xsec_4s']), incl. chi2_profiles.csv.  Run from Spyder: edit the settings, press F5.
 """
 import contextlib
 import io
@@ -47,14 +48,13 @@ N_C = constants.epsilon_0 * constants.m_e * (2 * np.pi * FREQ_HZ) ** 2 / constan
 MEASURED_1S5 = (1e17, 8e17)                         # m^-3, absorption estimate (path length uncertain)
 PURE_AR = [("microwave", he.BOLSIG_FOLDER / "Ar_Biagi_bolsig_mw"), ("dc", he.BOLSIG_FOLDER / "Ar_Biagi_bolsig")]
 ECOL = {"microwave": "C3", "dc": "C0"}
-OUTDIR = os.path.join(ROOT_DIR, "Experimental_Data", "Output", "CriticalDensity")
+OUTDIR = crf.output_dir("CriticalDensity")          # + "_RDW4s" with the RDW 4s cross sections
 
 
 # ---- fits -----------------------------------------------------------------------
 def load_fit(eedf, pct):
     """A saved ActinometryNitrogenContent fit, in the form CRFitNeTe.run returns."""
-    cfg = dict(anc.CONFIG["fit"], eedf=str(anc.mixture_library(pct, eedf)), N2_percent=pct,
-               Ne_grid=anc.CONFIG["Ne_grid"], outdir=os.path.join(anc.CONFIG["outdir"], f"fit_{eedf}_{pct:g}pct_N2"))
+    cfg = anc.fit_config(pct, eedf)
     with contextlib.redirect_stdout(io.StringIO()):
         tab = crf.build_model_table(cfg)
         eedfs = crf.eedf_axis(cfg)[0]
@@ -234,6 +234,9 @@ def main():
         _, act = anc.condition_estimates(pinned_fits, act_in, anc.CONFIG)
     res.to_csv(os.path.join(OUTDIR, "pinned_fits.csv"), index=False)
     act.to_csv(os.path.join(OUTDIR, "nN_pinned_nc.csv"), index=False)
+    pd.DataFrame([dict(eedf=e, sweep=sw, x=x, Ne=n, delta_chi2_s2=d)
+                  for e, sw, x, (Ne, prof) in profiles for n, d in zip(Ne, prof)]
+                 ).to_csv(os.path.join(OUTDIR, "chi2_profiles.csv"), index=False)
     plot_profiles(profiles, os.path.join(OUTDIR, "chi2_profile_Ne.png"))
     plot_summary(res, act, acfg["sweeps"], os.path.join(OUTDIR, "pinned_summary.png"))
     cols = ["eedf", "sweep", "x", "Ne_free", "delta_chi2_at_nc", "chi2_red_free", "chi2_red_pinned", "Te_free",
