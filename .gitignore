@@ -8,10 +8,10 @@ Scripts/Output/*
 Experimental_Data/Output/*
 !Experimental_Data/Output/.gitkeep
 
-# Molecular fitting libraries (large, regenerable)
-MolecularFitting/Raw_Library/
-MolecularFitting/Calibrated_Library/
-MolecularFitting/EXOMOL/
+# Molecular fitting (separate work, large libraries). Only the echelle slit function the CR
+# model reads (HelperFunctions.SLIT_FUNCTION_FILE) stays tracked - it was force-added:
+#   MolecularFitting/Slit_Functions/09_04_2026.txt
+MolecularFitting/
 
 # BOLSIG+ EEDF libraries are committed (the solver is a Windows binary); not their scratch folders
 InputData/Bolsig/*/work/
