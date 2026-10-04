@@ -10,7 +10,8 @@ fit results for
                    only on lines to the ground state), Tg = 700 K, R = 1 cm, and the ground-state
                    excitation from BSR (he.XSEC_GROUND)
   line subsets     the baseline fitted without the primed-core 2p lines (2p1-2p4: 750.4, 727.3,
-                   706.7, 794.8 nm), without the 5p lines, without 800.6 / 801.5 nm
+                   706.7, 794.8 nm), without 750.4 nm (2p1) alone, without 2p2-2p4 (keeping
+                   750.4 nm), without the 5p lines, without 800.6 / 801.5 nm
 
 Each variant has its own CR tables (Output/HighNeDiagnostics/<variant>/; ~1 min each, 20 in all
 on the first run). Results: high_ne_diagnostics.png and .csv in Output/HighNeDiagnostics/.
@@ -49,6 +50,8 @@ PRIMED_2P = ("4p7", "4p8", "4p9", "4p10")           # 2p4, 2p3, 2p2, 2p1 (2P1/2 
 SUBSETS = {    # name: feature -> keep?
     "all 9 lines": lambda f: True,
     "without primed 2p": lambda f: not any(u in PRIMED_2P for u in f.uppers.split("+")),
+    "without 750.4 (2p1)": lambda f: "4p10" not in f.uppers.split("+"),
+    "without 2p2-2p4": lambda f: not any(u in PRIMED_2P[:3] for u in f.uppers.split("+")),
     "without 5p": lambda f: not f.uppers.startswith("5p"),
     "without 800.6/801.5": lambda f: not 800.0 < f.wl < 802.0,
 }

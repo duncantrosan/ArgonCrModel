@@ -89,6 +89,11 @@ shows what drives the fit there (pure Ar and 2.4 % N2 at 85 W, both EEDFs):
   2P1/2 core relative to the 2P3/2 ones (750.4 nm ~e^1 too weak, 800.6/801.5 nm ~e^0.8 too
   strong at n_c, also without any trapping). It reaches the observed, strongly mixed 4p
   distribution only through electron-collision mixing at ~1e19.
+- **No single primed line does it.** Dropping only 750.4 nm (2p1) leaves the best-fit Ne at
+  6e18-1.1e19 m^-3 (Delta chi^2/s^2 at n_c 51/59/57/30 -> 41/14/41/28 for microwave 0 % / 85 W,
+  dc 0 % / 85 W). Dropping 2p2-2p4 (706.7, 727.3, 794.8 nm) but keeping 750.4 nm does more
+  (best fit 3-8e18, Delta chi^2/s^2 at n_c 12-24, at 1e18 0.8-3). Only removing all four frees
+  Ne. The pull comes from the primed-core group as a whole, mostly from 2p2-2p4.
 - **Not the cause** (minimum stays at Ne >= 2e18): radiation trapping of the 4p -> 4s lines
   (switched off), Tg = 700 K, R = 1 cm, the 5p lines (dropped), 800.6/801.5 nm (dropped).
 - **Partly** (best-fit Ne at most 1.7x lower, not at all with the DC EEDF; Delta chi^2/s^2 at n_c
