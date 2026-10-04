@@ -1,0 +1,175 @@
+{
+ "created": "2026-10-04T16:01:34",
+ "kind": "2D",
+ "xsec_file": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\Cross-Sections\\Biagi_Ar.txt",
+ "species": [
+  "Ar"
+ ],
+ "background_fractions": [
+  1.0
+ ],
+ "bolsig_not_converged": [],
+ "electron_electron": true,
+ "superelastic": {},
+ "P_Torr": 1.0,
+ "Tg": 300.0,
+ "N_m3": 3.2188332685087476e+22,
+ "EN_Td": [
+  1.5,
+  2.0,
+  2.5,
+  3.0,
+  4.0,
+  5.0,
+  6.0,
+  7.0,
+  8.0,
+  9.0,
+  10.0,
+  12.0,
+  15.0,
+  20.0,
+  30.0,
+  50.0,
+  75.0,
+  100.0,
+  150.0,
+  200.0
+ ],
+ "Ne": [
+  1e+17
+ ],
+ "conditions": {
+  "n_grid": 500,
+  "precision": 1e-25,
+  "max_iter": 20000
+ },
+ "tol": 0.03,
+ "history": [],
+ "fractions": [
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ],
+  [
+   []
+  ]
+ ],
+ "max_change": [
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ],
+  [
+   0.0
+  ]
+ ],
+ "bolsig_exe": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\bolsigminus.exe",
+ "template": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\bolsig_template.txt"
+}

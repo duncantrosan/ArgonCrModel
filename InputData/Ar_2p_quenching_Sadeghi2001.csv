@@ -1,0 +1,103 @@
+Ar_state,CR_label,Ar_state_energy_eV,quencher,quencher_IE_eV,10^10_kQ_cm3_s,kQ_rel_uncertainty,10^-16_sigmaQ_cm2,note,table,reference
+2p1,4p10,13.48,He,24.5,0.0031,0.3,0.02,,Table II,Sadeghi2001
+2p5,4p6,13.27,He,24.5,0.11,0.1,0.76,,Table II,Sadeghi2001
+2p6,4p5,13.17,He,24.5,0.1,0.1,0.76,,Table II,Sadeghi2001
+2p8,4p3,13.09,He,24.5,0.14,0.3,1.0,sum of quenching from 2p8 and 2p9 (both emissions observed),Table II,Sadeghi2001
+2p1,4p10,13.48,Ne,21.5,0.0021,0.3,0.03,,Table II,Sadeghi2001
+2p5,4p6,13.27,Ne,21.5,0.011,0.3,0.15,,Table II,Sadeghi2001
+2p6,4p5,13.17,Ne,21.5,0.009,0.3,0.13,,Table II,Sadeghi2001
+2p8,4p3,13.09,Ne,21.5,0.027,0.3,0.4,sum of quenching from 2p8 and 2p9 (both emissions observed),Table II,Sadeghi2001
+2p1,4p10,13.48,Ar,15.7,0.16,0.1,2.8,,Table II,Sadeghi2001
+2p5,4p6,13.27,Ar,15.7,0.12,0.1,2.1,lower limit to the total quenching constant,Table II,Sadeghi2001
+2p6,4p5,13.17,Ar,15.7,0.13,0.1,2.3,,Table II,Sadeghi2001
+2p8,4p3,13.09,Ar,15.7,0.24,0.1,4.2,sum of quenching from 2p8 and 2p9 (both emissions observed),Table II,Sadeghi2001
+2p1,4p10,13.48,Kr,14.0,1.7,0.1,35,,Table II,Sadeghi2001
+2p5,4p6,13.27,Kr,14.0,2.2,0.1,45,,Table II,Sadeghi2001
+2p6,4p5,13.17,Kr,14.0,0.47,0.3,10,lower limit to the total quenching constant,Table II,Sadeghi2001
+2p8,4p3,13.09,Kr,14.0,1.6,0.3,33,,Table II,Sadeghi2001
+2p1,4p10,13.48,Xe,12.1;13.4,2.7,0.1,60,,Table II,Sadeghi2001
+2p5,4p6,13.27,Xe,12.1;13.4,4.6,0.1,100,,Table II,Sadeghi2001
+2p6,4p5,13.17,Xe,12.1;13.4,2.0,0.1,44,,Table II,Sadeghi2001
+2p8,4p3,13.09,Xe,12.1;13.4,3.8,0.1,83,,Table II,Sadeghi2001
+2p1,4p10,13.48,H2,15.4,0.27,0.1,1.5,,Table II,Sadeghi2001
+2p5,4p6,13.27,H2,15.4,4.1,0.1,23,,Table II,Sadeghi2001
+2p6,4p5,13.17,H2,15.4,6.8,0.1,38,,Table II,Sadeghi2001
+2p8,4p3,13.09,H2,15.4,5.4,0.1,30,,Table II,Sadeghi2001
+2p1,4p10,13.48,D2,15.4,0.29,0.1,2.2,,Table II,Sadeghi2001
+2p5,4p6,13.27,D2,15.4,2.7,0.1,20,,Table II,Sadeghi2001
+2p6,4p5,13.17,D2,15.4,3.2,0.1,24,,Table II,Sadeghi2001
+2p8,4p3,13.09,D2,15.4,4.3,0.1,32,,Table II,Sadeghi2001
+2p1,4p10,13.48,N2,15.6,0.32,0.1,5.1,,Table II,Sadeghi2001
+2p5,4p6,13.27,N2,15.6,1.4,0.1,23,,Table II,Sadeghi2001
+2p6,4p5,13.17,N2,15.6,1.1,0.1,18,,Table II,Sadeghi2001
+2p8,4p3,13.09,N2,15.6,3.5,0.1,56,,Table II,Sadeghi2001
+2p1,4p10,13.48,CO,14.0,1.1,0.1,18,,Table II,Sadeghi2001
+2p5,4p6,13.27,CO,14.0,2.7,0.1,43,,Table II,Sadeghi2001
+2p6,4p5,13.17,CO,14.0,2.5,0.1,40,,Table II,Sadeghi2001
+2p8,4p3,13.09,CO,14.0,5.0,0.1,80,,Table II,Sadeghi2001
+2p6,4p5,13.17,Kr,14.0,0.75,0.3,16,Stern-Volmer fit of the full data set (footnote f; see the text of the paper on Kr + 2p6),Table II,Sadeghi2001
+2p1,4p10,13.48,O2,12.1,7.6,0.1,130,,Table III,Sadeghi2001
+2p5,4p6,13.27,O2,12.1,7.2,0.1,120,,Table III,Sadeghi2001
+2p6,4p5,13.17,O2,12.1,4.6,0.1,77,,Table III,Sadeghi2001
+2p8,4p3,13.09,O2,12.1,6.3,0.1,105,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,O2,12.1,2.2,0.1,37,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,NO,9.3,7.8,0.1,130,,Table III,Sadeghi2001
+2p5,4p6,13.27,NO,9.3,5.0,0.1,83,,Table III,Sadeghi2001
+2p6,4p5,13.17,NO,9.3,4.8,0.1,80,,Table III,Sadeghi2001
+2p8,4p3,13.09,NO,9.3,4.6,0.1,76,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,NO,9.3,2.4,0.1,39,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,CO2,13.8,6.2,0.1,110,,Table III,Sadeghi2001
+2p5,4p6,13.27,CO2,13.8,6.6,0.1,120,,Table III,Sadeghi2001
+2p6,4p5,13.17,CO2,13.8,6.1,0.1,110,,Table III,Sadeghi2001
+2p8,4p3,13.09,CO2,13.8,6.4,0.1,115,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,CO2,13.8,5.6,0.1,102,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,CF4,14.7,2.2,0.1,46,,Table III,Sadeghi2001
+2p5,4p6,13.27,CF4,14.7,1.6,0.1,33,,Table III,Sadeghi2001
+2p6,4p5,13.17,CF4,14.7,1.7,0.1,35,,Table III,Sadeghi2001
+2p8,4p3,13.09,CF4,14.7,1.7,0.1,35,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,CF4,14.7,0.3,0.1,5.6,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,CHF3,13.9,8.1,0.1,160,,Table III,Sadeghi2001
+2p5,4p6,13.27,CHF3,13.9,4.0,0.1,80,,Table III,Sadeghi2001
+2p6,4p5,13.17,CHF3,13.9,3.4,0.1,68,,Table III,Sadeghi2001
+2p8,4p3,13.09,CHF3,13.9,5.0,0.1,100,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,CHF3,13.9,2.6,0.1,39,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,CH4,12.5,9.3,0.1,124,,Table III,Sadeghi2001
+2p5,4p6,13.27,CH4,12.5,6.0,0.1,80,,Table III,Sadeghi2001
+2p6,4p5,13.17,CH4,12.5,3.4,0.1,45,,Table III,Sadeghi2001
+2p8,4p3,13.09,CH4,12.5,7.4,0.1,98,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,CH4,12.5,4.9,0.1,67,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,C2H2,11.4,5.3,0.1,83,,Table III,Sadeghi2001
+2p5,4p6,13.27,C2H2,11.4,6.0,0.1,94,,Table III,Sadeghi2001
+2p6,4p5,13.17,C2H2,11.4,5.7,0.1,89,,Table III,Sadeghi2001
+2p8,4p3,13.09,C2H2,11.4,5.0,0.1,78,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,C2H2,11.4,5.3,0.1,84,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,C2H4,10.5,8.6,0.1,139,,Table III,Sadeghi2001
+2p5,4p6,13.27,C2H4,10.5,5.4,0.1,87,,Table III,Sadeghi2001
+2p6,4p5,13.17,C2H4,10.5,4.1,0.1,66,,Table III,Sadeghi2001
+2p8,4p3,13.09,C2H4,10.5,5.8,0.1,94,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,C2H4,10.5,5.4,0.1,100,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,C2H6,11.5,11.0,0.1,180,,Table III,Sadeghi2001
+2p5,4p6,13.27,C2H6,11.5,9.9,0.1,165,,Table III,Sadeghi2001
+2p6,4p5,13.17,C2H6,11.5,4.8,0.1,80,,Table III,Sadeghi2001
+2p8,4p3,13.09,C2H6,11.5,9.2,0.1,150,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,C2H6,11.5,5.9,0.1,97,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,SF6,15.3,7.7,0.1,170,,Table III,Sadeghi2001
+2p5,4p6,13.27,SF6,15.3,4.5,0.1,100,,Table III,Sadeghi2001
+2p6,4p5,13.17,SF6,15.3,6.3,0.1,140,,Table III,Sadeghi2001
+2p8,4p3,13.09,SF6,15.3,5.9,0.1,130,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,SF6,15.3,5.7,0.1,125,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,NO2,9.8,5.4,0.3,98,,Table III,Sadeghi2001
+2p5,4p6,13.27,NO2,9.8,23,0.3,410,,Table III,Sadeghi2001
+2p6,4p5,13.17,NO2,9.8,21,0.3,390,,Table III,Sadeghi2001
+2p8,4p3,13.09,NO2,9.8,13,0.3,240,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,NO2,9.8,6.5,0.1,120,estimated by analogy with similar molecules (6-7 in the paper),Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,F2,15.7,13,0.1,227,,Table III,Sadeghi2001
+2p5,4p6,13.27,F2,15.7,8.6,0.1,150,,Table III,Sadeghi2001
+2p6,4p5,13.17,F2,15.7,14,0.1,245,,Table III,Sadeghi2001
+2p8,4p3,13.09,F2,15.7,13,0.1,227,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,F2,15.7,7.8,0.1,137,,Table III,Velazco1978 (quoted in Sadeghi2001)
+2p1,4p10,13.48,Cl2,11.5,14,0.1,280,,Table III,Sadeghi2001
+2p5,4p6,13.27,Cl2,11.5,17,0.2,340,,Table III,Sadeghi2001
+2p6,4p5,13.17,Cl2,11.5,14,0.2,280,,Table III,Sadeghi2001
+2p8,4p3,13.09,Cl2,11.5,14,0.2,280,,Table III,Sadeghi2001
+1s5/1s3 avg,4s1;4s3,11.55,Cl2,11.5,7.3,0.1,146,,Table III,Velazco1978 (quoted in Sadeghi2001)

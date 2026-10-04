@@ -1,0 +1,141 @@
+BOLSIG+ script file: bolsig_input.dat
+READCOLLISIONS
+Ar
+Biagi_ArN2.txt
+C1    Ar    Elastic                                             
+C2    Ar    Excitation    11.55 eV                              
+C3    Ar    Excitation    11.62 eV                              
+C4    Ar    Excitation    11.72 eV                              
+C5    Ar    Excitation    11.83 eV                              
+C6    Ar    Excitation    12.91 eV                              
+C7    Ar    Excitation    13.08 eV                              
+C8    Ar    Excitation    13.10 eV                              
+C9    Ar    Excitation    13.15 eV                              
+C10   Ar    Excitation    13.17 eV                              
+C11   Ar    Excitation    13.27 eV                              
+C12   Ar    Excitation    13.28 eV                              
+C13   Ar    Excitation    13.30 eV                              
+C14   Ar    Excitation    13.33 eV                              
+C15   Ar    Excitation    13.48 eV                              
+C16   Ar    Excitation    13.85 eV                              
+C17   Ar    Excitation    13.86 eV                              
+C18   Ar    Excitation    13.90 eV                              
+C19   Ar    Excitation    13.98 eV                              
+C20   Ar    Excitation    14.01 eV                              
+C21   Ar    Excitation    14.06 eV                              
+C22   Ar    Excitation    14.07 eV                              
+C23   Ar    Excitation    14.09 eV                              
+C24   Ar    Excitation    14.10 eV                              
+C25   Ar    Excitation    14.15 eV                              
+C26   Ar    Excitation    14.21 eV                              
+C27   Ar    Excitation    14.23 eV                              
+C28   Ar    Excitation    14.24 eV                              
+C29   Ar    Excitation    14.24 eV                              
+C30   Ar    Excitation    14.26 eV                              
+C31   Ar    Excitation    14.30 eV                              
+C32   Ar    Excitation    14.71 eV                              
+C33   Ar    Excitation    14.85 eV                              
+C34   Ar    Excitation    14.86 eV                              
+C35   Ar    Excitation    15.00 eV                              
+C36   Ar    Excitation    15.02 eV                              
+C37   Ar    Excitation    15.12 eV                              
+C38   Ar    Excitation    15.19 eV                              
+C39   Ar    Excitation    15.19 eV                              
+C40   Ar    Excitation    15.31 eV                              
+C41   Ar    Excitation    15.35 eV                              
+C42   Ar    Excitation    15.36 eV                              
+C43   Ar    Excitation    15.37 eV                              
+C44   Ar    Excitation    15.37 eV                              
+C45   Ar    Excitation    15.66 eV                              
+C46   Ar    Ionization    15.76 eV                              
+N2
+Biagi_ArN2.txt
+C47   N2    Elastic                                             
+C48   N2    Excitation    0.29 eV                               
+C49   N2    Excitation    0.57 eV                               
+C50   N2    Excitation    0.86 eV                               
+C51   N2    Excitation    1.13 eV                               
+C52   N2    Excitation    1.41 eV                               
+C53   N2    Excitation    1.68 eV                               
+C54   N2    Excitation    1.95 eV                               
+C55   N2    Excitation    2.21 eV                               
+C56   N2    Excitation    2.47 eV                               
+C57   N2    Excitation    2.73 eV                               
+C58   N2    Excitation    2.98 eV                               
+C59   N2    Excitation    3.23 eV                               
+C60   N2    Excitation    3.48 eV                               
+C61   N2    Excitation    3.72 eV                               
+C62   N2    Excitation    3.96 eV                               
+C63   N2    Excitation    6.72 eV                               
+C64   N2    Excitation    7.36 eV                               
+C65   N2    Excitation    7.74 eV                               
+C66   N2    Excitation    8.05 eV                               
+C67   N2    Excitation    8.22 eV                               
+C68   N2    Excitation    8.45 eV                               
+C69   N2    Excitation    8.73 eV                               
+C70   N2    Excitation    8.95 eV                               
+C71   N2    Excitation    8.97 eV                               
+C72   N2    Excitation    9.19 eV                               
+C73   N2    Excitation    9.56 eV                               
+C74   N2    Excitation    9.59 eV                               
+C75   N2    Excitation    9.66 eV                               
+C76   N2    Excitation    9.93 eV                               
+C77   N2    Excitation    10.17 eV                              
+C78   N2    Excitation    10.54 eV                              
+C79   N2    Excitation    11.19 eV                              
+C80   N2    Excitation    11.88 eV                              
+C81   N2    Excitation    12.29 eV                              
+C82   N2    Excitation    12.77 eV                              
+C83   N2    Excitation    12.95 eV                              
+C84   N2    Excitation    13.00 eV                              
+C85   N2    Excitation    13.09 eV                              
+C86   N2    Excitation    13.17 eV                              
+C87   N2    Excitation    13.37 eV                              
+C88   N2    Excitation    13.38 eV                              
+C89   N2    Excitation    13.56 eV                              
+C90   N2    Excitation    14.00 eV                              
+C91   N2    Excitation    14.20 eV                              
+C92   N2    Ionization    15.58 eV                              
+RUN
+R1    6.00 Td    0.245 eV                                       
+RUN
+R2    8.00 Td    0.363 eV                                       
+RUN
+R3    10.0 Td    0.482 eV                                       
+RUN
+R4    15.0 Td    0.686 eV                                       
+RUN
+R5    20.0 Td    0.788 eV                                       
+RUN
+R6    30.0 Td    0.877 eV                                       
+RUN
+R7    40.0 Td    0.917 eV                                       
+RUN
+R8    60.0 Td    0.976 eV                                       
+RUN
+R9    80.0 Td    1.09 eV                                        
+RUN
+R10   100. Td    1.28 eV                                        
+RUN
+R11   130. Td    1.66 eV                                        
+RUN
+R12   170. Td    2.15 eV                                        
+RUN
+R13   250. Td    2.82 eV                                        
+RUN
+R14   330. Td    3.24 eV                                        
+RUN
+R15   400. Td    3.67 eV                                        
+RUN
+R16   500. Td    4.14 eV                                        
+RUN
+R17   600. Td    4.79 eV                                        
+RUN
+R18   700. Td    5.31 eV                                        
+RUN
+R19   850. Td    6.27 eV                                        
+RUN
+R20   1000. Td    7.24 eV                                       
+SAVERESULTS
+bolsig_output.dat
+FINISHED

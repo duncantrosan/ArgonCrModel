@@ -10,6 +10,7 @@ The .tex is a fragment for \\input{}; it needs \\usepackage{booktabs,longtable}.
 """
 import os
 import re
+import csv
 import contextlib
 import io
 import numpy as np
@@ -24,6 +25,8 @@ K_MET = 6.4e-16     # m^3/s, metastable-metastable collisions (SolveLabelEquatio
 K_AR2 = 2.3e-21     # m^3/s, two-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
 K_AR3 = 1.4e-44     # m^6/s, three-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
 SIGMA_CAP = 1.0e-18 # m^2, cap on analytic cross sections (he.AddAnalyticExcitationCrossSections)
+QUENCH_2P_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                              "InputData", "Ar_2p_quenching_Sadeghi2001.csv")
 
 # Numbered in this order in the tables
 REFERENCES = {
@@ -69,6 +72,10 @@ REFERENCES = {
                  r'(MultiBolt, used for numerical EEDFs).',
     'Biagi': r'S.~F.~Biagi, Magboltz 8.97 cross sections (Biagi database on LXCat), '
              r'input to MultiBolt for the EEDF.',
+    'Sadeghi01': r'N.~Sadeghi, D.~W.~Setser, A.~Francis, U.~Czarnetzki and H.~F.~D\"obele, '
+                 r'J.~Chem.~Phys. \textbf{115}, 3144 (2001) (total quenching of Ar($2\mathrm{p}_1$, '
+                 r'$2\mathrm{p}_5$, $2\mathrm{p}_6$, $2\mathrm{p}_8$) by 22 gases at 300~K; all values in '
+                 r'\texttt{InputData/Ar\_2p\_quenching\_Sadeghi2001.csv}).',
 }
 REF_NUM = {key: i + 1 for i, key in enumerate(REFERENCES)}
 
@@ -338,10 +345,27 @@ def build(MD):
         + '.',
         'tab:ar_radiative'))
 
-    # ---- 7. references -----------------------------------------------------
+    # ---- 7. quenching of the 2p levels by N2 ---------------------------------
+    with open(QUENCH_2P_FILE, newline='', encoding='utf-8') as file:
+        q2p = [r for r in csv.DictReader(file) if r['quencher'] == 'N2' and r['Ar_state'].startswith('2p')]
+    q2p.sort(key=lambda r: by_energy[r['CR_label']])
+    rows = [[D[r['CR_label']], paschen(r['CR_label']), f"{MD[r['CR_label']]['energy_eV']:.4f}",
+             sci(float(r['10^10_kQ_cm3_s']) * 1e-16, 1), f"{100 * float(r['kQ_rel_uncertainty']):.0f}",
+             sci(float(r['10^-16_sigmaQ_cm2']) * 1e-20, 1)] for r in q2p]
+    tex.append(longtable(
+        'llrrrr', ['Level', 'Paschen', '$E$ (eV)', r'$k_Q$ (m$^3$\,s$^{-1}$)', r'$\Delta k_Q/k_Q$ (\%)',
+                   r'$\sigma_Q$ (m$^2$)'], rows,
+        r'Total quenching of $\mathrm{Ar}(2\mathrm{p})$ levels by N$_2$ at 300~K, '
+        r'$\mathrm{Ar}(2\mathrm{p})+\mathrm{N}_2\rightarrow$ products, measured by two-photon laser '
+        r'excitation from the ground state and time-resolved fluorescence (so only $J=0$ and 2 levels) '
+        rf'{cite("Sadeghi01")}; $\sigma_Q=k_Q/\langle v\rangle$, loss frequency $k_Q\,x_{{\mathrm{{N}}_2}}N_g$. '
+        r'Not yet in the CR model, which quenches only the $4\mathrm{s}$ levels by N$_2$.',
+        'tab:ar_n2_quenching'))
+
+    # ---- 8. references -----------------------------------------------------
     rows = [[f'[{n}]', text] for text, n in ((REFERENCES[k], REF_NUM[k]) for k in REFERENCES)]
     tex.append(longtable(r'lp{0.9\linewidth}', ['', 'Source'], rows,
-                         'Data sources for Tables~\\ref{tab:ar_levels}--\\ref{tab:ar_radiative}.',
+                         'Data sources for Tables~\\ref{tab:ar_levels}--\\ref{tab:ar_n2_quenching}.',
                          'tab:ar_sources'))
     return '\n'.join(tex), dict(levels=len(levels), rdw=len(rdw), allowed=len(allowed),
                                 forbidden=n_forb, ionization=n_ion, radiative=len(lines))

@@ -1,0 +1,540 @@
+/ BOLSIG+ script written by HelperFunctions.BolsigScript from bolsig_template.txt
+NOSCREEN
+
+READCOLLISIONS
+Biagi_Ar.txt  / File
+Ar  / Species
+1  / Extrapolate: 0= No 1= Yes
+
+CONDITIONS
+6  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+8  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+10  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+15  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+20  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+30  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+40  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+60  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+80  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+100  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+130  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+170  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+250  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+330  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+400  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+500  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+600  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+700  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+850  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+CONDITIONS
+1000  / Electric field / N (Td)
+4.723857117e-13  / Angular field frequency / N (m3/s)
+0  / Cosine of E-B field angle
+300  / Gas temperature (K)
+300  / Excitation temperature (K)
+0  / Transition energy (eV)
+0  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+1e+18  / Plasma density (1/m3) (Coulomb logarithm)
+1  / Ion charge parameter
+1  / Ion/neutral mass ratio
+1  / Coulomb collision model
+0  / Energy sharing
+1  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+0  / Maxwellian mean energy (eV)
+500  / # of grid points
+1  / Grid type
+30  / Maximum energy (eV)
+1e-25  / Precision
+0.0001  / Convergence
+20000  / Maximum # of iterations
+1.000000e+00  / Gas composition fractions (one per species, same order)
+0  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+
+SAVERESULTS
+bolsig_output.dat  / File
+1  / Format: 1=Run by run
+1  / Conditions: 0=No 1=Yes
+1  / Transport coefficients: 0=No 1=Yes
+1  / Rate coefficients: 0=No 1=Yes
+0  / Reverse rate coefficients: 0=No 1=Yes
+0  / Energy loss coefficients: 0=No 1=Yes
+1  / Distribution function: 0=No 1=Yes
+0  / Skip failed runs: 0=No 1=Yes
+
+END

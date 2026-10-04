@@ -1,0 +1,42 @@
+{
+ "created": "2026-10-04T16:03:28",
+ "kind": "1D",
+ "xsec_file": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\Cross-Sections\\Biagi_Ar.txt",
+ "species": [
+  "Ar"
+ ],
+ "fractions": [
+  1.0
+ ],
+ "EN_Td": [
+  6.0,
+  8.0,
+  10.0,
+  15.0,
+  20.0,
+  30.0,
+  40.0,
+  60.0,
+  80.0,
+  100.0,
+  130.0,
+  170.0,
+  250.0,
+  330.0,
+  400.0,
+  500.0,
+  600.0,
+  700.0,
+  850.0,
+  1000.0
+ ],
+ "conditions": {
+  "Tg": 300.0,
+  "n_grid": 500,
+  "precision": 1e-25,
+  "max_iter": 20000,
+  "omega_N": 4.723857116842545e-13
+ },
+ "bolsig_exe": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\bolsigminus.exe",
+ "template": "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\Bolsig\\bolsig_template.txt"
+}
