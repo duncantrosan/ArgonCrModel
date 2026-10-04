@@ -258,6 +258,492 @@ def RunMultiBolt(XsecFiles, Name, EN_Td, species='Ar', P_Torr=1, T_K=300,
     return ImportMultiBoltEEDFs(RunFolder, verbose=verbose)
 
 
+#%% BOLSIG+ (two-term Boltzmann solver, command-line version bolsigminus.exe)
+# A BOLSIG+ call runs a script built from Bolsig/bolsig_template.txt: the cross
+# sections and species, one CONDITIONS + RUN block per run, then SAVERESULTS.
+# In version 11/2019 the first CONDITIONS block of a script fixes the mole
+# fractions, so each gas composition is a call of its own. Results are read back
+# into the same EEDF dicts as MultiBolt's; BOLSIG+'s 'EEDF (eV-3/2)' column is
+# f0 = EEPF with int sqrt(E) f0 dE = 1.
+# Superelastic collisions: write the excitation 'Ar <-> Ar(1S5)' with the
+# statistical-weight ratio on its energy line (MakeSuperelasticXsecFile) and list
+# 'Ar(1S5)' as a species; its mole fraction is then the population that
+# de-excites electrons. Electron-electron collisions: ionization_degree = Ne/N > 0.
+REPO_FOLDER = Path(__file__).resolve().parent.parent
+BOLSIG_EXE = REPO_FOLDER / 'Bolsig' / 'bolsigminus.exe'
+BOLSIG_TEMPLATE = REPO_FOLDER / 'Bolsig' / 'bolsig_template.txt'
+BOLSIG_XSEC_FOLDER = REPO_FOLDER / 'Bolsig' / 'Cross-Sections'
+BOLSIG_FOLDER = REPO_FOLDER / 'InputData' / 'Bolsig'
+
+# Values for the $fields of the template (any can be overridden per call)
+BOLSIG_DEFAULTS = {
+    'extrapolate': 1,             # extrapolate cross sections past their last point
+    'EN_Td': 10.0,                # E/N [Td]
+    'omega_N': 0.0,               # angular field frequency / N [m^3/s] (0 = DC)
+    'cos_EB': 0.0,
+    'Tg': 300.0,                  # gas temperature [K]
+    'Texc': 300.0,                # BOLSIG+'s automatic superelastics (Boltzmann excited
+    'E_transition': 0.0,          #   states at Texc) - off; see BuildBolsigLibrary instead
+    'ionization_degree': 0.0,     # Ne/N; > 0 switches on e-e (and e-ion) collisions
+    'plasma_density': 1e18,       # Ne [m^-3]; only enters the Coulomb logarithm
+    'ion_charge': 1.0,
+    'ion_mass_ratio': 1.0,
+    'coulomb_model': 1,
+    'energy_sharing': 0,
+    'growth_model': 1,            # 1 = temporal growth (as MultiBolt's HD model)
+    'maxwell_mean_energy': 0.0,
+    'n_grid': 500,                # energy grid points (tail within ~3 % of 1000 points)
+    'grid_type': 1,
+    'E_max': 30.0,                # first guess; BOLSIG+ moves it to where f ~ precision
+    'precision': 1e-25,           # also sets how far down the tail is computed
+    'convergence': 1e-4,
+    'max_iter': 1000,
+    'normalize': 0,               # 0: mole fractions as given
+    'save_rates': 1,              # BOLSIG+ rate coefficients of its own cross sections
+}
+
+# Biagi Ar set (Paschen names) -> CR-model 4s labels and g(excited)/g(ground)
+AR_PASCHEN_4S = {'Ar(1S5)': ('4s1', 5), 'Ar(1S4)': ('4s2', 3),
+                 'Ar(1S3)': ('4s3', 1), 'Ar(1S2)': ('4s4', 3)}
+
+
+def _BolsigValue(v):
+    if isinstance(v, (bool, np.bool_, int, np.integer)):
+        return str(int(v))
+    if isinstance(v, (float, np.floating)):
+        return f'{float(v):.10g}'
+    return str(v)
+
+
+def _BolsigSections(template=BOLSIG_TEMPLATE):
+    """Template text split at its '@@' lines -> {'HEADER', 'RUN', 'FOOTER'}."""
+    sections, current = {}, None
+    for line in Path(template).read_text().splitlines():
+        if line.startswith('@@'):
+            current = line[2:].strip().upper()
+            sections[current] = []
+        elif current is not None:
+            sections[current].append(line)
+    missing = {'HEADER', 'RUN', 'FOOTER'} - set(sections)
+    if missing:
+        raise ValueError(f'{template}: missing section(s) {sorted(missing)}')
+    return {k: '\n'.join(v) for k, v in sections.items()}
+
+
+def BolsigScript(xsec_ref, species, fractions, runs, output_file='bolsig_output.dat',
+                 template=BOLSIG_TEMPLATE, **settings):
+    """
+    Text of a BOLSIG+ script: the template's header once, its RUN section for each
+    entry of runs (dicts of template fields, e.g. {'EN_Td': 3.5,
+    'ionization_degree': 1e-6}), then the footer. settings override
+    BOLSIG_DEFAULTS for every run; runs override settings.
+    """
+    from string import Template
+    sec = _BolsigSections(template)
+    species = [species] if isinstance(species, str) else list(species)
+    if len(fractions) != len(species):
+        raise ValueError(f'{len(species)} species but {len(fractions)} mole fractions')
+    base = {**BOLSIG_DEFAULTS, **settings}
+
+    def fill(text, extra):
+        return Template(text).substitute({k: _BolsigValue(v) for k, v in {**base, **extra}.items()})
+
+    parts = [f'/ BOLSIG+ script written by HelperFunctions.BolsigScript from {Path(template).name}',
+             fill(sec['HEADER'], {'xsec_file': xsec_ref, 'species': ' '.join(species)})]
+    frac_text = ' '.join(f'{float(x):.6e}' for x in fractions)
+    for run in runs:
+        parts.append(fill(sec['RUN'], {**run, 'fractions': frac_text}))
+    parts.append(fill(sec['FOOTER'], {'output_file': output_file}))
+    return '\n'.join(parts) + '\n'
+
+
+def _FortranFloat(text):
+    """float() that also reads Fortran's exponent-only form, e.g. '0.1234-100'."""
+    try:
+        return float(text)
+    except ValueError:
+        m = re.fullmatch(r'([-+]?\d*\.?\d+)([-+]\d+)', text.strip())
+        if m:
+            return float(f'{m.group(1)}e{m.group(2)}')
+        raise
+
+
+def ReadBolsigOutput(path):
+    """
+    Runs of a BOLSIG+ results file saved with Format 1 (run by run), as a list of
+    dicts: 'conditions' {label: value}, 'fractions' {species: mole fraction},
+    'results' {label: value} (mean energy, mobility, ...), 'rates' (list of
+    {'id', 'species', 'process', 'threshold_eV', 'rate_m3s'}, if saved), 'E' [eV],
+    'EEPF' [eV^-3/2], 'anisotropy', and 'text' (the run's block of the file).
+    The listing of the collision data at the top of the file is skipped.
+    """
+    lines = Path(path).read_text(errors='replace').splitlines()
+    runs, i, n = [], 0, len(lines)
+    while i < n:
+        if not (re.fullmatch(r'R\d+', lines[i].strip()) and i + 1 < n
+                and lines[i + 1].startswith('-----')):
+            i += 1
+            continue
+        start, run = i, {'name': lines[i].strip(), 'conditions': {}, 'fractions': {},
+                         'results': {}, 'rates': []}
+        i, block = i + 2, 'conditions'
+        while i < n:
+            s = lines[i].strip()
+            if lines[i].startswith('-----'):
+                block = 'results' if block == 'conditions' else 'after'
+            elif s.startswith('Rate coefficients'):
+                block = 'rates'
+            elif s.startswith('Energy (eV) EEDF'):
+                i += 1
+                rows = []
+                while i < n and lines[i].strip():
+                    try:
+                        rows.append([_FortranFloat(v) for v in lines[i].split()[:3]])
+                    except ValueError:
+                        break
+                    i += 1
+                rows = np.array(rows, dtype=float)
+                run['E'], run['EEPF'] = rows[:, 0], rows[:, 1]
+                run['anisotropy'] = rows[:, 2] if rows.shape[1] > 2 else np.full(len(rows), np.nan)
+                break
+            elif s and block in ('conditions', 'results'):
+                label, value = s.rsplit(None, 1)
+                label, value = label.strip(), _FortranFloat(value)
+                if block == 'conditions' and label.startswith('Mole fraction '):
+                    run['fractions'][label[len('Mole fraction '):].strip()] = value
+                else:
+                    run[block][label] = value
+            elif s and block == 'rates':
+                p = s.split()
+                run['rates'].append({'id': p[0], 'species': p[1], 'process': p[2],
+                                     'threshold_eV': float(p[p.index('eV') - 1]) if 'eV' in p else None,
+                                     'rate_m3s': _FortranFloat(p[-1])})
+            i += 1
+        if 'E' not in run:
+            raise ValueError(f'{path}: run {run["name"]} has no distribution function '
+                             '(save with Distribution function = 1)')
+        run['text'] = '\n'.join(lines[start:i])
+        runs.append(run)
+    return runs
+
+
+def BolsigEEDF(run, E=None, dE=0.02, source=None):
+    """EEDF dict (TabulatedEEDF) of one run read by ReadBolsigOutput."""
+    EN = run['conditions']['Electric field / N (Td)']
+    label = f'BOLSIG+ E/N = {EN:g} Td'
+    deg = run['conditions'].get('Ionization degree', 0.0)
+    if deg > 0:
+        label += f', ne/N = {deg:.1e}'
+    eedf = TabulatedEEDF(run['E'], run['EEPF'], form='EEPF', E=E, dE=dE, label=label)
+    eedf.update(sweep={'name': 'E_N', 'unit': 'Td', 'value': EN},
+                conditions=run['conditions'], fractions=run['fractions'],
+                results=run['results'], rates=run['rates'], source=source,
+                converged=BolsigConverged(run))
+    return eedf
+
+
+def BolsigConverged(run):
+    """False when BOLSIG+ stopped at its iteration limit (# of iterations > maximum)."""
+    n_it = run['results'].get('# of iterations', 0.0)
+    return n_it <= run['conditions'].get('Maximum # of iterations', np.inf)
+
+
+def RunBolsigScript(XsecFile, species, fractions, runs, workdir, xsec_ref=None,
+                    exe=BOLSIG_EXE, template=BOLSIG_TEMPLATE, timeout=None, **settings):
+    """
+    One BOLSIG+ call in workdir (one gas composition, any number of runs): writes
+    bolsig_input.dat, runs bolsigminus and returns the parsed runs
+    (ReadBolsigOutput of workdir/bolsig_output.dat).
+
+    xsec_ref : name of the cross-section file in the script. Default: XsecFile is
+               copied into workdir and named without a path - BOLSIG+ reads
+               everything after '/' as a comment, so plain names are safest.
+    settings : template fields for every run (see BOLSIG_DEFAULTS)
+    """
+    import shutil
+    import subprocess
+    exe = Path(exe)
+    if not exe.is_file():
+        raise FileNotFoundError(f'BOLSIG+ binary not found: {exe} (set he.BOLSIG_EXE)')
+    workdir = Path(workdir)
+    workdir.mkdir(parents=True, exist_ok=True)
+    if xsec_ref is None:
+        src = Path(XsecFile).resolve()
+        if not src.is_file():
+            raise FileNotFoundError(f'Cross-section file not found: {src}')
+        if (workdir / src.name).resolve() != src:
+            shutil.copyfile(src, workdir / src.name)
+        xsec_ref = src.name
+    script = BolsigScript(xsec_ref, species, fractions, runs, 'bolsig_output.dat', template, **settings)
+    (workdir / 'bolsig_input.dat').write_text(script)
+    for old in ('bolsig_output.dat', 'bolsiglog.txt'):
+        (workdir / old).unlink(missing_ok=True)
+    result = subprocess.run([str(exe), 'bolsig_input.dat'], cwd=workdir, capture_output=True,
+                            text=True, errors='replace', timeout=timeout)
+    logfile = workdir / 'bolsiglog.txt'
+    log = logfile.read_text(errors='replace') if logfile.is_file() else result.stdout + result.stderr
+    if 'ABORT' in log or 'FINISHED' not in log or not (workdir / 'bolsig_output.dat').is_file():
+        tail = '\n'.join(log.strip().splitlines()[-12:])
+        raise RuntimeError(f'BOLSIG+ failed in {workdir} (exit code {result.returncode}):\n{tail}')
+    out = ReadBolsigOutput(workdir / 'bolsig_output.dat')
+    if len(out) != len(runs):
+        raise RuntimeError(f'BOLSIG+ returned {len(out)} of {len(runs)} runs in {workdir}')
+    return out
+
+
+def MakeSuperelasticXsecFile(src, dst, states):
+    """
+    Copy of an LXCat cross-section file in which the excitations to the given
+    states are written 'A <-> B', with g_B/g_A on the energy line. BOLSIG+ then
+    adds the de-excitation (superelastic) process with B as target, weighted by
+    B's mole fraction. Excitations to other states are copied unchanged.
+
+    states : {excited species: g_excited / g_ground}, e.g. {'Ar(1S5)': 5, ...};
+             for the argon 4s levels: {k: g for k, (_, g) in AR_PASCHEN_4S.items()}
+    """
+    lines = Path(src).read_text(errors='replace').splitlines()
+    out, done, i = [], set(), 0
+    while i < len(lines):
+        out.append(lines[i])
+        if lines[i].strip() == 'EXCITATION' and i + 2 < len(lines):
+            m = re.fullmatch(r'\s*(\S+)\s*<?->\s*(\S+)\s*', lines[i + 1])
+            if m and m.group(2) in states:
+                out.append(f'{m.group(1)} <-> {m.group(2)}')
+                out.append(f'{lines[i + 2].split()[0]}  {states[m.group(2)]:g}')
+                done.add(m.group(2))
+                i += 3
+                continue
+        i += 1
+    missing = set(states) - done
+    if missing:
+        raise ValueError(f'{src}: no excitation to {sorted(missing)}')
+    Path(dst).parent.mkdir(parents=True, exist_ok=True)
+    Path(dst).write_text('\n'.join(out) + '\n')
+    return Path(dst)
+
+
+def _WriteBolsigLibrary(RunFolder, meta, runs):
+    """library.json + bolsig_output.dat (the runs' blocks) of a library folder."""
+    from datetime import datetime
+    RunFolder = Path(RunFolder)
+    meta = {'created': datetime.now().isoformat(timespec='seconds'), **meta}
+    (RunFolder / 'library.json').write_text(json.dumps(meta, indent=1))
+    with open(RunFolder / 'bolsig_output.dat', 'w') as file:
+        file.write('BOLSIG+ runs collected by HelperFunctions (see library.json)\n\n')
+        for run in runs:
+            file.write(run['text'] + '\n\n')
+
+
+def RunBolsig(XsecFile, Name, EN_Td, species='Ar', fractions=None, overwrite=False,
+              ExportFolder=BOLSIG_FOLDER, exe=BOLSIG_EXE, template=BOLSIG_TEMPLATE,
+              verbose=True, **conditions):
+    """
+    BOLSIG+ E/N sweep at one gas composition, like RunMultiBolt: writes the run
+    folder ExportFolder/Name and returns its EEDFs (ImportBolsigEEDFs).
+
+    species, fractions : 'Ar', or lists named as in the cross-section file;
+                         default fractions 1 for the first species, 0 for the rest
+    conditions : any BOLSIG_DEFAULTS field, one number for all runs or one value
+                 per E/N, e.g. ionization_degree=1e-6, plasma_density=1e17, n_grid=1000
+    The folder holds the cross-section file, BOLSIG+'s script, log and raw results
+    (in work/), library.json, and bolsig_output.dat with the runs.
+    """
+    RunFolder = Path(ExportFolder).resolve() / Name
+    if RunFolder.exists() and not overwrite:
+        raise FileExistsError(f'{RunFolder} already exists - pick another Name or pass overwrite=True')
+    species = [species] if isinstance(species, str) else list(species)
+    fractions = [1.0] + [0.0] * (len(species) - 1) if fractions is None else [float(x) for x in fractions]
+    EN_Td = [float(x) for x in np.atleast_1d(EN_Td)]
+    per_run = {k: list(np.asarray(v, float)) for k, v in conditions.items() if np.ndim(v) > 0}
+    settings = {k: v for k, v in conditions.items() if np.ndim(v) == 0}
+    for k, v in per_run.items():
+        if len(v) != len(EN_Td):
+            raise ValueError(f'{k}: {len(v)} values for {len(EN_Td)} E/N points')
+    runs = [{'EN_Td': en, **{k: v[i] for k, v in per_run.items()}} for i, en in enumerate(EN_Td)]
+    if verbose:
+        print(f'Running BOLSIG+: {len(runs)} E/N points -> {RunFolder}')
+    out = RunBolsigScript(XsecFile, species, fractions, runs, RunFolder / 'work', exe=exe,
+                          template=template, **settings)
+    meta = {'kind': '1D', 'xsec_file': str(Path(XsecFile).resolve()), 'species': species,
+            'fractions': fractions, 'EN_Td': EN_Td, 'conditions': {**settings, **per_run},
+            'bolsig_exe': str(exe), 'template': str(template)}
+    _WriteBolsigLibrary(RunFolder, meta, out)
+    return ImportBolsigEEDFs(RunFolder, verbose=verbose)
+
+
+def IsBolsigLibrary(folder):
+    """True for a folder written by RunBolsig or BuildBolsigLibrary."""
+    folder = Path(folder)
+    return (folder / 'library.json').is_file() and (folder / 'bolsig_output.dat').is_file()
+
+
+def ImportBolsigLibrary(RunFolder, E=None, dE=0.02, verbose=True):
+    """
+    EEDFs of a BOLSIG+ library folder (RunBolsig or BuildBolsigLibrary), as a dict:
+      'kind'  : '1D' (E/N sweep), or '2D' (E/N x Ne: the EEDF depends on Ne through
+                electron-electron collisions and/or the superelastic populations)
+      'EN_Td' : E/N axis [Td]
+      'Ne'    : Ne axis [m^-3] (None for 1D)
+      'EEDFs' : list along E/N (1D), or rows EEDFs[i][j] at (EN_Td[i], Ne[j]) (2D)
+      'meta'  : library.json
+    E, dE : integration grid, see TabulatedEEDF.
+    """
+    folder = Path(RunFolder)
+    meta = json.loads((folder / 'library.json').read_text())
+    src = str(folder / 'bolsig_output.dat')
+    runs = ReadBolsigOutput(src)
+    EN = np.asarray(meta['EN_Td'], float)
+    if meta['kind'] == '1D':
+        if len(runs) != len(EN):
+            raise ValueError(f'{folder}: {len(runs)} runs for {len(EN)} E/N values')
+        EEDFs, Ne = [BolsigEEDF(r, E=E, dE=dE, source=src) for r in runs], None
+    else:
+        Ne = np.asarray(meta['Ne'], float)
+        EEDFs = [[None] * len(Ne) for _ in EN]
+        for r in runs:
+            en = r['conditions']['Electric field / N (Td)']
+            ne = r['conditions']['Plasma density (1/m3)']
+            i, j = int(np.argmin(np.abs(np.log(EN / en)))), int(np.argmin(np.abs(np.log(Ne / ne))))
+            if not (np.isclose(EN[i], en, rtol=2e-3) and np.isclose(Ne[j], ne, rtol=2e-3)):
+                raise ValueError(f'{folder}: run at E/N = {en:g} Td, Ne = {ne:.3e} is not on the grid')
+            EEDFs[i][j] = BolsigEEDF(r, E=E, dE=dE, source=src)
+        missing = [(i, j) for i in range(len(EN)) for j in range(len(Ne)) if EEDFs[i][j] is None]
+        if missing:
+            raise ValueError(f'{folder}: no run for {len(missing)} grid points, e.g. {missing[:3]}')
+    if verbose:
+        n = len(EN) if Ne is None else len(EN) * len(Ne)
+        print(f"Imported {n} BOLSIG+ EEDFs ({meta['kind']}) from {folder}")
+    return {'kind': meta['kind'], 'EN_Td': EN, 'Ne': Ne, 'EEDFs': EEDFs, 'meta': meta}
+
+
+def ImportBolsigEEDFs(RunFolder, E=None, dE=0.02, verbose=True):
+    """EEDF dicts of a 1D BOLSIG+ library (RunBolsig) in E/N order, like ImportMultiBoltEEDFs."""
+    lib = ImportBolsigLibrary(RunFolder, E=E, dE=dE, verbose=False)
+    if lib['kind'] != '1D':
+        raise ValueError(f'{RunFolder} is an E/N x Ne library - use ImportBolsigLibrary')
+    if verbose:
+        print(f"Imported {len(lib['EEDFs'])} BOLSIG+ EEDFs from {RunFolder}")
+        for eedf in lib['EEDFs']:
+            print(f"  {eedf['label']:<34} <E> = {1.5*eedf['Te_eff']:7.3f} eV   "
+                  f"Te_eff = {eedf['Te_eff']:6.3f} eV   E_max = {eedf['E'][-1]:6.1f} eV")
+    return lib['EEDFs']
+
+
+def BuildBolsigLibrary(XsecFile, Name, EN_Td, Ne, P_Torr=1.0, Tg=300.0, species='Ar',
+                       fractions=None, electron_electron=True, superelastic=None, cr_solve=None,
+                       n_iter=10, tol=0.03, n_workers=12, overwrite=False,
+                       ExportFolder=BOLSIG_FOLDER, exe=BOLSIG_EXE, template=BOLSIG_TEMPLATE,
+                       verbose=True, **conditions):
+    """
+    BOLSIG+ EEDFs on an (E/N, Ne) grid, for physics that makes the EEDF depend on Ne:
+
+    species, fractions : background gas, 'Ar', or lists named as in the cross-section
+                        file, e.g. ['Ar', 'N2'], [0.9, 0.1]; default fraction 1 for
+                        the first species, 0 for the rest (as RunBolsig)
+    electron_electron: e-e collisions at ionization degree Ne/N (N from P_Torr, Tg)
+    superelastic      : {excited species: CR label}, e.g. {k: lbl for k, (lbl, g) in
+                        AR_PASCHEN_4S.items()}. Their mole fractions are the CR-model
+                        densities / N at the same (E/N, Ne), iterated to
+                        self-consistency: BOLSIG+ -> cr_solve -> fractions -> BOLSIG+ ...
+                        until each fraction changes by less than tol (relative) or
+                        n_iter passes. XsecFile must write these excitations with
+                        '<->' (MakeSuperelasticXsecFile).
+    cr_solve          : function (eedf, Ne) -> {CR label: density [m^-3]}
+    conditions        : template fields for every run (see BOLSIG_DEFAULTS)
+
+    The BOLSIG+ calls run n_workers at a time, each in its own folder (BOLSIG+
+    writes its log to the working directory). Without superelastics one call per
+    Ne row, with them one call per point (each point has its own composition).
+    Writes ExportFolder/Name: library.json (grid, settings, final mole fractions,
+    convergence history) and bolsig_output.dat; read with ImportBolsigLibrary.
+    """
+    import shutil
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+    RunFolder = Path(ExportFolder).resolve() / Name
+    if RunFolder.exists() and not overwrite:
+        raise FileExistsError(f'{RunFolder} already exists - pick another Name or pass overwrite=True')
+    se = dict(superelastic or {})
+    if se and cr_solve is None:
+        raise ValueError('superelastic collisions need cr_solve (CR-model densities)')
+    EN, Ne = np.asarray(EN_Td, float), np.asarray(Ne, float)
+    N = Torr2Volume(P_Torr, Tg)
+    species = [species] if isinstance(species, str) else list(species)
+    fractions = [1.0] + [0.0] * (len(species) - 1) if fractions is None else [float(x) for x in fractions]
+    names = species + list(se)
+    src = Path(XsecFile).resolve()
+    RunFolder.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, RunFolder / src.name)
+    work = RunFolder / 'work'
+    xsec_ref = '..\\..\\' + src.name           # from work/job_<k>/ (no '/': BOLSIG+ comment)
+
+    def point(i, j):
+        return {'EN_Td': EN[i], 'Tg': Tg, 'plasma_density': Ne[j],
+                'ionization_degree': Ne[j] / N if electron_electron else 0.0}
+
+    frac = np.zeros((len(EN), len(Ne), len(se)))
+    change = np.full((len(EN), len(Ne)), np.inf if se else 0.0)
+    results, history = {}, []
+    todo = [(i, j) for i in range(len(EN)) for j in range(len(Ne))]
+    t0 = time.time()
+    for it in range(n_iter if se else 1):
+        if se:                     # one composition per point -> one call per point
+            jobs = [([(i, j)], [*fractions, *frac[i, j]]) for i, j in todo]
+        else:                      # same composition everywhere -> one call per Ne row
+            jobs = [([(i, j) for i, jj in todo if jj == j], fractions)
+                    for j in sorted({j for _, j in todo})]
+
+        def call(k):
+            pts, fr = jobs[k]
+            return RunBolsigScript(None, names, fr, [point(i, j) for i, j in pts],
+                                   work / f'job_{k:04d}', xsec_ref=xsec_ref, exe=exe,
+                                   template=template, **conditions)
+        with ThreadPoolExecutor(max_workers=n_workers) as pool:
+            outs = list(pool.map(call, range(len(jobs))))
+        for (pts, _), out in zip(jobs, outs):
+            results.update(zip(pts, out))
+        t_bolsig = time.time() - t0
+        if not se:
+            break
+        for i, j in todo:          # populations from the CR model with the new EEDFs
+            dens = cr_solve(BolsigEEDF(results[i, j]), Ne[j])
+            target = np.array([dens[lbl] / N for lbl in se.values()])
+            change[i, j] = np.max(np.abs(target - frac[i, j]) / np.maximum(target, 1e-300))
+            if change[i, j] > tol:   # from the 3rd pass on, damp (geometric mean): stops 2-cycles
+                frac[i, j] = (target if it < 2 or np.any(frac[i, j] <= 0)
+                              else np.sqrt(frac[i, j] * np.maximum(target, 1e-300)))
+        todo = [(i, j) for i, j in todo if change[i, j] > tol]
+        history.append({'iteration': it + 1, 'max_change': float(np.max(change)),
+                        'not_converged': len(todo), 'seconds': round(time.time() - t0, 1)})
+        if verbose:
+            print(f'  {Name}: pass {it + 1}, BOLSIG+ done at {t_bolsig:.0f} s, max change '
+                  f'{np.max(change):.2e}, {len(todo)} points not converged ({time.time() - t0:.0f} s)')
+        if not todo:
+            break
+    if se and todo:
+        i, j = np.unravel_index(np.argmax(change), change.shape)
+        print(f'WARNING: {Name}: {len(todo)} points not self-consistent within tol = {tol} '
+              f'after {n_iter} passes (worst change {change[i, j]:.2e} at E/N = {EN[i]:g} Td, '
+              f'Ne = {Ne[j]:.2e} m^-3)')
+    unconverged = [[float(EN[i]), float(Ne[j])] for (i, j), r in sorted(results.items())
+                   if not BolsigConverged(r)]
+    if unconverged:
+        print(f'WARNING: {Name}: BOLSIG+ hit its iteration limit at {len(unconverged)} points '
+              f'(E/N [Td], Ne [m^-3]), e.g. {unconverged[:4]}')
+    meta = {'kind': '2D', 'xsec_file': str(src), 'species': names,
+            'background_fractions': fractions, 'bolsig_not_converged': unconverged,
+            'electron_electron': bool(electron_electron),
+            'superelastic': {k: v for k, v in se.items()}, 'P_Torr': P_Torr, 'Tg': Tg,
+            'N_m3': N, 'EN_Td': EN.tolist(), 'Ne': Ne.tolist(), 'conditions': conditions,
+            'tol': tol, 'history': history, 'fractions': frac.tolist(),
+            'max_change': change.tolist(), 'bolsig_exe': str(exe), 'template': str(template)}
+    _WriteBolsigLibrary(RunFolder, meta, [results[i, j] for i in range(len(EN)) for j in range(len(Ne))])
+    shutil.rmtree(work, ignore_errors=True)
+    if verbose:
+        print(f'  {Name}: {len(EN)} x {len(Ne)} EEDFs written to {RunFolder} ({time.time() - t0:.0f} s)')
+    return ImportBolsigLibrary(RunFolder, verbose=False)
+
+
 #%% Helpers for Radiation Trapping solve   
     
 ############
@@ -611,14 +1097,62 @@ def ImportRadiationTrappingMatrix():
 def AddDiffusionLoss(ModelData,P,T,R):
     T_s3 , T_s5 = FindDiffusionTime(P, T, R)
     for MD in ModelData.values() :
-        if MD['label'] == '4s1': # 4s1 is my notation and corresponds to 1s3 in Paschen
-            MD['DiffusionLoss'] = T_s3
-        if MD['label'] == '4s3': # 4s3 is 1s5 in Paschen Notation
+        if MD['label'] == '4s1': # 4s1 (J=2) is 1s5 in Paschen notation
             MD['DiffusionLoss'] = T_s5
+        if MD['label'] == '4s3': # 4s3 (J=0) is 1s3 in Paschen notation
+            MD['DiffusionLoss'] = T_s3
     return ModelData
-    
 
-#%% Parsing data an helper lookups 
+
+# LS terms of the Ar(4s) levels in the quenching data -> CR-model labels
+AR_1S_STATES = {'3P2': '4s1', '3P1': '4s2', '3P0': '4s3', '1P1': '4s4'}
+
+def ImportArQuenchingData(quencher='N2', choose='median', verbose=True):
+    """
+    Rate coefficients for quenching of the four Ar(4s) levels by a molecular gas,
+    from InputData/Ar_1s_quenching_data.csv (several measurements per level):
+        two-body    Ar(4s) + Q     -> products   kQ  [m^3/s]
+        three-body  Ar(4s) + Q + M -> products   kQM [m^6/s], 0 where not measured
+    quencher : 'N2', 'H2' or 'O2', as in the file
+    choose   : 'median' of all measurements of a level, or a reference as written
+               in the file (e.g. 'Velazco1978'); a level that reference does not
+               cover falls back to the median
+    Returns {CR label: {'kQ', 'kQM', 'source_kQ', 'source_kQM'}}.
+    """
+    import csv
+    path = Path(__file__).resolve().parent.parent / 'InputData' / 'Ar_1s_quenching_data.csv'
+    with open(path, newline='', encoding='utf-8-sig') as file:
+        rows = [r for r in csv.DictReader(file) if r['quencher'].strip() == quencher]
+    if not rows:
+        raise ValueError(f'{path.name}: no data for quencher {quencher!r}')
+
+    def pick(state_rows, column, scale):
+        have = [r for r in state_rows if r[column].strip()]
+        ref = [r for r in have if choose in r['reference'].split(';')]
+        use = ref if (choose != 'median' and ref) else have
+        if not use:
+            return 0.0, 'not measured'
+        values = [float(r[column]) * scale for r in use]
+        refs = sorted({r['reference'] for r in use})
+        source = refs[0] if len(use) == 1 else f'median of {len(use)} ({", ".join(refs)})'
+        return float(np.median(values)), source
+
+    out = {}
+    for state, label in AR_1S_STATES.items():
+        state_rows = [r for r in rows if r['Ar_1s_state'].strip() == state]
+        kQ, src_kQ = pick(state_rows, '10^10_kQ_cm3_s', 1e-10 * 1e-6)       # cm^3/s -> m^3/s
+        kQM, src_kQM = pick(state_rows, '10^30_kQM_cm6_s', 1e-30 * 1e-12)   # cm^6/s -> m^6/s
+        out[label] = {'kQ': kQ, 'kQM': kQM, 'source_kQ': src_kQ, 'source_kQM': src_kQM}
+    if verbose:
+        print(f'Ar(4s) + {quencher} quenching ({choose}), from {path.name}:')
+        for state, label in AR_1S_STATES.items():
+            q = out[label]
+            print(f"  {label} ({state})  kQ = {q['kQ']:.3e} m^3/s  [{q['source_kQ']}]"
+                  f"   kQM = {q['kQM']:.2e} m^6/s  [{q['source_kQM']}]")
+    return out
+
+
+#%% Parsing data an helper lookups
 
 def _level_lookup(levels):
     """Build (config, term, J) -> label map from the levels dict."""
@@ -1157,7 +1691,49 @@ def ListAnalyticChannels(ModelData):
     return out
 
 
-#%% Create Final Data 
+#%% Instrument broadening
+SLIT_FUNCTION_FILE = (Path(__file__).resolve().parent.parent / 'MolecularFitting' /
+                      'Slit_Functions' / '09_04_2026.txt')
+SLIT_REF_WAVELENGTH = 435.833  # nm, Hg line the slit function was measured on
+
+
+def BroadenWithSlit(wl, intensity, slit_file=SLIT_FUNCTION_FILE,
+                    ref_wl=SLIT_REF_WAVELENGTH, step=0.005, scale_with_wl=True):
+    """
+    Broaden a stick spectrum with the measured echelle slit function.
+
+    Each line gets a copy of the slit function centred on it, scaled to unit
+    area and multiplied by the line intensity; the copies are summed. With
+    scale_with_wl the profile is stretched by lambda/ref_wl (constant resolving
+    power, FWHM ~ lambda), as in MolecularFitting/Calibrate_Library_Echelle_V2.py.
+
+    wl, intensity : 1-D arrays of line centers (nm) and stick areas (arb.)
+    slit_file     : 2-column text file [offset from peak (nm), response]
+    step          : output grid spacing (nm)
+    Returns x_out (nm), y_out (intensity per nm)
+    """
+    wl = np.asarray(wl, float)
+    intensity = np.asarray(intensity, float)
+
+    offs, resp = np.loadtxt(slit_file, unpack=True)
+    offs = offs - offs[np.argmax(resp)]
+    resp = np.clip(resp, 0, None)
+
+    scale = wl / ref_wl if scale_with_wl else np.ones_like(wl)
+    pad = np.abs(offs).max() * scale.max()
+    x_out = np.arange(wl.min() - pad, wl.max() + pad + step, step)
+    y_out = np.zeros_like(x_out)
+
+    for lam, I, s in zip(wl, intensity, scale):
+        lo, hi = np.searchsorted(x_out, [lam + offs[0] * s, lam + offs[-1] * s])
+        x = x_out[lo:hi]
+        prof = np.interp((x - lam) / s, offs, resp, left=0.0, right=0.0)
+        area = np.trapezoid(resp, offs) * s
+        y_out[lo:hi] += I * prof / area
+    return x_out, y_out
+
+
+#%% Create Final Data
 def GetData():
     #import all levels taken into consideration JSON file includes type of level
     # Leveltypes -- ground, resonant, metastable,normal

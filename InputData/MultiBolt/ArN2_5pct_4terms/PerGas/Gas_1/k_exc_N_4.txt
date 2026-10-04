@@ -1,0 +1,18 @@
+# The density-reduced particular excitation collision rate coefficient.
+# Reactant: N2
+# Product: N2( VIB 5V1)
+# Process: E + N2 -> E + N2( VIB 5V1), Excitation
+# col_1: E_N [Td], col_2: k_exc_N [m**3 s^-1]
+E_N	k_exc_N
+3.00000e+00	3.77407e-17
+5.00000e+00	1.76849e-16
+7.00000e+00	3.65246e-16
+1.00000e+01	5.70821e-16
+1.50000e+01	6.52128e-16
+2.00000e+01	6.31173e-16
+3.00000e+01	5.71189e-16
+5.00000e+01	4.97542e-16
+7.50000e+01	4.47479e-16
+1.00000e+02	4.17747e-16
+1.50000e+02	3.78467e-16
+2.00000e+02	3.49919e-16

@@ -1,0 +1,14 @@
+# The density-reduced particular ionization collision rate coefficient.
+# Reactant: Ar
+# Product: Ar^+
+# Process: E + Ar -> E + E + Ar+, Ionization
+# col_1: E_N [Td], col_2: k_iz_N [m**3 s^-1]
+E_N	k_iz_N
+1.00000e+00	0.00000e+00
+1.25000e+00	0.00000e+00
+1.50000e+00	0.00000e+00
+1.75000e+00	0.00000e+00
+2.00000e+00	0.00000e+00
+2.25000e+00	0.00000e+00
+2.50000e+00	0.00000e+00
+3.00000e+00	1.27328e-40

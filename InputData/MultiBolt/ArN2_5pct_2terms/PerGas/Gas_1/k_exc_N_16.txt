@@ -1,0 +1,18 @@
+# The density-reduced particular excitation collision rate coefficient.
+# Reactant: N2
+# Product: N2( A3SIG V=5-9)
+# Process: E + N2 -> E + N2( A3SIG V=5-9), Excitation
+# col_1: E_N [Td], col_2: k_exc_N [m**3 s^-1]
+E_N	k_exc_N
+3.00000e+00	3.02145e-23
+5.00000e+00	9.79327e-20
+7.00000e+00	2.41130e-18
+1.00000e+01	2.07733e-17
+1.50000e+01	8.17146e-17
+2.00000e+01	1.47075e-16
+3.00000e+01	2.51490e-16
+5.00000e+01	3.86169e-16
+7.50000e+01	4.86541e-16
+1.00000e+02	5.53332e-16
+1.50000e+02	6.42988e-16
+2.00000e+02	7.05683e-16

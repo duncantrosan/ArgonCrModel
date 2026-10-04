@@ -1,0 +1,11 @@
+# The density-reduced total excitation collision rate coefficient.
+# col_1: E_N [Td], col_2: k_exc_N [m**3 s^-1]
+E_N	k_exc_N
+1.00000e+00	0.00000e+00
+1.25000e+00	0.00000e+00
+1.50000e+00	7.56578e-32
+1.75000e+00	1.53508e-28
+2.00000e+00	0.00000e+00
+2.25000e+00	1.41117e-24
+2.50000e+00	2.45238e-23
+3.00000e+00	1.16661e-21

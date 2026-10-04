@@ -1,0 +1,880 @@
+C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master\MultiBolt-master\bin\multibolt_win64.exe --LXCat_Xsec_fid C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master\MultiBolt-master\cross-sections\Biagi_Ar.txt --LXCat_Xsec_fid C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master\MultiBolt-master\cross-sections\Biagi_N2.txt --species Ar 0.9 --species N2 0.1 --export_location C:\Users\dptro\Documents\Work\Python\ArgonCrModel\InputData\MultiBolt --export_name ArN2_10pct_6terms --sweep_option EN_Td --sweep_style def 3 4 5 6 7 8.5 10 12 15 20 25 30 40 50 75 100 150 200 --model HD+GE --N_terms 6 --Nu 1000 --p_Torr 1 --T_K 300 --EN_Td 3 --initial_eV_max 100 --USE_ENERGY_REMAP --remap_target_order_span 12 --remap_grid_trial_max 10 --conv_err 1e-6 --weight_f0 1.0 --iter_max 100 --iter_min 4
+
+
+mb: thrID: 0	| *** 
+mb: thrID: 0	| *** MULTIBOLT
+mb: thrID: 0	| *** A multi-term Boltzmann equation solver
+mb: thrID: 0	| *** v3.1.4
+mb: thrID: 0	| *** Most recent development: 10/2024
+mb: thrID: 0	| *** 
+mb: thrID: 0	| MultiBolt is using up to 1 thread(s).
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.00789e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.00789e+00 | err: 9.59499e-12
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.00789e+00 | err: 5.33162e-12
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.00789e+00 | err: 5.57743e-12
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 8.65866e+00 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.01413e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 0	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.30204e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 1.98028e+04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f1L converged in 1 iterations.
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 6.04986e-04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.37699e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.03524e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.03524e+00 | err: 1.57259e-11
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.03524e+00 | err: 2.52731e-12
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.03524e+00 | err: 1.31828e-12
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.03604e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.04084e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 8	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.16980e+24 | err: 0.00000e+00
+mb: thrID: 4	| f1L	| i: 1 | omega1 [m s^-1]: 2.51334e+04 | err: 0.00000e+00
+mb: thrID: 4	| Scheme f1L converged in 1 iterations.
+mb: thrID: 4	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.94406e-04 | err: 0.00000e+00
+mb: thrID: 4	| Scheme f2T converged in 1 iterations.
+mb: thrID: 6	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.35247e-04 | err: 0.00000e+00
+mb: thrID: 6	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.06012e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.06012e+00 | err: 6.55809e-13
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.06012e+00 | err: 5.37548e-12
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.06012e+00 | err: 4.50617e-12
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.17618e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.06477e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 8	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.04006e+24 | err: 0.00000e+00
+mb: thrID: 6	| f1L	| i: 1 | omega1 [m s^-1]: 3.01957e+04 | err: 0.00000e+00
+mb: thrID: 6	| Scheme f1L converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.32270e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 6	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.84429e-04 | err: 0.00000e+00
+mb: thrID: 6	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.08623e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.08623e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.08623e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.08623e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.27628e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.09100e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 13	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 7.90927e+24 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 3.48915e+04 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f1L converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.29255e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.74382e-04 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.11809e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.11809e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.11809e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.11809e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.37638e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.12333e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 9	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 7.77688e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 3.92361e+04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f1L converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.26410e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.64067e-04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.19033e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.19033e+00 | err: 1.33227e-15
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.19033e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.19033e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.48649e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.19697e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.67230e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.19817e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.19817e+00 | err: 3.33067e-16
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.19817e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.19817e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 13	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 7.57018e+24 | err: 0.00000e+00
+mb: thrID: 12	| f1L	| i: 1 | omega1 [m s^-1]: 4.49550e+04 | err: 1.12748e-08
+mb: thrID: 12	| f1L	| i: 2 | omega1 [m s^-1]: 4.49550e+04 | err: 1.12556e-09
+mb: thrID: 12	| f1L	| i: 3 | omega1 [m s^-1]: 4.49550e+04 | err: 1.12364e-10
+mb: thrID: 12	| f1L	| i: 4 | omega1 [m s^-1]: 4.49550e+04 | err: 1.12172e-11
+mb: thrID: 12	| Scheme f1L converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 1.77976e-04 | err: 1.99665e-01
+mb: thrID: 12	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.47669e-04 | err: 2.94936e-06
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 2.17943e-04 | err: 2.24564e-01
+mb: thrID: 12	| f2T	| i: 2 | omega2 [m**2 s**-1]: 5.47669e-04 | err: 2.94434e-07
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 2.21933e-04 | err: 1.83070e-02
+mb: thrID: 12	| f2T	| i: 3 | omega2 [m**2 s**-1]: 5.47669e-04 | err: 2.93933e-08
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 2.22331e-04 | err: 1.79473e-03
+mb: thrID: 12	| f2T	| i: 4 | omega2 [m**2 s**-1]: 5.47669e-04 | err: 2.93431e-09
+mb: thrID: 12	| Scheme f2T converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 2.22371e-04 | err: 1.78846e-04
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 2.22375e-04 | err: 1.78509e-05
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 2.22375e-04 | err: 1.78202e-06
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 2.22375e-04 | err: 1.77898e-07
+mb: thrID: 0	| Scheme f2L converged in 9 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.30973e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.30973e+00 | err: 1.43774e-13
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.30973e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.30973e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.56657e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.32012e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.32012e+00 | err: 2.22045e-16
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.32012e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.32012e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.76239e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.31971e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.31971e+00 | err: 1.33227e-13
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.31971e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.31971e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 3	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 7.35482e+24 | err: 0.00000e+00
+mb: thrID: 12	| f1L	| i: 1 | omega1 [m s^-1]: 4.96699e+04 | err: 1.36130e-08
+mb: thrID: 12	| f1L	| i: 2 | omega1 [m s^-1]: 4.96699e+04 | err: 2.11727e-09
+mb: thrID: 12	| f1L	| i: 3 | omega1 [m s^-1]: 4.96699e+04 | err: 3.29306e-10
+mb: thrID: 12	| f1L	| i: 4 | omega1 [m s^-1]: 4.96699e+04 | err: 5.12179e-11
+mb: thrID: 12	| Scheme f1L converged in 5 iterations.
+mb: thrID: 12	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.30835e-04 | err: 4.58276e-06
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 1.50063e-04 | err: 3.11076e-01
+mb: thrID: 12	| f2T	| i: 2 | omega2 [m**2 s**-1]: 5.30835e-04 | err: 7.12774e-07
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 2.07282e-04 | err: 3.81296e-01
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 2.16181e-04 | err: 4.29337e-02
+mb: thrID: 12	| f2T	| i: 3 | omega2 [m**2 s**-1]: 5.30835e-04 | err: 1.10860e-07
+mb: thrID: 12	| f2T	| i: 4 | omega2 [m**2 s**-1]: 5.30835e-04 | err: 1.72424e-08
+mb: thrID: 12	| Scheme f2T converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 2.17565e-04 | err: 6.40272e-03
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 2.17781e-04 | err: 9.89500e-04
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 2.17814e-04 | err: 1.53748e-04
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 2.17819e-04 | err: 2.39092e-05
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 2.17820e-04 | err: 3.71859e-06
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 2.17820e-04 | err: 5.78362e-07
+mb: thrID: 0	| Scheme f2L converged in 10 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.55405e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.55405e+00 | err: 2.60935e-11
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.55405e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.55405e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.67668e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.57076e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.57076e+00 | err: 2.35514e-11
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.57076e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.57076e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.88626e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 1.57395e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 1.57395e+00 | err: 2.59506e-11
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 1.57395e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 1.57395e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 11	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 7.05551e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 5.35713e+04 | err: 1.08526e-08
+mb: thrID: 1	| f1L	| i: 2 | omega1 [m s^-1]: 5.35713e+04 | err: 2.18199e-09
+mb: thrID: 1	| f1L	| i: 3 | omega1 [m s^-1]: 5.35713e+04 | err: 4.38704e-10
+mb: thrID: 1	| f1L	| i: 4 | omega1 [m s^-1]: 5.35713e+04 | err: 8.82046e-11
+mb: thrID: 1	| Scheme f1L converged in 5 iterations.
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.09007e-04 | err: 5.80112e-06
+mb: thrID: 4	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 1.25121e-04 | err: 4.02126e-01
+mb: thrID: 1	| f2T	| i: 2 | omega2 [m**2 s**-1]: 5.09006e-04 | err: 1.16636e-06
+mb: thrID: 4	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 1.92354e-04 | err: 5.37344e-01
+mb: thrID: 1	| f2T	| i: 3 | omega2 [m**2 s**-1]: 5.09006e-04 | err: 2.34506e-07
+mb: thrID: 4	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 2.05871e-04 | err: 7.02749e-02
+mb: thrID: 1	| f2T	| i: 4 | omega2 [m**2 s**-1]: 5.09006e-04 | err: 4.71491e-08
+mb: thrID: 1	| Scheme f2T converged in 5 iterations.
+mb: thrID: 4	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 2.08589e-04 | err: 1.32015e-02
+mb: thrID: 4	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 2.09135e-04 | err: 2.61968e-03
+mb: thrID: 4	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 2.09245e-04 | err: 5.25328e-04
+mb: thrID: 4	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 2.09267e-04 | err: 1.05565e-04
+mb: thrID: 4	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 2.09272e-04 | err: 2.12224e-05
+mb: thrID: 4	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 2.09273e-04 | err: 4.26683e-06
+mb: thrID: 4	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 2.09273e-04 | err: 8.57872e-07
+mb: thrID: 4	| Scheme f2L converged in 11 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.04448e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.04448e+00 | err: 3.77548e-09
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.04448e+00 | err: 6.66134e-16
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.04448e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.80681e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.06363e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.06363e+00 | err: 3.74355e-09
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.06363e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.06363e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 2.03266e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.06979e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.06979e+00 | err: 3.79890e-09
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.06979e+00 | err: 2.22045e-16
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.06979e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 7	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 6.63785e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 5.59751e+04 | err: 1.94400e-08
+mb: thrID: 1	| f1L	| i: 2 | omega1 [m s^-1]: 5.59751e+04 | err: 4.67302e-09
+mb: thrID: 1	| f1L	| i: 3 | omega1 [m s^-1]: 5.59751e+04 | err: 1.12330e-09
+mb: thrID: 1	| f1L	| i: 4 | omega1 [m s^-1]: 5.59751e+04 | err: 2.70021e-10
+mb: thrID: 1	| Scheme f1L converged in 5 iterations.
+mb: thrID: 8	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 9.94562e-05 | err: 4.80776e-01
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.82652e-04 | err: 6.22692e-06
+mb: thrID: 8	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 1.69408e-04 | err: 7.03343e-01
+mb: thrID: 1	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.82651e-04 | err: 1.49684e-06
+mb: thrID: 8	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.86223e-04 | err: 9.92579e-02
+mb: thrID: 1	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.82651e-04 | err: 3.59813e-07
+mb: thrID: 1	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.82651e-04 | err: 8.64923e-08
+mb: thrID: 1	| Scheme f2T converged in 5 iterations.
+mb: thrID: 8	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.90265e-04 | err: 2.17053e-02
+mb: thrID: 8	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.91237e-04 | err: 5.10670e-03
+mb: thrID: 8	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.91470e-04 | err: 1.22132e-03
+mb: thrID: 8	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.91527e-04 | err: 2.93223e-04
+mb: thrID: 8	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.91540e-04 | err: 7.04646e-05
+mb: thrID: 8	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.91543e-04 | err: 1.69372e-05
+mb: thrID: 8	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.91544e-04 | err: 4.07130e-06
+mb: thrID: 8	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.91544e-04 | err: 9.78660e-07
+mb: thrID: 8	| Scheme f2L converged in 12 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.87038e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.87038e+00 | err: 3.63389e-07
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.87038e+00 | err: 5.15588e-13
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.87038e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.99700e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.89899e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.89898e+00 | err: 3.67019e-07
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.89898e+00 | err: 5.26690e-13
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.89898e+00 | err: 4.44089e-16
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 2.24662e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.88633e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.88633e+00 | err: 3.62920e-07
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.88633e+00 | err: 5.14699e-13
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.88633e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 13	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 6.12620e+24 | err: 0.00000e+00
+mb: thrID: 8	| f1L	| i: 1 | omega1 [m s^-1]: 5.54533e+04 | err: 1.45528e-06
+mb: thrID: 8	| f1L	| i: 2 | omega1 [m s^-1]: 5.54533e+04 | err: 4.01736e-07
+mb: thrID: 8	| f1L	| i: 3 | omega1 [m s^-1]: 5.54533e+04 | err: 1.10901e-07
+mb: thrID: 8	| f1L	| i: 4 | omega1 [m s^-1]: 5.54533e+04 | err: 3.06146e-08
+mb: thrID: 8	| Scheme f1L converged in 5 iterations.
+mb: thrID: 8	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.52681e-04 | err: 4.79127e-06
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 7.45959e-05 | err: 5.52126e-01
+mb: thrID: 8	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.52680e-04 | err: 1.32265e-06
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 1.41167e-04 | err: 8.92419e-01
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.59544e-04 | err: 1.30180e-01
+mb: thrID: 8	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.52680e-04 | err: 3.65124e-07
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.64617e-04 | err: 3.17974e-02
+mb: thrID: 8	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.52680e-04 | err: 1.00794e-07
+mb: thrID: 8	| Scheme f2T converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.66017e-04 | err: 8.50729e-03
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.66404e-04 | err: 2.32866e-03
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.66511e-04 | err: 6.41343e-04
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.66540e-04 | err: 1.76932e-04
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.66548e-04 | err: 4.88341e-05
+mb: thrID: 0	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.66550e-04 | err: 1.34802e-05
+mb: thrID: 0	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.66551e-04 | err: 3.72121e-06
+mb: thrID: 0	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 1.66551e-04 | err: 1.02725e-06
+mb: thrID: 0	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 1.66551e-04 | err: 2.83576e-07
+mb: thrID: 0	| Scheme f2L converged in 14 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.50552e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.50550e+00 | err: 4.57466e-06
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.50550e+00 | err: 7.49205e-11
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.50550e+00 | err: 8.88178e-16
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 2.17718e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.53039e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.53037e+00 | err: 4.60708e-06
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.53037e+00 | err: 7.59275e-11
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.53037e+00 | err: 9.99201e-16
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 2.44932e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.52215e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.52213e+00 | err: 4.58680e-06
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.52213e+00 | err: 7.53211e-11
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.52213e+00 | err: 1.77636e-15
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 7	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 5.80966e+24 | err: 0.00000e+00
+mb: thrID: 9	| f1L	| i: 1 | omega1 [m s^-1]: 5.40618e+04 | err: 2.03986e-05
+mb: thrID: 9	| f1L	| i: 2 | omega1 [m s^-1]: 5.40621e+04 | err: 6.10913e-06
+mb: thrID: 9	| f1L	| i: 3 | omega1 [m s^-1]: 5.40622e+04 | err: 1.82963e-06
+mb: thrID: 9	| f1L	| i: 4 | omega1 [m s^-1]: 5.40622e+04 | err: 5.47961e-07
+mb: thrID: 9	| Scheme f1L converged in 5 iterations.
+mb: thrID: 9	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.34836e-04 | err: 6.14343e-06
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 6.01881e-05 | err: 5.99054e-01
+mb: thrID: 9	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.34836e-04 | err: 1.83990e-06
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 1.23173e-04 | err: 1.04646e+00
+mb: thrID: 9	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.34837e-04 | err: 5.51038e-07
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.42036e-04 | err: 1.53146e-01
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.47685e-04 | err: 3.97749e-02
+mb: thrID: 9	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.34837e-04 | err: 1.65032e-07
+mb: thrID: 9	| Scheme f2T converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.49377e-04 | err: 1.14566e-02
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.49884e-04 | err: 3.39232e-03
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.50036e-04 | err: 1.01254e-03
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.50081e-04 | err: 3.02942e-04
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.50095e-04 | err: 9.07017e-05
+mb: thrID: 0	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.50099e-04 | err: 2.71621e-05
+mb: thrID: 0	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.50100e-04 | err: 8.13463e-06
+mb: thrID: 0	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 1.50101e-04 | err: 2.43625e-06
+mb: thrID: 0	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 1.50101e-04 | err: 7.29638e-07
+mb: thrID: 0	| Scheme f2L converged in 14 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.96935e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.96926e+00 | err: 2.30779e-05
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.96926e+00 | err: 1.84120e-09
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.96926e+00 | err: 1.47993e-13
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 2.34735e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.99041e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.99032e+00 | err: 2.32117e-05
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.99032e+00 | err: 1.86346e-09
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.99032e+00 | err: 1.48659e-13
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 2.64077e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.98171e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.98161e+00 | err: 2.31351e-05
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.98161e+00 | err: 1.85135e-09
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.98161e+00 | err: 1.48437e-13
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 9	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 5.60941e+24 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 5.38870e+04 | err: 1.05617e-04
+mb: thrID: 14	| f1L	| i: 2 | omega1 [m s^-1]: 5.38891e+04 | err: 3.73391e-05
+mb: thrID: 14	| f1L	| i: 3 | omega1 [m s^-1]: 5.38898e+04 | err: 1.32014e-05
+mb: thrID: 14	| f1L	| i: 4 | omega1 [m s^-1]: 5.38900e+04 | err: 4.66756e-06
+mb: thrID: 14	| f1L	| i: 5 | omega1 [m s^-1]: 5.38901e+04 | err: 1.65030e-06
+mb: thrID: 14	| f1L	| i: 6 | omega1 [m s^-1]: 5.38901e+04 | err: 5.83493e-07
+mb: thrID: 14	| Scheme f1L converged in 7 iterations.
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.24514e-04 | err: 4.51114e-05
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 4.04847e-05 | err: 7.07406e-01
+mb: thrID: 14	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.24520e-04 | err: 1.59493e-05
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 1.03720e-04 | err: 1.56196e+00
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.26078e-04 | err: 2.15562e-01
+mb: thrID: 14	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.24523e-04 | err: 5.63908e-06
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.33984e-04 | err: 6.27002e-02
+mb: thrID: 14	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.24524e-04 | err: 1.99379e-06
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.36779e-04 | err: 2.08609e-02
+mb: thrID: 14	| f2T	| i: 5 | omega2 [m**2 s**-1]: 4.24524e-04 | err: 7.04942e-07
+mb: thrID: 14	| Scheme f2T converged in 6 iterations.
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.37767e-04 | err: 7.22504e-03
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.38116e-04 | err: 2.53623e-03
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.38240e-04 | err: 8.94462e-04
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.38283e-04 | err: 3.15972e-04
+mb: thrID: 0	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.38299e-04 | err: 1.11682e-04
+mb: thrID: 0	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.38304e-04 | err: 3.94830e-05
+mb: thrID: 0	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 1.38306e-04 | err: 1.39594e-05
+mb: thrID: 0	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 1.38307e-04 | err: 4.93555e-06
+mb: thrID: 0	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 1.38307e-04 | err: 1.74505e-06
+mb: thrID: 0	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 1.38307e-04 | err: 6.16994e-07
+mb: thrID: 0	| Scheme f2L converged in 16 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 4.59788e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 4.59712e+00 | err: 1.65395e-04
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 4.59712e+00 | err: 9.14842e-08
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 4.59712e+00 | err: 5.05865e-11
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 2.67768e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 4.60565e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 4.60489e+00 | err: 1.65698e-04
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 4.60489e+00 | err: 9.18858e-08
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 4.60489e+00 | err: 5.09385e-11
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 9	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 5.37101e+24 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 5.59777e+04 | err: 8.53642e-04
+mb: thrID: 14	| f1L	| i: 2 | omega1 [m s^-1]: 5.59948e+04 | err: 3.05384e-04
+mb: thrID: 14	| f1L	| i: 3 | omega1 [m s^-1]: 5.60009e+04 | err: 1.09309e-04
+mb: thrID: 14	| f1L	| i: 4 | omega1 [m s^-1]: 5.60031e+04 | err: 3.91335e-05
+mb: thrID: 14	| f1L	| i: 5 | omega1 [m s^-1]: 5.60039e+04 | err: 1.40111e-05
+mb: thrID: 14	| f1L	| i: 6 | omega1 [m s^-1]: 5.60042e+04 | err: 5.01658e-06
+mb: thrID: 14	| f1L	| i: 7 | omega1 [m s^-1]: 5.60043e+04 | err: 1.79617e-06
+mb: thrID: 14	| f1L	| i: 8 | omega1 [m s^-1]: 5.60043e+04 | err: 6.43113e-07
+mb: thrID: 14	| Scheme f1L converged in 9 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.45951e-05 | err: 7.17865e-01
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.13564e-04 | err: 3.23787e-04
+mb: thrID: 14	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.13612e-04 | err: 1.15894e-04
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 9.08852e-05 | err: 1.62711e+00
+mb: thrID: 14	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.13629e-04 | err: 4.14907e-05
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.11040e-04 | err: 2.21759e-01
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.18256e-04 | err: 6.49885e-02
+mb: thrID: 14	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.13635e-04 | err: 1.48550e-05
+mb: thrID: 14	| f2T	| i: 5 | omega2 [m**2 s**-1]: 4.13637e-04 | err: 5.31874e-06
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.20840e-04 | err: 2.18490e-02
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.21765e-04 | err: 7.65574e-03
+mb: thrID: 14	| f2T	| i: 6 | omega2 [m**2 s**-1]: 4.13638e-04 | err: 1.90435e-06
+mb: thrID: 14	| f2T	| i: 7 | omega2 [m**2 s**-1]: 4.13638e-04 | err: 6.81849e-07
+mb: thrID: 14	| Scheme f2T converged in 8 iterations.
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.22096e-04 | err: 2.72030e-03
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.22215e-04 | err: 9.71354e-04
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.22257e-04 | err: 3.47454e-04
+mb: thrID: 0	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.22273e-04 | err: 1.24362e-04
+mb: thrID: 0	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.22278e-04 | err: 4.45220e-05
+mb: thrID: 0	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 1.22280e-04 | err: 1.59403e-05
+mb: thrID: 0	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 1.22281e-04 | err: 5.70730e-06
+mb: thrID: 0	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 1.22281e-04 | err: 2.04348e-06
+mb: thrID: 0	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 1.22281e-04 | err: 7.31661e-07
+mb: thrID: 0	| Scheme f2L converged in 16 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 5.02111e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 5.01844e+00 | err: 5.31508e-04
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 5.01844e+00 | err: 9.23219e-07
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 5.01844e+00 | err: 1.60210e-09
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 3.00801e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 5.02483e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 5.02215e+00 | err: 5.32122e-04
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 5.02216e+00 | err: 9.25647e-07
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 5.02216e+00 | err: 1.60868e-09
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 4	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 5.22885e+24 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 6.01118e+04 | err: 2.84969e-03
+mb: thrID: 14	| f1L	| i: 2 | omega1 [m s^-1]: 6.01740e+04 | err: 1.03586e-03
+mb: thrID: 14	| f1L	| i: 3 | omega1 [m s^-1]: 6.01967e+04 | err: 3.77213e-04
+mb: thrID: 14	| f1L	| i: 4 | omega1 [m s^-1]: 6.02050e+04 | err: 1.37455e-04
+mb: thrID: 14	| f1L	| i: 5 | omega1 [m s^-1]: 6.02080e+04 | err: 5.00998e-05
+mb: thrID: 14	| f1L	| i: 6 | omega1 [m s^-1]: 6.02091e+04 | err: 1.82621e-05
+mb: thrID: 14	| f1L	| i: 7 | omega1 [m s^-1]: 6.02095e+04 | err: 6.65702e-06
+mb: thrID: 14	| f1L	| i: 8 | omega1 [m s^-1]: 6.02097e+04 | err: 2.42669e-06
+mb: thrID: 14	| f1L	| i: 9 | omega1 [m s^-1]: 6.02097e+04 | err: 8.84605e-07
+mb: thrID: 14	| Scheme f1L converged in 10 iterations.
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.07807e-04 | err: 9.44788e-04
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.98486e-05 | err: 7.34430e-01
+mb: thrID: 14	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.07947e-04 | err: 3.44081e-04
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 8.17008e-05 | err: 1.73718e+00
+mb: thrID: 14	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.07998e-04 | err: 1.25386e-04
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 1.00603e-04 | err: 2.31354e-01
+mb: thrID: 14	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.08017e-04 | err: 4.57015e-05
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.07493e-04 | err: 6.84907e-02
+mb: thrID: 14	| f2T	| i: 5 | omega2 [m**2 s**-1]: 4.08023e-04 | err: 1.66589e-05
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 1.10005e-04 | err: 2.33667e-02
+mb: thrID: 14	| f2T	| i: 6 | omega2 [m**2 s**-1]: 4.08026e-04 | err: 6.07263e-06
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 1.10920e-04 | err: 8.32344e-03
+mb: thrID: 14	| f2T	| i: 7 | omega2 [m**2 s**-1]: 4.08027e-04 | err: 2.21366e-06
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 1.11254e-04 | err: 3.00912e-03
+mb: thrID: 14	| f2T	| i: 8 | omega2 [m**2 s**-1]: 4.08027e-04 | err: 8.06950e-07
+mb: thrID: 14	| Scheme f2T converged in 9 iterations.
+mb: thrID: 0	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 1.11376e-04 | err: 1.09363e-03
+mb: thrID: 0	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 1.11420e-04 | err: 3.98230e-04
+mb: thrID: 0	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 1.11436e-04 | err: 1.45110e-04
+mb: thrID: 0	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 1.11442e-04 | err: 5.28897e-05
+mb: thrID: 0	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 1.11444e-04 | err: 1.92790e-05
+mb: thrID: 0	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 1.11445e-04 | err: 7.02770e-06
+mb: thrID: 0	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 1.11445e-04 | err: 2.56181e-06
+mb: thrID: 0	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 1.11445e-04 | err: 9.33862e-07
+mb: thrID: 0	| Scheme f2L converged in 16 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 5.71385e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 5.69932e+00 | err: 2.54329e-03
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 5.69944e+00 | err: 2.01228e-05
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 5.69944e+00 | err: 1.58510e-07
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 3.79880e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 5.71486e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 5.70032e+00 | err: 2.54471e-03
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 5.70044e+00 | err: 2.01446e-05
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 5.70043e+00 | err: 1.58764e-07
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 0	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 5.02084e+24 | err: 0.00000e+00
+mb: thrID: 12	| f1L	| i: 1 | omega1 [m s^-1]: 7.39112e+04 | err: 1.15185e-02
+mb: thrID: 12	| f1L	| i: 2 | omega1 [m s^-1]: 7.42994e+04 | err: 5.25199e-03
+mb: thrID: 12	| f1L	| i: 3 | omega1 [m s^-1]: 7.44784e+04 | err: 2.40963e-03
+mb: thrID: 12	| f1L	| i: 4 | omega1 [m s^-1]: 7.45610e+04 | err: 1.10868e-03
+mb: thrID: 12	| f1L	| i: 5 | omega1 [m s^-1]: 7.45991e+04 | err: 5.10774e-04
+mb: thrID: 12	| f1L	| i: 6 | omega1 [m s^-1]: 7.46167e+04 | err: 2.35456e-04
+mb: thrID: 12	| f1L	| i: 7 | omega1 [m s^-1]: 7.46248e+04 | err: 1.08570e-04
+mb: thrID: 12	| f1L	| i: 8 | omega1 [m s^-1]: 7.46285e+04 | err: 5.00684e-05
+mb: thrID: 12	| f1L	| i: 9 | omega1 [m s^-1]: 7.46302e+04 | err: 2.30911e-05
+mb: thrID: 12	| f1L	| i: 10 | omega1 [m s^-1]: 7.46310e+04 | err: 1.06497e-05
+mb: thrID: 12	| f1L	| i: 11 | omega1 [m s^-1]: 7.46314e+04 | err: 4.91172e-06
+mb: thrID: 12	| f1L	| i: 12 | omega1 [m s^-1]: 7.46316e+04 | err: 2.26534e-06
+mb: thrID: 12	| f1L	| i: 13 | omega1 [m s^-1]: 7.46316e+04 | err: 1.04480e-06
+mb: thrID: 12	| f1L	| i: 14 | omega1 [m s^-1]: 7.46317e+04 | err: 4.81877e-07
+mb: thrID: 12	| Scheme f1L converged in 15 iterations.
+mb: thrID: 12	| f2T	| i: 1 | omega2 [m**2 s**-1]: 4.00811e-04 | err: 3.18987e-03
+mb: thrID: 6	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 5.58737e-06 | err: 9.41891e-01
+mb: thrID: 6	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 5.25116e-05 | err: 8.39828e+00
+mb: thrID: 12	| f2T	| i: 2 | omega2 [m**2 s**-1]: 4.01399e-04 | err: 1.46653e-03
+mb: thrID: 6	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 7.41537e-05 | err: 4.12139e-01
+mb: thrID: 12	| f2T	| i: 3 | omega2 [m**2 s**-1]: 4.01670e-04 | err: 6.75394e-04
+mb: thrID: 6	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 8.41353e-05 | err: 1.34607e-01
+mb: thrID: 12	| f2T	| i: 4 | omega2 [m**2 s**-1]: 4.01795e-04 | err: 3.11290e-04
+mb: thrID: 6	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 8.87390e-05 | err: 5.47173e-02
+mb: thrID: 12	| f2T	| i: 5 | omega2 [m**2 s**-1]: 4.01852e-04 | err: 1.43527e-04
+mb: thrID: 6	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 9.08622e-05 | err: 2.39271e-02
+mb: thrID: 12	| f2T	| i: 6 | omega2 [m**2 s**-1]: 4.01879e-04 | err: 6.61869e-05
+mb: thrID: 6	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 9.18415e-05 | err: 1.07776e-02
+mb: thrID: 12	| f2T	| i: 7 | omega2 [m**2 s**-1]: 4.01891e-04 | err: 3.05243e-05
+mb: thrID: 6	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 9.22932e-05 | err: 4.91779e-03
+mb: thrID: 12	| f2T	| i: 8 | omega2 [m**2 s**-1]: 4.01897e-04 | err: 1.40778e-05
+mb: thrID: 6	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 9.25015e-05 | err: 2.25705e-03
+mb: thrID: 12	| f2T	| i: 9 | omega2 [m**2 s**-1]: 4.01900e-04 | err: 6.49277e-06
+mb: thrID: 6	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 9.25976e-05 | err: 1.03864e-03
+mb: thrID: 12	| f2T	| i: 10 | omega2 [m**2 s**-1]: 4.01901e-04 | err: 2.99454e-06
+mb: thrID: 6	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 9.26419e-05 | err: 4.78537e-04
+mb: thrID: 12	| f2T	| i: 11 | omega2 [m**2 s**-1]: 4.01901e-04 | err: 1.38112e-06
+mb: thrID: 6	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 9.26623e-05 | err: 2.20602e-04
+mb: thrID: 12	| f2T	| i: 12 | omega2 [m**2 s**-1]: 4.01902e-04 | err: 6.36989e-07
+mb: thrID: 12	| Scheme f2T converged in 13 iterations.
+mb: thrID: 6	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 9.26717e-05 | err: 1.01722e-04
+mb: thrID: 6	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 9.26761e-05 | err: 4.69109e-05
+mb: thrID: 6	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 9.26781e-05 | err: 2.16349e-05
+mb: thrID: 6	| f2L	| i: 16 | omega2_bar [m**2 s**-1]: 9.26790e-05 | err: 9.97811e-06
+mb: thrID: 6	| f2L	| i: 17 | omega2_bar [m**2 s**-1]: 9.26795e-05 | err: 4.60199e-06
+mb: thrID: 6	| f2L	| i: 18 | omega2_bar [m**2 s**-1]: 9.26796e-05 | err: 2.12249e-06
+mb: thrID: 6	| f2L	| i: 19 | omega2_bar [m**2 s**-1]: 9.26797e-05 | err: 9.78920e-07
+mb: thrID: 6	| Scheme f2L converged in 20 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 6.18681e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 6.15156e+00 | err: 5.69838e-03
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 6.15215e+00 | err: 9.68500e-05
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 6.15214e+00 | err: 1.63011e-06
+mb: thrID: 0	| f0	| i: 5 | avg_en [eV]: 6.15214e+00 | err: 2.74414e-08
+mb: thrID: 0	| Scheme f0 converged in 6 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 4.62963e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 6.19098e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 6.15566e+00 | err: 5.70526e-03
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 6.15626e+00 | err: 9.70782e-05
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 6.15625e+00 | err: 1.63580e-06
+mb: thrID: 0	| f0	| i: 5 | avg_en [eV]: 6.15625e+00 | err: 2.75683e-08
+mb: thrID: 0	| Scheme f0 converged in 6 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 13	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 4.89730e+24 | err: 0.00000e+00
+mb: thrID: 0	| f1L	| i: 1 | omega1 [m s^-1]: 8.95205e+04 | err: 2.23447e-02
+mb: thrID: 0	| f1L	| i: 2 | omega1 [m s^-1]: 9.05145e+04 | err: 1.11040e-02
+mb: thrID: 0	| f1L	| i: 3 | omega1 [m s^-1]: 9.10196e+04 | err: 5.57937e-03
+mb: thrID: 0	| f1L	| i: 4 | omega1 [m s^-1]: 9.12761e+04 | err: 2.81885e-03
+mb: thrID: 0	| f1L	| i: 5 | omega1 [m s^-1]: 9.14065e+04 | err: 1.42808e-03
+mb: thrID: 0	| f1L	| i: 6 | omega1 [m s^-1]: 9.14727e+04 | err: 7.24492e-04
+mb: thrID: 0	| f1L	| i: 7 | omega1 [m s^-1]: 9.15064e+04 | err: 3.67808e-04
+mb: thrID: 0	| f1L	| i: 8 | omega1 [m s^-1]: 9.15234e+04 | err: 1.86794e-04
+mb: thrID: 0	| f1L	| i: 9 | omega1 [m s^-1]: 9.15321e+04 | err: 9.48823e-05
+mb: thrID: 0	| f1L	| i: 10 | omega1 [m s^-1]: 9.15365e+04 | err: 4.81999e-05
+mb: thrID: 0	| f1L	| i: 11 | omega1 [m s^-1]: 9.15388e+04 | err: 2.44865e-05
+mb: thrID: 0	| f1L	| i: 12 | omega1 [m s^-1]: 9.15399e+04 | err: 1.24400e-05
+mb: thrID: 0	| f1L	| i: 13 | omega1 [m s^-1]: 9.15405e+04 | err: 6.31999e-06
+mb: thrID: 0	| f1L	| i: 14 | omega1 [m s^-1]: 9.15408e+04 | err: 3.21082e-06
+mb: thrID: 0	| f1L	| i: 15 | omega1 [m s^-1]: 9.15409e+04 | err: 1.63123e-06
+mb: thrID: 0	| f1L	| i: 16 | omega1 [m s^-1]: 9.15410e+04 | err: 8.28740e-07
+mb: thrID: 0	| Scheme f1L converged in 17 iterations.
+mb: thrID: 8	| f2T	| i: 1 | omega2 [m**2 s**-1]: 3.97693e-04 | err: 5.79232e-03
+mb: thrID: 1	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: -4.51233e-06 | err: 9.47366e-01
+mb: thrID: 8	| f2T	| i: 2 | omega2 [m**2 s**-1]: 3.98857e-04 | err: 2.92581e-03
+mb: thrID: 1	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 3.67504e-05 | err: 7.14444e+00
+mb: thrID: 8	| f2T	| i: 3 | omega2 [m**2 s**-1]: 3.99448e-04 | err: 1.48211e-03
+mb: thrID: 1	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 5.77137e-05 | err: 5.70424e-01
+mb: thrID: 8	| f2T	| i: 4 | omega2 [m**2 s**-1]: 3.99748e-04 | err: 7.51863e-04
+mb: thrID: 1	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 6.83640e-05 | err: 1.84537e-01
+mb: thrID: 8	| f2T	| i: 5 | omega2 [m**2 s**-1]: 3.99901e-04 | err: 3.81693e-04
+mb: thrID: 1	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 7.37748e-05 | err: 7.91475e-02
+mb: thrID: 8	| f2T	| i: 6 | omega2 [m**2 s**-1]: 3.99978e-04 | err: 1.93843e-04
+mb: thrID: 1	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 7.65238e-05 | err: 3.72613e-02
+mb: thrID: 8	| f2T	| i: 7 | omega2 [m**2 s**-1]: 4.00018e-04 | err: 9.84621e-05
+mb: thrID: 1	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 7.79204e-05 | err: 1.82504e-02
+mb: thrID: 8	| f2T	| i: 8 | omega2 [m**2 s**-1]: 4.00038e-04 | err: 5.00183e-05
+mb: thrID: 1	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 7.86299e-05 | err: 9.10585e-03
+mb: thrID: 8	| f2T	| i: 9 | omega2 [m**2 s**-1]: 4.00048e-04 | err: 2.54103e-05
+mb: thrID: 1	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 7.89904e-05 | err: 4.58444e-03
+mb: thrID: 8	| f2T	| i: 10 | omega2 [m**2 s**-1]: 4.00053e-04 | err: 1.29092e-05
+mb: thrID: 1	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 7.91735e-05 | err: 2.31847e-03
+mb: thrID: 8	| f2T	| i: 11 | omega2 [m**2 s**-1]: 4.00056e-04 | err: 6.55839e-06
+mb: thrID: 1	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 7.92665e-05 | err: 1.17516e-03
+mb: thrID: 8	| f2T	| i: 12 | omega2 [m**2 s**-1]: 4.00057e-04 | err: 3.33194e-06
+mb: thrID: 1	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 7.93138e-05 | err: 5.96335e-04
+mb: thrID: 8	| f2T	| i: 13 | omega2 [m**2 s**-1]: 4.00058e-04 | err: 1.69277e-06
+mb: thrID: 1	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 7.93378e-05 | err: 3.02785e-04
+mb: thrID: 8	| f2T	| i: 14 | omega2 [m**2 s**-1]: 4.00058e-04 | err: 8.60001e-07
+mb: thrID: 8	| Scheme f2T converged in 15 iterations.
+mb: thrID: 1	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 7.93500e-05 | err: 1.53782e-04
+mb: thrID: 1	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 7.93562e-05 | err: 7.81160e-05
+mb: thrID: 1	| f2L	| i: 16 | omega2_bar [m**2 s**-1]: 7.93594e-05 | err: 3.96834e-05
+mb: thrID: 1	| f2L	| i: 17 | omega2_bar [m**2 s**-1]: 7.93610e-05 | err: 2.01601e-05
+mb: thrID: 1	| f2L	| i: 18 | omega2_bar [m**2 s**-1]: 7.93618e-05 | err: 1.02421e-05
+mb: thrID: 1	| f2L	| i: 19 | omega2_bar [m**2 s**-1]: 7.93622e-05 | err: 5.20337e-06
+mb: thrID: 1	| f2L	| i: 20 | omega2_bar [m**2 s**-1]: 7.93624e-05 | err: 2.64353e-06
+mb: thrID: 1	| f2L	| i: 21 | omega2_bar [m**2 s**-1]: 7.93625e-05 | err: 1.34303e-06
+mb: thrID: 1	| f2L	| i: 22 | omega2_bar [m**2 s**-1]: 7.93626e-05 | err: 6.82319e-07
+mb: thrID: 1	| Scheme f2L converged in 23 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 6.89311e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 6.79980e+00 | err: 1.35379e-02
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 6.80326e+00 | err: 5.09488e-04
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 6.80313e+00 | err: 1.87479e-05
+mb: thrID: 0	| f0	| i: 5 | avg_en [eV]: 6.80314e+00 | err: 6.90459e-07
+mb: thrID: 0	| Scheme f0 converged in 6 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 6.39139e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 6.89377e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 6.80038e+00 | err: 1.35465e-02
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 6.80385e+00 | err: 5.09957e-04
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 6.80372e+00 | err: 1.87702e-05
+mb: thrID: 0	| f0	| i: 5 | avg_en [eV]: 6.80372e+00 | err: 6.91462e-07
+mb: thrID: 0	| Scheme f0 converged in 6 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 9	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 4.73692e+24 | err: 0.00000e+00
+mb: thrID: 2	| f1L	| i: 1 | omega1 [m s^-1]: 1.22214e+05 | err: 3.41923e-02
+mb: thrID: 2	| f1L	| i: 2 | omega1 [m s^-1]: 1.24786e+05 | err: 2.10410e-02
+mb: thrID: 2	| f1L	| i: 3 | omega1 [m s^-1]: 1.26422e+05 | err: 1.31148e-02
+mb: thrID: 2	| f1L	| i: 4 | omega1 [m s^-1]: 1.27464e+05 | err: 8.23836e-03
+mb: thrID: 2	| f1L	| i: 5 | omega1 [m s^-1]: 1.28126e+05 | err: 5.20015e-03
+mb: thrID: 2	| f1L	| i: 6 | omega1 [m s^-1]: 1.28548e+05 | err: 3.29232e-03
+mb: thrID: 2	| f1L	| i: 7 | omega1 [m s^-1]: 1.28817e+05 | err: 2.08840e-03
+mb: thrID: 2	| f1L	| i: 8 | omega1 [m s^-1]: 1.28988e+05 | err: 1.32631e-03
+mb: thrID: 2	| f1L	| i: 9 | omega1 [m s^-1]: 1.29096e+05 | err: 8.42962e-04
+mb: thrID: 2	| f1L	| i: 10 | omega1 [m s^-1]: 1.29165e+05 | err: 5.36019e-04
+mb: thrID: 2	| f1L	| i: 11 | omega1 [m s^-1]: 1.29209e+05 | err: 3.40946e-04
+mb: thrID: 2	| f1L	| i: 12 | omega1 [m s^-1]: 1.29238e+05 | err: 2.16909e-04
+mb: thrID: 2	| f1L	| i: 13 | omega1 [m s^-1]: 1.29255e+05 | err: 1.38013e-04
+mb: thrID: 2	| f1L	| i: 14 | omega1 [m s^-1]: 1.29267e+05 | err: 8.78212e-05
+mb: thrID: 2	| f1L	| i: 15 | omega1 [m s^-1]: 1.29274e+05 | err: 5.58856e-05
+mb: thrID: 2	| f1L	| i: 16 | omega1 [m s^-1]: 1.29279e+05 | err: 3.55643e-05
+mb: thrID: 2	| f1L	| i: 17 | omega1 [m s^-1]: 1.29281e+05 | err: 2.26327e-05
+mb: thrID: 2	| f1L	| i: 18 | omega1 [m s^-1]: 1.29283e+05 | err: 1.44034e-05
+mb: thrID: 2	| f1L	| i: 19 | omega1 [m s^-1]: 1.29285e+05 | err: 9.16638e-06
+mb: thrID: 2	| f1L	| i: 20 | omega1 [m s^-1]: 1.29285e+05 | err: 5.83354e-06
+mb: thrID: 2	| f1L	| i: 21 | omega1 [m s^-1]: 1.29286e+05 | err: 3.71251e-06
+mb: thrID: 2	| f1L	| i: 22 | omega1 [m s^-1]: 1.29286e+05 | err: 2.36268e-06
+mb: thrID: 2	| f1L	| i: 23 | omega1 [m s^-1]: 1.29286e+05 | err: 1.50363e-06
+mb: thrID: 2	| f1L	| i: 24 | omega1 [m s^-1]: 1.29286e+05 | err: 9.56930e-07
+mb: thrID: 2	| Scheme f1L converged in 25 iterations.
+mb: thrID: 2	| f2T	| i: 1 | omega2 [m**2 s**-1]: 3.93508e-04 | err: 9.01060e-03
+mb: thrID: 6	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: -2.38316e-05 | err: 6.70198e-01
+mb: thrID: 2	| f2T	| i: 2 | omega2 [m**2 s**-1]: 3.95744e-04 | err: 5.68325e-03
+mb: thrID: 6	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 6.98907e-06 | err: 7.06731e-01
+mb: thrID: 2	| f2T	| i: 3 | omega2 [m**2 s**-1]: 3.97167e-04 | err: 3.59645e-03
+mb: thrID: 6	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 2.66037e-05 | err: 2.80647e+00
+mb: thrID: 2	| f2T	| i: 4 | omega2 [m**2 s**-1]: 3.98073e-04 | err: 2.28062e-03
+mb: thrID: 6	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 3.90867e-05 | err: 4.69220e-01
+mb: thrID: 2	| f2T	| i: 5 | omega2 [m**2 s**-1]: 3.98649e-04 | err: 1.44811e-03
+mb: thrID: 6	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 4.70310e-05 | err: 2.03249e-01
+mb: thrID: 2	| f2T	| i: 6 | omega2 [m**2 s**-1]: 3.99016e-04 | err: 9.20263e-04
+mb: thrID: 6	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 5.20869e-05 | err: 1.07501e-01
+mb: thrID: 2	| f2T	| i: 7 | omega2 [m**2 s**-1]: 3.99250e-04 | err: 5.85128e-04
+mb: thrID: 6	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 5.53045e-05 | err: 6.17740e-02
+mb: thrID: 2	| f2T	| i: 8 | omega2 [m**2 s**-1]: 3.99398e-04 | err: 3.72165e-04
+mb: thrID: 6	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 5.73522e-05 | err: 3.70264e-02
+mb: thrID: 2	| f2T	| i: 9 | omega2 [m**2 s**-1]: 3.99493e-04 | err: 2.36762e-04
+mb: thrID: 6	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 5.86554e-05 | err: 2.27227e-02
+mb: thrID: 2	| f2T	| i: 10 | omega2 [m**2 s**-1]: 3.99553e-04 | err: 1.50643e-04
+mb: thrID: 6	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 5.94848e-05 | err: 1.41397e-02
+mb: thrID: 2	| f2T	| i: 11 | omega2 [m**2 s**-1]: 3.99591e-04 | err: 9.58564e-05
+mb: thrID: 6	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 6.00126e-05 | err: 8.87323e-03
+mb: thrID: 2	| f2T	| i: 12 | omega2 [m**2 s**-1]: 3.99616e-04 | err: 6.09983e-05
+mb: thrID: 6	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 6.03485e-05 | err: 5.59736e-03
+mb: thrID: 2	| f2T	| i: 13 | omega2 [m**2 s**-1]: 3.99631e-04 | err: 3.88177e-05
+mb: thrID: 6	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 6.05623e-05 | err: 3.54240e-03
+mb: thrID: 2	| f2T	| i: 14 | omega2 [m**2 s**-1]: 3.99641e-04 | err: 2.47031e-05
+mb: thrID: 6	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 6.06984e-05 | err: 2.24647e-03
+mb: thrID: 2	| f2T	| i: 15 | omega2 [m**2 s**-1]: 3.99647e-04 | err: 1.57210e-05
+mb: thrID: 6	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 6.07850e-05 | err: 1.42648e-03
+mb: thrID: 2	| f2T	| i: 16 | omega2 [m**2 s**-1]: 3.99651e-04 | err: 1.00049e-05
+mb: thrID: 6	| f2L	| i: 16 | omega2_bar [m**2 s**-1]: 6.08401e-05 | err: 9.06534e-04
+mb: thrID: 2	| f2T	| i: 17 | omega2 [m**2 s**-1]: 3.99654e-04 | err: 6.36715e-06
+mb: thrID: 6	| f2L	| i: 17 | omega2_bar [m**2 s**-1]: 6.08751e-05 | err: 5.76406e-04
+mb: thrID: 2	| f2T	| i: 18 | omega2 [m**2 s**-1]: 3.99656e-04 | err: 4.05210e-06
+mb: thrID: 6	| f2L	| i: 18 | omega2_bar [m**2 s**-1]: 6.08975e-05 | err: 3.66621e-04
+mb: thrID: 2	| f2T	| i: 19 | omega2 [m**2 s**-1]: 3.99657e-04 | err: 2.57880e-06
+mb: thrID: 6	| f2L	| i: 19 | omega2_bar [m**2 s**-1]: 6.09117e-05 | err: 2.33236e-04
+mb: thrID: 2	| f2T	| i: 20 | omega2 [m**2 s**-1]: 3.99657e-04 | err: 1.64117e-06
+mb: thrID: 6	| f2L	| i: 20 | omega2_bar [m**2 s**-1]: 6.09207e-05 | err: 1.48400e-04
+mb: thrID: 2	| f2T	| i: 21 | omega2 [m**2 s**-1]: 3.99658e-04 | err: 1.04446e-06
+mb: thrID: 6	| f2L	| i: 21 | omega2_bar [m**2 s**-1]: 6.09265e-05 | err: 9.44294e-05
+mb: thrID: 2	| f2T	| i: 22 | omega2 [m**2 s**-1]: 3.99658e-04 | err: 6.64707e-07
+mb: thrID: 2	| Scheme f2T converged in 23 iterations.
+mb: thrID: 6	| f2L	| i: 22 | omega2_bar [m**2 s**-1]: 6.09301e-05 | err: 6.00904e-05
+mb: thrID: 6	| f2L	| i: 23 | omega2_bar [m**2 s**-1]: 6.09324e-05 | err: 3.82399e-05
+mb: thrID: 6	| f2L	| i: 24 | omega2_bar [m**2 s**-1]: 6.09339e-05 | err: 2.43354e-05
+mb: thrID: 6	| f2L	| i: 25 | omega2_bar [m**2 s**-1]: 6.09349e-05 | err: 1.54870e-05
+mb: thrID: 6	| f2L	| i: 26 | omega2_bar [m**2 s**-1]: 6.09355e-05 | err: 9.85595e-06
+mb: thrID: 6	| f2L	| i: 27 | omega2_bar [m**2 s**-1]: 6.09359e-05 | err: 6.27239e-06
+mb: thrID: 6	| f2L	| i: 28 | omega2_bar [m**2 s**-1]: 6.09361e-05 | err: 3.99180e-06
+mb: thrID: 6	| f2L	| i: 29 | omega2_bar [m**2 s**-1]: 6.09362e-05 | err: 2.54042e-06
+mb: thrID: 6	| f2L	| i: 30 | omega2_bar [m**2 s**-1]: 6.09363e-05 | err: 1.61675e-06
+mb: thrID: 6	| f2L	| i: 31 | omega2_bar [m**2 s**-1]: 6.09364e-05 | err: 1.02892e-06
+mb: thrID: 6	| f2L	| i: 32 | omega2_bar [m**2 s**-1]: 6.09364e-05 | err: 6.54815e-07
+mb: thrID: 6	| Scheme f2L converged in 33 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 7.47574e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 7.30995e+00 | err: 2.21772e-02
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 7.31937e+00 | err: 1.28872e-03
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 7.31884e+00 | err: 7.22423e-05
+mb: thrID: 0	| f0	| i: 5 | avg_en [eV]: 7.31887e+00 | err: 4.05809e-06
+mb: thrID: 0	| f0	| i: 6 | avg_en [eV]: 7.31887e+00 | err: 2.27930e-07
+mb: thrID: 0	| Scheme f0 converged in 7 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 12	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 4.63810e+24 | err: 0.00000e+00
+mb: thrID: 0	| f1L	| i: 1 | omega1 [m s^-1]: 1.53924e+05 | err: 3.76296e-02
+mb: thrID: 0	| f1L	| i: 2 | omega1 [m s^-1]: 1.57963e+05 | err: 2.62391e-02
+mb: thrID: 0	| f1L	| i: 3 | omega1 [m s^-1]: 1.60886e+05 | err: 1.84996e-02
+mb: thrID: 0	| f1L	| i: 4 | omega1 [m s^-1]: 1.63000e+05 | err: 1.31421e-02
+mb: thrID: 0	| f1L	| i: 5 | omega1 [m s^-1]: 1.64530e+05 | err: 9.38544e-03
+mb: thrID: 0	| f1L	| i: 6 | omega1 [m s^-1]: 1.65637e+05 | err: 6.72759e-03
+mb: thrID: 0	| f1L	| i: 7 | omega1 [m s^-1]: 1.66437e+05 | err: 4.83514e-03
+mb: thrID: 0	| f1L	| i: 8 | omega1 [m s^-1]: 1.67017e+05 | err: 3.48157e-03
+mb: thrID: 0	| f1L	| i: 9 | omega1 [m s^-1]: 1.67436e+05 | err: 2.51031e-03
+mb: thrID: 0	| f1L	| i: 10 | omega1 [m s^-1]: 1.67740e+05 | err: 1.81176e-03
+mb: thrID: 0	| f1L	| i: 11 | omega1 [m s^-1]: 1.67959e+05 | err: 1.30851e-03
+mb: thrID: 0	| f1L	| i: 12 | omega1 [m s^-1]: 1.68118e+05 | err: 9.45518e-04
+mb: thrID: 0	| f1L	| i: 13 | omega1 [m s^-1]: 1.68233e+05 | err: 6.83473e-04
+mb: thrID: 0	| f1L	| i: 14 | omega1 [m s^-1]: 1.68316e+05 | err: 4.94181e-04
+mb: thrID: 0	| f1L	| i: 15 | omega1 [m s^-1]: 1.68376e+05 | err: 3.57382e-04
+mb: thrID: 0	| f1L	| i: 16 | omega1 [m s^-1]: 1.68420e+05 | err: 2.58488e-04
+mb: thrID: 0	| f1L	| i: 17 | omega1 [m s^-1]: 1.68451e+05 | err: 1.86977e-04
+mb: thrID: 0	| f1L	| i: 18 | omega1 [m s^-1]: 1.68474e+05 | err: 1.35260e-04
+mb: thrID: 0	| f1L	| i: 19 | omega1 [m s^-1]: 1.68490e+05 | err: 9.78526e-05
+mb: thrID: 0	| f1L	| i: 20 | omega1 [m s^-1]: 1.68502e+05 | err: 7.07932e-05
+mb: thrID: 0	| f1L	| i: 21 | omega1 [m s^-1]: 1.68511e+05 | err: 5.12180e-05
+mb: thrID: 0	| f1L	| i: 22 | omega1 [m s^-1]: 1.68517e+05 | err: 3.70563e-05
+mb: thrID: 0	| f1L	| i: 23 | omega1 [m s^-1]: 1.68522e+05 | err: 2.68107e-05
+mb: thrID: 0	| f1L	| i: 24 | omega1 [m s^-1]: 1.68525e+05 | err: 1.93980e-05
+mb: thrID: 0	| f1L	| i: 25 | omega1 [m s^-1]: 1.68527e+05 | err: 1.40349e-05
+mb: thrID: 0	| f1L	| i: 26 | omega1 [m s^-1]: 1.68529e+05 | err: 1.01547e-05
+mb: thrID: 0	| f1L	| i: 27 | omega1 [m s^-1]: 1.68530e+05 | err: 7.34723e-06
+mb: thrID: 0	| f1L	| i: 28 | omega1 [m s^-1]: 1.68531e+05 | err: 5.31596e-06
+mb: thrID: 0	| f1L	| i: 29 | omega1 [m s^-1]: 1.68532e+05 | err: 3.84628e-06
+mb: thrID: 0	| f1L	| i: 30 | omega1 [m s^-1]: 1.68532e+05 | err: 2.78292e-06
+mb: thrID: 0	| f1L	| i: 31 | omega1 [m s^-1]: 1.68533e+05 | err: 2.01355e-06
+mb: thrID: 0	| f1L	| i: 32 | omega1 [m s^-1]: 1.68533e+05 | err: 1.45688e-06
+mb: thrID: 0	| f1L	| i: 33 | omega1 [m s^-1]: 1.68533e+05 | err: 1.05410e-06
+mb: thrID: 0	| f1L	| i: 34 | omega1 [m s^-1]: 1.68533e+05 | err: 7.62684e-07
+mb: thrID: 0	| Scheme f1L converged in 35 iterations.
+mb: thrID: 5	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: -3.26995e-05 | err: 4.86480e-01
+mb: thrID: 13	| f2T	| i: 1 | omega2 [m**2 s**-1]: 3.91036e-04 | err: 1.07929e-02
+mb: thrID: 5	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: -1.02859e-05 | err: 6.85441e-01
+mb: thrID: 13	| f2T	| i: 2 | omega2 [m**2 s**-1]: 3.94057e-04 | err: 7.72571e-03
+mb: thrID: 5	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 5.93115e-06 | err: 4.23373e-01
+mb: thrID: 13	| f2T	| i: 3 | omega2 [m**2 s**-1]: 3.96243e-04 | err: 5.54700e-03
+mb: thrID: 5	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 1.76648e-05 | err: 1.97832e+00
+mb: thrID: 13	| f2T	| i: 4 | omega2 [m**2 s**-1]: 3.97825e-04 | err: 3.99133e-03
+mb: thrID: 5	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 2.61546e-05 | err: 4.80603e-01
+mb: thrID: 13	| f2T	| i: 5 | omega2 [m**2 s**-1]: 3.98969e-04 | err: 2.87640e-03
+mb: thrID: 5	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 3.22973e-05 | err: 2.34860e-01
+mb: thrID: 13	| f2T	| i: 6 | omega2 [m**2 s**-1]: 3.99797e-04 | err: 2.07521e-03
+mb: thrID: 5	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 3.67418e-05 | err: 1.37611e-01
+mb: thrID: 13	| f2T	| i: 7 | omega2 [m**2 s**-1]: 4.00396e-04 | err: 1.49839e-03
+mb: thrID: 5	| f2L	| i: 8 | omega2_bar [m**2 s**-1]: 3.99575e-05 | err: 8.75228e-02
+mb: thrID: 13	| f2T	| i: 8 | omega2 [m**2 s**-1]: 4.00829e-04 | err: 1.08252e-03
+mb: thrID: 5	| f2L	| i: 9 | omega2_bar [m**2 s**-1]: 4.22842e-05 | err: 5.82297e-02
+mb: thrID: 13	| f2T	| i: 9 | omega2 [m**2 s**-1]: 4.01143e-04 | err: 7.82398e-04
+mb: thrID: 5	| f2L	| i: 10 | omega2_bar [m**2 s**-1]: 4.39677e-05 | err: 3.98131e-02
+mb: thrID: 13	| f2T	| i: 10 | omega2 [m**2 s**-1]: 4.01370e-04 | err: 5.65652e-04
+mb: thrID: 5	| f2L	| i: 11 | omega2_bar [m**2 s**-1]: 4.51857e-05 | err: 2.77034e-02
+mb: thrID: 13	| f2T	| i: 11 | omega2 [m**2 s**-1]: 4.01534e-04 | err: 4.09040e-04
+mb: thrID: 5	| f2L	| i: 12 | omega2_bar [m**2 s**-1]: 4.60671e-05 | err: 1.95041e-02
+mb: thrID: 13	| f2T	| i: 12 | omega2 [m**2 s**-1]: 4.01653e-04 | err: 2.95835e-04
+mb: thrID: 5	| f2L	| i: 13 | omega2_bar [m**2 s**-1]: 4.67047e-05 | err: 1.38420e-02
+mb: thrID: 13	| f2T	| i: 13 | omega2 [m**2 s**-1]: 4.01739e-04 | err: 2.13985e-04
+mb: thrID: 5	| f2L	| i: 14 | omega2_bar [m**2 s**-1]: 4.71661e-05 | err: 9.87849e-03
+mb: thrID: 13	| f2T	| i: 14 | omega2 [m**2 s**-1]: 4.01801e-04 | err: 1.54793e-04
+mb: thrID: 5	| f2L	| i: 15 | omega2_bar [m**2 s**-1]: 4.74999e-05 | err: 7.07755e-03
+mb: thrID: 13	| f2T	| i: 15 | omega2 [m**2 s**-1]: 4.01846e-04 | err: 1.11981e-04
+mb: thrID: 5	| f2L	| i: 16 | omega2_bar [m**2 s**-1]: 4.77414e-05 | err: 5.08489e-03
+mb: thrID: 13	| f2T	| i: 16 | omega2 [m**2 s**-1]: 4.01879e-04 | err: 8.10138e-05
+mb: thrID: 5	| f2L	| i: 17 | omega2_bar [m**2 s**-1]: 4.79162e-05 | err: 3.66050e-03
+mb: thrID: 13	| f2T	| i: 17 | omega2 [m**2 s**-1]: 4.01902e-04 | err: 5.86118e-05
+mb: thrID: 5	| f2L	| i: 18 | omega2_bar [m**2 s**-1]: 4.80426e-05 | err: 2.63885e-03
+mb: thrID: 13	| f2T	| i: 18 | omega2 [m**2 s**-1]: 4.01919e-04 | err: 4.24054e-05
+mb: thrID: 5	| f2L	| i: 19 | omega2_bar [m**2 s**-1]: 4.81341e-05 | err: 1.90429e-03
+mb: thrID: 13	| f2T	| i: 19 | omega2 [m**2 s**-1]: 4.01931e-04 | err: 3.06807e-05
+mb: thrID: 5	| f2L	| i: 20 | omega2_bar [m**2 s**-1]: 4.82003e-05 | err: 1.37521e-03
+mb: thrID: 13	| f2T	| i: 20 | omega2 [m**2 s**-1]: 4.01940e-04 | err: 2.21980e-05
+mb: thrID: 5	| f2L	| i: 21 | omega2_bar [m**2 s**-1]: 4.82482e-05 | err: 9.93648e-04
+mb: thrID: 13	| f2T	| i: 21 | omega2 [m**2 s**-1]: 4.01947e-04 | err: 1.60607e-05
+mb: thrID: 5	| f2L	| i: 22 | omega2_bar [m**2 s**-1]: 4.82829e-05 | err: 7.18229e-04
+mb: thrID: 13	| f2T	| i: 22 | omega2 [m**2 s**-1]: 4.01952e-04 | err: 1.16204e-05
+mb: thrID: 5	| f2L	| i: 23 | omega2_bar [m**2 s**-1]: 4.83079e-05 | err: 5.19294e-04
+mb: thrID: 13	| f2T	| i: 23 | omega2 [m**2 s**-1]: 4.01955e-04 | err: 8.40769e-06
+mb: thrID: 5	| f2L	| i: 24 | omega2_bar [m**2 s**-1]: 4.83261e-05 | err: 3.75534e-04
+mb: thrID: 13	| f2T	| i: 24 | omega2 [m**2 s**-1]: 4.01957e-04 | err: 6.08323e-06
+mb: thrID: 5	| f2L	| i: 25 | omega2_bar [m**2 s**-1]: 4.83392e-05 | err: 2.71611e-04
+mb: thrID: 13	| f2T	| i: 25 | omega2 [m**2 s**-1]: 4.01959e-04 | err: 4.40143e-06
+mb: thrID: 5	| f2L	| i: 26 | omega2_bar [m**2 s**-1]: 4.83487e-05 | err: 1.96468e-04
+mb: thrID: 13	| f2T	| i: 26 | omega2 [m**2 s**-1]: 4.01960e-04 | err: 3.18459e-06
+mb: thrID: 5	| f2L	| i: 27 | omega2_bar [m**2 s**-1]: 4.83556e-05 | err: 1.42124e-04
+mb: thrID: 13	| f2T	| i: 27 | omega2 [m**2 s**-1]: 4.01961e-04 | err: 2.30416e-06
+mb: thrID: 5	| f2L	| i: 28 | omega2_bar [m**2 s**-1]: 4.83605e-05 | err: 1.02818e-04
+mb: thrID: 13	| f2T	| i: 28 | omega2 [m**2 s**-1]: 4.01962e-04 | err: 1.66715e-06
+mb: thrID: 5	| f2L	| i: 29 | omega2_bar [m**2 s**-1]: 4.83641e-05 | err: 7.43849e-05
+mb: thrID: 13	| f2T	| i: 29 | omega2 [m**2 s**-1]: 4.01963e-04 | err: 1.20624e-06
+mb: thrID: 5	| f2L	| i: 30 | omega2_bar [m**2 s**-1]: 4.83667e-05 | err: 5.38163e-05
+mb: thrID: 13	| f2T	| i: 30 | omega2 [m**2 s**-1]: 4.01963e-04 | err: 8.72763e-07
+mb: thrID: 13	| Scheme f2T converged in 31 iterations.
+mb: thrID: 5	| f2L	| i: 31 | omega2_bar [m**2 s**-1]: 4.83686e-05 | err: 3.89361e-05
+mb: thrID: 5	| f2L	| i: 32 | omega2_bar [m**2 s**-1]: 4.83700e-05 | err: 2.81707e-05
+mb: thrID: 5	| f2L	| i: 33 | omega2_bar [m**2 s**-1]: 4.83710e-05 | err: 2.03820e-05
+mb: thrID: 5	| f2L	| i: 34 | omega2_bar [m**2 s**-1]: 4.83717e-05 | err: 1.47468e-05
+mb: thrID: 5	| f2L	| i: 35 | omega2_bar [m**2 s**-1]: 4.83722e-05 | err: 1.06698e-05
+mb: thrID: 5	| f2L	| i: 36 | omega2_bar [m**2 s**-1]: 4.83726e-05 | err: 7.71990e-06
+mb: thrID: 5	| f2L	| i: 37 | omega2_bar [m**2 s**-1]: 4.83729e-05 | err: 5.58560e-06
+mb: thrID: 5	| f2L	| i: 38 | omega2_bar [m**2 s**-1]: 4.83730e-05 | err: 4.04137e-06
+mb: thrID: 5	| f2L	| i: 39 | omega2_bar [m**2 s**-1]: 4.83732e-05 | err: 2.92408e-06
+mb: thrID: 5	| f2L	| i: 40 | omega2_bar [m**2 s**-1]: 4.83733e-05 | err: 2.11568e-06
+mb: thrID: 5	| f2L	| i: 41 | omega2_bar [m**2 s**-1]: 4.83734e-05 | err: 1.53077e-06
+mb: thrID: 5	| f2L	| i: 42 | omega2_bar [m**2 s**-1]: 4.83734e-05 | err: 1.10757e-06
+mb: thrID: 5	| f2L	| i: 43 | omega2_bar [m**2 s**-1]: 4.83735e-05 | err: 8.01368e-07
+mb: thrID: 5	| Scheme f2L converged in 44 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Created output location: 'ArN2_10pct_6terms' in directory: 'C:\Users\dptro\Documents\Work\Python\ArgonCrModel\InputData\MultiBolt' 

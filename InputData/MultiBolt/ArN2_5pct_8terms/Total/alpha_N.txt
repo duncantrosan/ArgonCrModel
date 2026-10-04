@@ -1,0 +1,15 @@
+# The density-reduced total ionization growth coefficient.
+# col_1: E_N [Td], col_2: alpha_N [m**2]
+E_N	alpha_N
+3.00000e+00	nan
+5.00000e+00	nan
+7.00000e+00	nan
+1.00000e+01	nan
+1.50000e+01	nan
+2.00000e+01	nan
+3.00000e+01	nan
+5.00000e+01	nan
+7.50000e+01	nan
+1.00000e+02	nan
+1.50000e+02	nan
+2.00000e+02	nan

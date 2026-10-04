@@ -18,8 +18,10 @@ discharge is ignored for now (pure-Ar CR model at the total pressure).
 3. Model: CR model on an (EEDF, Ne) grid at the sweep pressure.  The EEDF axis
    is either a Maxwellian Te sweep (eedf='maxwell') or the E/N sweep of a
    MultiBolt export (eedf=<run folder>; Boltzmann EEDFs with the inelastic
-   depletion of the tail).  Everything is reported against Te_eff = 2/3 <E>
-   (= Te for a Maxwellian).  Stored per grid point: observed line intensities
+   depletion of the tail) or of a BOLSIG+ library (he.RunBolsig).  A BOLSIG+
+   library built with e-e and/or superelastic collisions (he.BuildBolsigLibrary)
+   has one EEDF per (E/N, Ne) grid point.  Everything is reported against
+   Te_eff = 2/3 <E> (= Te for a Maxwellian).  Stored per grid point: observed line intensities
    n_u A eta (photons; eta is the escape factor of the line, same as in the
    balance equations), level densities, and the fraction of each level's
    production that is direct excitation from the ground state.  Cached.
@@ -79,21 +81,30 @@ CONFIG = dict(
     min_rating=4,                       # unrated lines pass on the automatic flags
     wl_ranges=[(400.0, 475.0), (690.0, 860.0)],     # 5p -> 4s and 4p -> 4s lines
     merge_nm=0.10,                      # model lines closer than this form one feature
-    exclude_wl=(),                      # air wavelengths [nm] to drop by hand
+    exclude_wl=(852.144,),              # air wavelengths [nm] to drop by hand; 852.14 (4p7-4s4)
+                                        # sits at the edge of an echelle order (unreliable response)
     # --- measurement ---------------------------------------------------------
     sweeps=als.CONFIG["sweeps"],
     export_flags=als.CONFIG["export_flags"],    # spectra with other header flags are dropped
     window_nm=1.5,                      # catalogue lines within this of a fitted line are fitted too
     reuse_measurements=True,
+    measure_dir=None,                   # folder of the measurement cache; None = outdir
     valid_status=("ok", "weak", "blend", "not_detected"),   # allowed component statuses in a feature
     max_rel_err=0.15,                   # feature dropped from a spectrum above this relative error
     # --- CR model ------------------------------------------------------------
     P_Torr=1.0, Tg=300.0, R=0.04,       # both sweeps are at 1 Torr
     trap_lines="all",                   # see SolveDirect in MainFileV2
-    eedf=MULTIBOLT_RUN,                 # 'maxwell', or a MultiBolt export folder (E/N sweep)
+    N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
+                                        # levels by N2 and dilution of the Ar ground state, as in
+                                        # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
+    eedf=MULTIBOLT_RUN,                 # 'maxwell', a MultiBolt export folder (E/N sweep), or a
+                                        # BOLSIG+ library folder (he.RunBolsig / he.BuildBolsigLibrary;
+                                        # E/N x Ne libraries must use the same Ne_grid)
     Te_grid=np.geomspace(0.5, 6.0, 32), # eV, eedf='maxwell' only
     EN_range=None,                      # (min, max) Td of the MultiBolt sweep to use; None = all
     min_eedf_Emax=15.0,                 # eV; drop EEDFs exported only below this (no 4p/5p excitation)
+    min_bolsig_Emax=11.6,               # eV; BOLSIG+ E/N rows whose tail ends below the 4s threshold
+                                        # (f < precision x f(0) there) give no excitation at all
     Ne_grid=np.geomspace(1e15, 3e19, 28),   # m^-3
     reuse_model=True,
     # --- fit -----------------------------------------------------------------
@@ -138,12 +149,66 @@ def load_cr_model(outdir):
     return cr, he, ModelData, interp
 
 
+def apply_nitrogen(MD, cfg, he):
+    """N2 admixture cfg['N2_percent'] (Scripts/MainFileWithNitrogen.py): sets the loss of
+    the Ar(4s) levels by N2 quenching on MD and returns the Ar partial pressure [Torr]
+    to give CRModel (dilution of the Ar ground state). Metastable diffusion keeps the
+    total pressure. Rate coefficients: median of InputData/Ar_1s_quenching_data.csv."""
+    x = cfg.get("N2_percent", 0.0) / 100
+    N = he.Torr2Volume(cfg["P_Torr"], cfg["Tg"])
+    Q = he.ImportArQuenchingData("N2", verbose=False) if x > 0 else {}
+    for lbl, s in MD.items():
+        q = Q.get(lbl)
+        s["GasQuenching_s^-1"] = q["kQ"] * x * N + q["kQM"] * x * N * (1 - x) * N if q else 0.0
+    return (1 - x) * cfg["P_Torr"]
+
+
+def cr_density_solver(cfg=CONFIG):
+    """Function (eedf, Ne) -> {level: density [m^-3]} of the CR model with the
+    settings of cfg, e.g. for the superelastic populations of he.BuildBolsigLibrary."""
+    cr, he, MD, interp = load_cr_model(cfg["outdir"])
+    MD = he.AddDiffusionLoss(MD, cfg["P_Torr"], cfg["Tg"], cfg["R"])
+    P_Ar = apply_nitrogen(MD, cfg, he)
+
+    def solve(eedf, Ne):
+        with contextlib.redirect_stdout(io.StringIO()):
+            D, _, _, _ = cr["CRModel"](MD, eedf, float(Ne), P_Ar, cfg["Tg"], cfg["R"],
+                                       interp, trap_lines=cfg["trap_lines"])
+        return {lbl: s["density_m^-3"] for lbl, s in D.items()}
+    return solve
+
+
 def eedf_axis(cfg=CONFIG):
-    """(EEDF inputs for CRModel, axis values x, axis name, Te_eff per x)."""
+    """(EEDF inputs for CRModel, axis values x, axis name, Te_eff).
+
+    One EEDF per x, or - for a BOLSIG+ library on an E/N x Ne grid (EEDF depends on
+    Ne through e-e / superelastic collisions) - rows eedfs[i][j] on cfg["Ne_grid"],
+    with Te_eff of shape (nx, nNe).  BOLSIG+ tails are computed down to the solver
+    precision (he.BOLSIG_DEFAULTS); rows ending below min_bolsig_Emax (no excitation at all)
+    are dropped, and min_eedf_Emax only applies to MultiBolt."""
     if cfg["eedf"] == "maxwell":
         Te = np.asarray(cfg["Te_grid"], float)
         return [float(t) for t in Te], Te, "Te [eV]", Te
     he = _helpers()
+    if he.IsBolsigLibrary(cfg["eedf"]):
+        lib = he.ImportBolsigLibrary(cfg["eedf"], verbose=False)
+        x = lib["EN_Td"]
+        lo, hi = cfg["EN_range"] or (-np.inf, np.inf)
+        rows = [r if isinstance(r, list) else [r] for r in lib["EEDFs"]]
+        E_max = np.array([min(e["E"][e["EEPF"] > 0].max() for e in r) for r in rows])
+        keep = np.flatnonzero((x >= lo) & (x <= hi) & (E_max >= cfg["min_bolsig_Emax"]))
+        E = [lib["EEDFs"][i] for i in keep]
+        if lib["kind"] == "2D":
+            if len(lib["Ne"]) != len(cfg["Ne_grid"]) or not np.allclose(lib["Ne"], cfg["Ne_grid"], rtol=1e-6):
+                raise ValueError(f"{cfg['eedf']}: library Ne grid differs from cfg['Ne_grid'] - "
+                                 "build the library on the same Ne grid")
+            Te_eff = np.array([[e["Te_eff"] for e in row] for row in E])
+        else:
+            Te_eff = np.array([e["Te_eff"] for e in E])
+        if np.any(np.diff(Te_eff, axis=0) <= 0):     # e.g. microwave EEDFs (Ramsauer minimum)
+            print(f"note: Te_eff of {os.path.basename(str(cfg['eedf']))} is not monotonic in E/N; "
+                  "Te is reported from the posterior")
+        return E, x[keep], "E/N [Td]", Te_eff
     with contextlib.redirect_stdout(io.StringIO()):
         E = he.ImportMultiBoltEEDFs(cfg["eedf"], verbose=False)
     x = np.array([e["sweep"]["value"] for e in E], float)
@@ -171,6 +236,8 @@ def _model_lines(MD):
 
 def _table_path(cfg):
     tag = "maxwell" if cfg["eedf"] == "maxwell" else os.path.basename(os.path.normpath(cfg["eedf"]))
+    if cfg.get("N2_percent", 0.0):
+        tag += f"_N2_{cfg['N2_percent']:g}pct"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -182,7 +249,8 @@ def _cached_subset(tab, cfg, x):
     try:
         same = (np.allclose(tab["Ne_grid"], cfg["Ne_grid"])
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
-                and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"]))
+                and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
+                and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0)))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -204,6 +272,7 @@ def build_model_table(cfg=CONFIG):
     cr, he, MD, interp = load_cr_model(cfg["outdir"])
     P, Tg, R = cfg["P_Torr"], cfg["Tg"], cfg["R"]
     MD = he.AddDiffusionLoss(MD, P, Tg, R)
+    P_Ar = apply_nitrogen(MD, cfg, he)
     levels = [l for l, s in MD.items() if s["kind"] != "ground"]
     lines = _model_lines(MD)
     Ne = cfg["Ne_grid"]
@@ -224,10 +293,11 @@ def build_model_table(cfg=CONFIG):
 
     rad_of = {(u, l): next(r for r in MD[u]["RadiativeDecay"] if r["direction"] == "loss" and r["partner"] == l)
               for u, l, _, _ in lines}
-    for i, eedf in enumerate(eedfs):
+    for i, eedf_row in enumerate(eedfs):
         for j, ne in enumerate(Ne):
+            eedf = eedf_row[j] if isinstance(eedf_row, list) else eedf_row   # E/N x Ne library
             with contextlib.redirect_stdout(io.StringIO()):
-                D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P, Tg, R, interp,
+                D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp,
                                                 trap_lines=cfg["trap_lines"])
             conv[i, j] = solver["converged"]
             ng = D["ground"]["density_m^-3"]
@@ -241,10 +311,12 @@ def build_model_table(cfg=CONFIG):
             for k, (u, l, wl, A) in enumerate(lines):
                 I_thin[i, j, k] = D[u]["density_m^-3"] * A
                 I_obs[i, j, k] = I_thin[i, j, k] * escape(D[u], D[l], rad_of[(u, l)])
-        print(f"  CR grid: {x_name} = {x[i]:.3g} (Te_eff {Te_eff[i]:.2f} eV) done ({i + 1}/{len(x)}), "
+        te = (f"{Te_eff[i]:.2f}" if np.ndim(Te_eff) == 1
+              else f"{np.min(Te_eff[i]):.2f}-{np.max(Te_eff[i]):.2f}")
+        print(f"  CR grid: {x_name} = {x[i]:.3g} (Te_eff {te} eV) done ({i + 1}/{len(x)}), "
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
-               P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"],
+               P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),
@@ -294,7 +366,7 @@ def select_features(tab, cfg=CONFIG):
 # ----------------------------------------------------------------------------
 def measure(comps, cfg=CONFIG):
     mcfg = dict(als.CONFIG, sweeps=cfg["sweeps"], window_nm=cfg["window_nm"],
-                reuse_measurements=cfg["reuse_measurements"], outdir=cfg["outdir"],
+                reuse_measurements=cfg["reuse_measurements"], outdir=cfg.get("measure_dir") or cfg["outdir"],
                 measure_cache="ar_line_measurements.csv", export_flags=cfg["export_flags"])
     return als.filter_export_flags(als.measure_sweeps(comps[["species", "wl_air"]].drop_duplicates(), mcfg), mcfg)
 
@@ -358,8 +430,12 @@ def fine_grid(tab, cfg=CONFIG):
 
 
 def te_eff_fine(tab, grid):
-    """Te_eff [eV] on the fine EEDF axis (Te itself for a Maxwellian)."""
-    return np.interp(grid[0], np.log(tab["x_grid"]), tab["Te_eff"])
+    """Te_eff [eV] on the fine EEDF axis (Te itself for a Maxwellian); on the fine
+    (x, Ne) grid, shape (nX, nNe), when the EEDF depends on Ne (BOLSIG+ E/N x Ne library)."""
+    lx = np.log(tab["x_grid"])
+    if np.ndim(tab["Te_eff"]) == 2:
+        return RectBivariateSpline(lx, np.log(tab["Ne_grid"]), tab["Te_eff"], kx=1, ky=1)(*grid)
+    return np.interp(grid[0], lx, tab["Te_eff"])
 
 
 def on_fine_grid(tab, values, cfg=CONFIG, k=3):
@@ -422,7 +498,14 @@ def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
     pX, pN = post.sum(1), post.sum(0)
     qX = _wquantile(fX, pX, [0.16, 0.5, 0.84])
     qN = np.exp(_wquantile(fN, pN, [0.16, 0.5, 0.84]))
-    qT = np.interp(qX, fX, Te_f)                       # Te_eff is monotonic in x
+    if np.ndim(Te_f) == 1 and np.all(np.diff(Te_f) > 0):
+        qT = np.interp(qX, fX, Te_f)                   # Te_eff is monotonic in x
+        Te_best = float(Te_f[ib[0]])
+    else:                                              # Te_eff(x, Ne) or not monotonic in x:
+        T2 = np.broadcast_to(Te_f[:, None], post.shape) if np.ndim(Te_f) == 1 else Te_f
+        o = np.argsort(T2, axis=None)                  # quantiles over the posterior
+        qT = _wquantile(T2.ravel()[o], post.ravel()[o], [0.16, 0.5, 0.84])
+        Te_best = float(T2[ib])
     mX, mN = (pX * fX).sum(), (pN * fN).sum()
     cov = (post * (fX[:, None] - mX) * (fN[None, :] - mN)).sum()
     corr = cov / np.sqrt((pX * (fX - mX) ** 2).sum() * (pN * (fN - mN) ** 2).sum())
@@ -430,7 +513,7 @@ def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
     resid = D[ib] - X @ beta
     edge = lambda p: p[:3].sum() + p[-3:].sum()
     out = dict(n_spec=n_spec, n_points=n, n_feat=len(np.unique(li)),
-               Te_best=float(Te_f[ib[0]]), Te_lo=qT[0], Te_med=qT[1], Te_hi=qT[2],
+               Te_best=Te_best, Te_lo=qT[0], Te_med=qT[1], Te_hi=qT[2],
                x_best=float(np.exp(fX[ib[0]])), x_lo=np.exp(qX[0]), x_med=np.exp(qX[1]), x_hi=np.exp(qX[2]),
                Ne_best=float(np.exp(fN[ib[1]])), Ne_lo=qN[0], Ne_med=qN[1], Ne_hi=qN[2],
                corr_lnx_lnNe=corr, chi2_min=chi2_min, dof=dof,
@@ -497,6 +580,10 @@ def plot_sweeps(cond, spec, tab, cfg, path):
 
 def plot_posteriors(cond, posts, tab, grid, cfg, path):
     Te_f, Ne_f = te_eff_fine(tab, grid), np.exp(grid[1])
+    if np.ndim(Te_f) == 2:                     # Te_eff(x, Ne): contour on 2D coordinates
+        X, Y, T = Te_f, np.broadcast_to(Ne_f, Te_f.shape), lambda p: p
+    else:
+        X, Y, T = Te_f, Ne_f, lambda p: p.T
     sweeps = cfg["sweeps"]
     fig, axs = plt.subplots(1, len(sweeps), figsize=(6.5 * len(sweeps), 5.5), squeeze=False)
     for ax, sw in zip(axs[0], sweeps):
@@ -504,7 +591,7 @@ def plot_posteriors(cond, posts, tab, grid, cfg, path):
         cols = plt.cm.viridis(np.linspace(0, 0.9, max(len(c), 1)))
         for col, r in zip(cols, c.itertuples()):
             post = posts[f"{sw['name']}|{r.x:g}"]
-            ax.contour(Te_f, Ne_f, post.T, levels=[hpd_level(post)], colors=[col])
+            ax.contour(X, Y, T(post), levels=[hpd_level(post)], colors=[col])
             ax.plot(r.Te_best, r.Ne_best, "o", color=col, ms=5, label=f"{r.x:g}")
         ax.set_xscale("log"); ax.set_yscale("log")
         ax.set_xlabel(te_label(tab), fontsize=9); ax.set_ylabel("$N_e$ [m$^{-3}$]")

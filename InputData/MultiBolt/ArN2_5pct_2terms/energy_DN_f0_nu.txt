@@ -1,0 +1,15 @@
+# The conventional (isotropic) diffusion coefficient density-product for energy (includes nonconservative effects).
+# col_1: E_N [Td], col_2: energy_DN_f0_nu [m^-1 s^-1]
+E_N	energy_DN_f0_nu
+3.00000e+00	1.02238e+25
+5.00000e+00	9.75645e+24
+7.00000e+00	8.82030e+24
+1.00000e+01	7.24227e+24
+1.50000e+01	6.10250e+24
+2.00000e+01	5.68373e+24
+3.00000e+01	5.34534e+24
+5.00000e+01	5.10368e+24
+7.50000e+01	5.00337e+24
+1.00000e+02	4.97488e+24
+1.50000e+02	5.00326e+24
+2.00000e+02	5.08905e+24

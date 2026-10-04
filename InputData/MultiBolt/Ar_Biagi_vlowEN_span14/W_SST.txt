@@ -1,0 +1,11 @@
+# (SST only) The drift velocity of electrons per SST conditions.
+# col_1: E_N [Td], col_2: W_SST [m s^-1]
+E_N	W_SST
+1.00000e+00	nan
+1.25000e+00	nan
+1.50000e+00	nan
+1.75000e+00	nan
+2.00000e+00	nan
+2.25000e+00	nan
+2.50000e+00	nan
+3.00000e+00	nan

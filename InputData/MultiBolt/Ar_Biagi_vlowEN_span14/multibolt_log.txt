@@ -1,0 +1,276 @@
+C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master\MultiBolt-master\bin\multibolt_win64.exe --LXCat_Xsec_fid C:\Users\dptro\Documents\Work\Python\Multibolt\MultiBolt-master\MultiBolt-master\cross-sections\Biagi_Ar.txt --species Ar 1.0 --export_location C:\Users\dptro\Documents\Work\Python\ArgonCrModel\InputData\MultiBolt --export_name Ar_Biagi_vlowEN_span14 --sweep_option EN_Td --sweep_style def 1 1.25 1.5 1.75 2 2.25 2.5 3 --model HD+GE --N_terms 6 --Nu 1000 --p_Torr 1 --T_K 300 --EN_Td 1 --initial_eV_max 100 --USE_ENERGY_REMAP --remap_target_order_span 14 --remap_grid_trial_max 10 --conv_err 1e-6 --weight_f0 1.0 --iter_max 100 --iter_min 4
+
+
+mb: thrID: 0	| *** 
+mb: thrID: 0	| *** MULTIBOLT
+mb: thrID: 0	| *** A multi-term Boltzmann equation solver
+mb: thrID: 0	| *** v3.1.4
+mb: thrID: 0	| *** Most recent development: 10/2024
+mb: thrID: 0	| *** 
+mb: thrID: 0	| MultiBolt is using up to 1 thread(s).
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.39695e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.39695e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.39695e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.39695e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.02603e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.39753e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 0	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 1.13612e+25 | err: 0.00000e+00
+mb: thrID: 3	| f1L	| i: 1 | omega1 [m s^-1]: 2.94284e+03 | err: 0.00000e+00
+mb: thrID: 3	| Scheme f1L converged in 1 iterations.
+mb: thrID: 0	| f2T	| i: 1 | omega2 [m**2 s**-1]: 7.57975e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2T converged in 1 iterations.
+mb: thrID: 15	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 4.24197e-04 | err: 0.00000e+00
+mb: thrID: 15	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.65642e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.65642e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.65642e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.65642e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.13614e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.65689e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 8	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 1.05966e+25 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 3.09296e+03 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f1L converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.96431e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 7.06407e-04 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.88633e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 2.88633e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 2.88633e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 2.88633e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.20621e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 2.88663e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 1	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 1.00160e+25 | err: 0.00000e+00
+mb: thrID: 11	| f1L	| i: 1 | omega1 [m s^-1]: 3.21977e+03 | err: 0.00000e+00
+mb: thrID: 11	| Scheme f1L converged in 1 iterations.
+mb: thrID: 11	| f2T	| i: 1 | omega2 [m**2 s**-1]: 6.67299e-04 | err: 0.00000e+00
+mb: thrID: 11	| Scheme f2T converged in 1 iterations.
+mb: thrID: 1	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.75287e-04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.09489e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.09489e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.09489e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.09489e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.26627e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.09499e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.42455e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.09500e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.22135e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.09499e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.37402e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.09500e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 9	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 9.55306e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 3.33155e+03 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f1L converged in 1 iterations.
+mb: thrID: 9	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.58265e-04 | err: 0.00000e+00
+mb: thrID: 9	| Scheme f2L converged in 1 iterations.
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 6.36224e-04 | err: 0.00000e+00
+mb: thrID: 1	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28745e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.28745e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.28745e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.28745e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.30631e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28738e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.46959e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28739e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.27468e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28738e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks very large; grid minimum is being raised significantly. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 7.01073e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28752e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.30179e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28738e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.46452e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28739e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.27467e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28738e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks very large; grid minimum is being raised significantly. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 7.01069e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.28752e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.28752e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.30179e+01 eV.
+mb: thrID: 0	| No more remap, reached remap trial max.
+mb: thrID: 6	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 1.70513e+24 | err: 0.00000e+00
+mb: thrID: 5	| f1L	| i: 1 | omega1 [m s^-1]: 1.18724e+02 | err: 0.00000e+00
+mb: thrID: 5	| Scheme f1L converged in 1 iterations.
+mb: thrID: 5	| f2T	| i: 1 | omega2 [m**2 s**-1]: 1.07960e-04 | err: 0.00000e+00
+mb: thrID: 5	| Scheme f2T converged in 1 iterations.
+mb: thrID: 6	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 7.18668e-05 | err: 0.00000e+00
+mb: thrID: 6	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46766e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.46766e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.46766e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.46766e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.35636e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46743e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.52590e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46744e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.32046e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46742e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks very large; grid minimum is being raised significantly. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 7.26254e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46767e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.46767e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.46767e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.46767e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.34855e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46743e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.51712e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.46744e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 5	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.84634e+24 | err: 0.00000e+00
+mb: thrID: 14	| f1L	| i: 1 | omega1 [m s^-1]: 3.52572e+03 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f1L converged in 1 iterations.
+mb: thrID: 14	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.89089e-04 | err: 0.00000e+00
+mb: thrID: 14	| Scheme f2T converged in 1 iterations.
+mb: thrID: 5	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.31859e-04 | err: 0.00000e+00
+mb: thrID: 5	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63800e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.63800e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.63800e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.63800e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.39640e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63766e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.57095e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63768e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.36573e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63766e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks very large; grid minimum is being raised significantly. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 7.51153e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63798e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.63798e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.63798e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.63798e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.38726e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63766e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.56067e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.63768e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 7	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.56607e+24 | err: 0.00000e+00
+mb: thrID: 11	| f1L	| i: 1 | omega1 [m s^-1]: 3.61285e+03 | err: 0.00000e+00
+mb: thrID: 11	| Scheme f1L converged in 1 iterations.
+mb: thrID: 11	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.70529e-04 | err: 0.00000e+00
+mb: thrID: 11	| Scheme f2T converged in 1 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 3.21197e-04 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f2L converged in 1 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Beginning MultiBolt calculation...
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.95463e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.95463e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.95463e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.95463e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| Tail of f0 looks small; grid maximum is being lowered. f0 will be solved again.
+mb: thrID: 0	| Grid roof was lowered to 1.45646e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.95473e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 1 iterations.
+mb: thrID: 0	| Tail of f0 looks large; grid minimum is being raised a bit. f0 will be solved again.
+mb: thrID: 0	| Grid-max was raised to 1.63851e+01 eV.
+mb: thrID: 0	| f0	| i: 1 | avg_en [eV]: 3.95474e+00 | err: nan
+mb: thrID: 0	| f0	| i: 2 | avg_en [eV]: 3.95474e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 3 | avg_en [eV]: 3.95474e+00 | err: 0.00000e+00
+mb: thrID: 0	| f0	| i: 4 | avg_en [eV]: 3.95474e+00 | err: 0.00000e+00
+mb: thrID: 0	| Scheme f0 converged in 5 iterations.
+mb: thrID: 0	| No more remap, further remap would not change solution.
+mb: thrID: 6	| f1T	| i: 1 | DFTN [m^-1 s^-1]: 8.10260e+24 | err: 0.00000e+00
+mb: thrID: 1	| f1L	| i: 1 | omega1 [m s^-1]: 3.77511e+03 | err: 3.45473e-07
+mb: thrID: 1	| f1L	| i: 2 | omega1 [m s^-1]: 3.77511e+03 | err: 2.94383e-08
+mb: thrID: 1	| f1L	| i: 3 | omega1 [m s^-1]: 3.77511e+03 | err: 2.50848e-09
+mb: thrID: 1	| f1L	| i: 4 | omega1 [m s^-1]: 3.77511e+03 | err: 2.13751e-10
+mb: thrID: 1	| Scheme f1L converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 1 | omega2_bar [m**2 s**-1]: 2.51361e-04 | err: 1.70424e-01
+mb: thrID: 1	| f2T	| i: 1 | omega2 [m**2 s**-1]: 5.40240e-04 | err: 6.47347e-07
+mb: thrID: 0	| f2L	| i: 2 | omega2_bar [m**2 s**-1]: 2.98599e-04 | err: 1.87928e-01
+mb: thrID: 1	| f2T	| i: 2 | omega2 [m**2 s**-1]: 5.40240e-04 | err: 5.51615e-08
+mb: thrID: 0	| f2L	| i: 3 | omega2_bar [m**2 s**-1]: 3.02624e-04 | err: 1.34803e-02
+mb: thrID: 1	| f2T	| i: 3 | omega2 [m**2 s**-1]: 5.40240e-04 | err: 4.70039e-09
+mb: thrID: 1	| f2T	| i: 4 | omega2 [m**2 s**-1]: 5.40240e-04 | err: 4.00528e-10
+mb: thrID: 1	| Scheme f2T converged in 5 iterations.
+mb: thrID: 0	| f2L	| i: 4 | omega2_bar [m**2 s**-1]: 3.02967e-04 | err: 1.13340e-03
+mb: thrID: 0	| f2L	| i: 5 | omega2_bar [m**2 s**-1]: 3.02997e-04 | err: 9.64694e-05
+mb: thrID: 0	| f2L	| i: 6 | omega2_bar [m**2 s**-1]: 3.02999e-04 | err: 8.21951e-06
+mb: thrID: 0	| f2L	| i: 7 | omega2_bar [m**2 s**-1]: 3.02999e-04 | err: 7.00391e-07
+mb: thrID: 0	| Scheme f2L converged in 8 iterations.
+mb: thrID: 0	| Concluded a MultiBolt calculation.
+mb: thrID: 0	| Created output location: 'Ar_Biagi_vlowEN_span14' in directory: 'C:\Users\dptro\Documents\Work\Python\ArgonCrModel\InputData\MultiBolt' 

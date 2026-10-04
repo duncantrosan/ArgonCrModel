@@ -38,9 +38,15 @@ R = 2/100 # Radius in meters
 #                 what the plots use as their x-axis.
 #                 New run with your own cross sections (lands in InputData/MultiBolt):
 #                 he.RunMultiBolt(r'path\to\Ar_set.txt', 'Ar_MySet_EN_sweep', [5, 10, 30, 100])
-EEDF_MODE = 'multibolt'
+#   'bolsig'    : numerical EEDFs from a BOLSIG+ E/N sweep (InputData/Bolsig/<run>), used
+#                 like 'multibolt'. New run: he.RunBolsig(he.BOLSIG_XSEC_FOLDER / 'Biagi_Ar.txt',
+#                 'Ar_MySweep', [2, 5, 10, 50]); with e-e collisions add ionization_degree=1e-6.
+#                 (E/N x Ne libraries from he.BuildBolsigLibrary are read by CRFitNeTe.)
+EEDF_MODE = 'maxwell'
 MULTIBOLT_RUN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..',
                              'InputData', 'MultiBolt', 'Ar_Biagi_EN_sweep')
+BOLSIG_RUN = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..',
+                          'InputData', 'Bolsig', 'Ar_Biagi_bolsig')
 
 
 ## Import preliminary structured data 
@@ -48,6 +54,18 @@ ModelData,RadiationTrappingMatrix = he.GetData()
 
 def GetEta(interp,tau,a):
     return 10**interp(((np.log10(tau), a)))
+
+def GroundQuenchingLoss(Ng):
+    """
+    Loss frequency [s^-1] of a metastable by collisions with ground-state Ar
+    (density Ng [m^-3]), H. Tachibana, Phys. Rev. A 34, 1007 (1986):
+        two-body    Ar(1s5,1s3) + Ar  -> 2Ar         k2 = 2.3e-15 cm^3/s
+        three-body  Ar(1s5,1s3) + 2Ar -> Ar2* + Ar   k3 = 1.4e-32 cm^6/s
+    The three-body term grows as P^2 and passes the two-body term above ~5 Torr.
+    """
+    k2 = 2.3e-21   # m^3/s
+    k3 = 1.4e-44   # m^6/s
+    return k2 * Ng + k3 * Ng**2
 
 def CreateSuperelasticRates(ModelData, eedf):
     """
@@ -360,7 +378,12 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
         n_meta = sum(p['density_m^-3'] for p in InputModel.values()
                      if p['kind'] == 'metastable')
         MetLoss = k_met * n_meta
-        Loss = IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss + DiffusionLoss + MetLoss
+        # Two- and three-body quenching by ground-state Ar (metastables only)
+        QuenchLoss = GroundQuenchingLoss(Ng) if kind == 'metastable' else 0
+        # Quenching by an admixed gas, set by the caller (MainFileWithNitrogen); 0 in pure Ar
+        QuenchLoss += US.get('GasQuenching_s^-1', 0.0)
+        Loss = (IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss + DiffusionLoss
+                + MetLoss + QuenchLoss)
         US['Loss_s^-1'] = Loss
         US['density_m^-3'] = Prod / Loss
 
@@ -403,6 +426,7 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
     S = np.zeros(len(Levels))
     k_met = 6.4e-16   # m^3/s, Ferreira et al. (Ref 31 in Bogaerts)
     n_meta = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'metastable')
+    Ng = next(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'ground')
 
     def Eta(Upper, Lower, Rad):
         if trap_lines == 'ground' and Lower['kind'] != 'ground':
@@ -443,8 +467,10 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
             RadiativeLossSum += US.get('A_untracked_loss', 0.0)
         DiffusionLoss = 1/(US['DiffusionLoss']) if US['kind'] == 'metastable' else 0
         MetLoss = k_met * n_meta
-        US['Loss_s^-1'] = (IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss
-                           + DiffusionLoss + MetLoss)
+        QuenchLoss = GroundQuenchingLoss(Ng) if US['kind'] == 'metastable' else 0
+        QuenchLoss += US.get('GasQuenching_s^-1', 0.0)     # admixed gas (MainFileWithNitrogen)
+        US['Loss_s^-1'] =(IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss
+                           + DiffusionLoss + MetLoss + QuenchLoss)
         M[i, i] -= US['Loss_s^-1']
 
     # Newton step on F(n) = M n + S, where d/dn_m of -k_met n_meta n_i adds
@@ -777,17 +803,17 @@ def voigt_broaden(wl, intensity, delG, delL, npts=4000, pad=5.0):
     return x_out, y_out
 
 
-def PlotSpectrum(EI, delG=0.02, delL=0.005, npts=8000, show_sticks=True):
+def PlotSpectrum(EI, slit_file=he.SLIT_FUNCTION_FILE, show_sticks=True):
     wl = np.array([item['Wavelength'] for item in EI])
     I  = np.array([item['intensity']  for item in EI])
 
     good = np.isfinite(wl) & np.isfinite(I) & (I > 0)
     wl, I = wl[good], I[good]
 
-    x, y = voigt_broaden(wl, I, delG, delL, npts)
+    x, y = he.BroadenWithSlit(wl, I, slit_file)
 
     fig, ax = plt.subplots(figsize=(14, 6))
-    ax.plot(x, y, color='darkred', linewidth=1.2, label='Voigt-broadened')
+    ax.plot(x, y, color='darkred', linewidth=1.2, label='Slit-function broadened')
     if show_sticks:
         # scale sticks to peak height for visual comparison only
         ax.vlines(wl, 0, I * y.max() / I.max(), color='steelblue',
@@ -829,17 +855,18 @@ interp = RegularGridInterpolator(
 if EEDF_MODE == 'maxwell':
     EEDFs = [he.MaxwellianEEDF(t) for t in Te]
     TeLabel = r'$T_e$ [eV]'
-elif EEDF_MODE == 'multibolt':
-    EEDFs = he.ImportMultiBoltEEDFs(MULTIBOLT_RUN)
+elif EEDF_MODE in ('multibolt', 'bolsig'):
+    EEDFs = (he.ImportMultiBoltEEDFs(MULTIBOLT_RUN) if EEDF_MODE == 'multibolt'
+             else he.ImportBolsigEEDFs(BOLSIG_RUN))
     Te = np.array([eedf['Te_eff'] for eedf in EEDFs])   # x-axis for the plots below
     TeLabel = r'$T_{e,\mathrm{eff}} = \frac{2}{3}\langle\varepsilon\rangle$ [eV]'
 else:
-    raise ValueError(f"EEDF_MODE must be 'maxwell' or 'multibolt', not {EEDF_MODE!r}")
+    raise ValueError(f"EEDF_MODE must be 'maxwell', 'multibolt' or 'bolsig', not {EEDF_MODE!r}")
 PlotEEDFs(EEDFs)
 
-Ratio_a = np.zeros((len(Ne), len(Te)))   # 4p'[1/2]0 / 4p[1/2]0
-Ratio_b = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
-Ratio_c = np.zeros((len(Ne), len(Te)))   # 4d[3/2]°  / 4p[1/2]0  (needs 4d added)
+Ratio_a = np.zeros((len(Ne), len(Te)))   # 4p10 / 4p6
+Ratio_b = np.zeros((len(Ne), len(Te)))   # 4d8 / 4p6
+Ratio_c = np.zeros((len(Ne), len(Te)))   # 4d3 / 4p6
 Metastable_4s1 = np.zeros((len(Ne), len(Te)))  # ADD THIS
 Metastable_4s3 = np.zeros((len(Ne), len(Te)))  # ADD THIS
 Resonant_4s2  = np.zeros((len(Ne), len(Te))) 
@@ -877,7 +904,7 @@ PlotStateDensities(SD)
 
 
 # ------------------------------------------------------------------
-# Plot (a): 4p'[1/2]0 / 4p[1/2]0
+# Plot (a): 4p10 / 4p6
 # ------------------------------------------------------------------
 fig, ax = plt.subplots(1,2,figsize=(16, 5))
 
@@ -886,12 +913,12 @@ CS = ax[0].contour(TeGrid, NeGrid, Ratio_a, levels=8, colors='black')
 ax[0].clabel(CS, inline=True, fontsize=9)
 ax[0].set_xlabel(TeLabel)
 ax[0].set_ylabel(r'$N_e$ [m$^{-3}$]')
-ax[0].set_title("4p'[1/2]$_0$ / 4p[1/2]$_0$")
+ax[0].set_title('4p10 / 4p6  (750.4 / 751.5 nm)')
 CS = ax[1].contour(TeGrid, NeGrid, Ratio_b, levels=8, colors='black')
 ax[1].clabel(CS, inline=True, fontsize=9)
 ax[1].set_xlabel(TeLabel)
 ax[1].set_ylabel(r'$N_e$ [ m$^{-3}$]')
-ax[1].set_title( r'$4d[3/2]^0$/ 4p[1/2]$_0$')
+ax[1].set_title('4d8 / 4p6')
 
 
 plt.tight_layout()
@@ -945,7 +972,7 @@ for i in range(0, len(Ne), step):
             linewidth=2.5, markersize=6)
  
 ax.set_xlabel(TeLabel, fontsize=13)
-ax.set_ylabel(r'Intensity ratio: $I_{4p^{\prime}[1/2]_0} / I_{4p[1/2]_0}$', fontsize=13)
+ax.set_ylabel(r'Intensity ratio: $I_{4p10} / I_{4p6}$', fontsize=13)
 ax.set_title('Line ratio vs electron temperature', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3)
 ax.legend(fontsize=11, loc='best')
@@ -962,11 +989,11 @@ fig, ax = plt.subplots(figsize=(12, 7))
 for i in range(0, len(Ne), step):
     n_meta_total = Metastable_4s1[i, :] + Metastable_4s3[i, :]
     ax.semilogy(Te, n_meta_total, 's-',
-                label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
+                label=f'$N_e$ = {Ne[i]:.1e} m$^{{-3}}$',
                 linewidth=2.5, markersize=6)
  
 ax.set_xlabel(TeLabel, fontsize=13)
-ax.set_ylabel(r'Metastable density: $n_{4s3} + n_{4s4}$ [m$^{-3}$]', fontsize=13)
+ax.set_ylabel(r'Metastable density: $n_{4s1} + n_{4s3}$ [m$^{-3}$]', fontsize=13)
 ax.set_title('Metastable population vs electron temperature', fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.3, which='both')
 ax.legend(fontsize=11, loc='best')
@@ -989,23 +1016,26 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 for i in range(0, len(Ne), step):
     # Left axis 1 Resonant 4s2 
     ax1.semilogy(Te, Resonant_4s2[i,:], 's-',
-                label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
+                label=f'$N_e$ = {Ne[i]:.1e} m$^{{-3}}$',
                 linewidth=2.5, markersize=6)
     
     
     ax2.semilogy(Te, Resonant_4s4[i,:], 's-',
-                label=f'$N_e$ = {Ne[i]:.1e} cm$^{{-3}}$',
+                label=f'$N_e$ = {Ne[i]:.1e} m$^{{-3}}$',
                 linewidth=2.5, markersize=6)
  
 ax1.set_xlabel(TeLabel, fontsize=13)
 ax2.set_xlabel(TeLabel, fontsize=13)
-ax1.set_ylabel(r'Resonant density: ', fontsize=13)
-ax.set_title('Metastable population vs electron temperature', fontsize=14, fontweight='bold')
-ax.grid(True, alpha=0.3, which='both')
-ax.legend(fontsize=11, loc='best')
+ax1.set_ylabel(r'Resonant density $n_{4s2}$ [m$^{-3}$]', fontsize=13)
+ax2.set_ylabel(r'Resonant density $n_{4s4}$ [m$^{-3}$]', fontsize=13)
+ax1.set_title('4s2 vs electron temperature', fontsize=14, fontweight='bold')
+ax2.set_title('4s4 vs electron temperature', fontsize=14, fontweight='bold')
+for a in (ax1, ax2):
+    a.grid(True, alpha=0.3, which='both')
+    a.legend(fontsize=11, loc='best')
  
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUT_DIR, 'metastable_vs_Te_multiNe.png'), dpi=300)
+plt.savefig(os.path.join(OUTPUT_DIR, 'resonant_vs_Te_multiNe.png'), dpi=300)
 plt.show()
 
 
@@ -1028,7 +1058,7 @@ ax1.tick_params(axis='y', labelcolor='darkred')
  
 # Right: Metastable
 ax2.semilogy(Te, Metastable_4s3[Ne_idx, :], 's-', label='4s3', color='steelblue', linewidth=2.5, markersize=7)
-ax2.semilogy(Te, Metastable_4s1[Ne_idx, :], 's-', label='4s4', color='navy', linewidth=2.5, markersize=7, linestyle='--')
+ax2.semilogy(Te, Metastable_4s1[Ne_idx, :], 's-', label='4s1', color='navy', linewidth=2.5, markersize=7, linestyle='--')
 ax2.set_xlabel(TeLabel, fontsize=12)
 ax2.set_ylabel(r'Metastable density [m$^{-3}$]', fontsize=12, color='navy')
 ax2.set_title(f'Metastables vs $T_e$ (at $N_e = {Ne_val:.1e}$ m$^{{-3}}$)', fontsize=13)
@@ -1044,7 +1074,7 @@ plt.show()
 
 
 # Plot spectrum 
-x_spec, y_spec = PlotSpectrum(EI, delG=2, delL=0.005)
+x_spec, y_spec = PlotSpectrum(EI)
 
 # ====================================================================
 # STATISTICS

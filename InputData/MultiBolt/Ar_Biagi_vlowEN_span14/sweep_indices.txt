@@ -1,0 +1,12 @@
+# The indices of particular swept values.
+# Sweep is denoted per E_N by default.
+# col_1: sweep_idx [count], col_2: E_N [Td]
+sweep_idx	E_N
+0.00000e+00	1.00000e+00
+1.00000e+00	1.25000e+00
+2.00000e+00	1.50000e+00
+3.00000e+00	1.75000e+00
+4.00000e+00	2.00000e+00
+5.00000e+00	2.25000e+00
+6.00000e+00	2.50000e+00
+7.00000e+00	3.00000e+00

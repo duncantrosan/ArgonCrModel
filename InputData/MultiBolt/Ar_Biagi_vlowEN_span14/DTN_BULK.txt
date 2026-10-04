@@ -1,0 +1,11 @@
+# (HD+GE only) The bulk transverse diffusion coefficient density-product.
+# col_1: E_N [Td], col_2: DTN_BULK [m^-1 s^-1]
+E_N	DTN_BULK
+1.00000e+00	1.13612e+25
+1.25000e+00	1.05966e+25
+1.50000e+00	1.00160e+25
+1.75000e+00	9.55306e+24
+2.00000e+00	1.70513e+24
+2.25000e+00	8.84634e+24
+2.50000e+00	8.56607e+24
+3.00000e+00	8.10260e+24

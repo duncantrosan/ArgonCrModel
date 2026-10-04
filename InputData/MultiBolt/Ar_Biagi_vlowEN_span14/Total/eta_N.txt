@@ -1,0 +1,11 @@
+# The density-reduced total attachment growth coefficient.
+# col_1: E_N [Td], col_2: eta_N [m**2]
+E_N	eta_N
+1.00000e+00	nan
+1.25000e+00	nan
+1.50000e+00	nan
+1.75000e+00	nan
+2.00000e+00	nan
+2.25000e+00	nan
+2.50000e+00	nan
+3.00000e+00	nan

@@ -1,0 +1,11 @@
+# The conventional (isotropic) diffusion coefficient density-product for electrons.
+# col_1: E_N [Td], col_2: DN_f0 [m^-1 s^-1]
+E_N	DN_f0
+1.00000e+00	1.21271e+25
+1.25000e+00	1.13531e+25
+1.50000e+00	1.07618e+25
+1.75000e+00	1.02861e+25
+2.00000e+00	2.44585e+24
+2.25000e+00	9.55320e+24
+2.50000e+00	9.25979e+24
+3.00000e+00	8.77109e+24

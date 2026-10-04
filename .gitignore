@@ -7,3 +7,20 @@ Scripts/Output/*
 !Scripts/Output/.gitkeep
 Experimental_Data/Output/*
 !Experimental_Data/Output/.gitkeep
+
+# Molecular fitting libraries (large, regenerable)
+MolecularFitting/Raw_Library/
+MolecularFitting/Calibrated_Library/
+MolecularFitting/EXOMOL/
+
+# BOLSIG+ EEDF libraries are committed (the solver is a Windows binary); not their scratch folders
+InputData/Bolsig/*/work/
+
+# Third-party solver binary (BOLSIG+, bolsig.laplace.univ-tlse.fr) - install locally
+Bolsig/bolsigminus.exe
+
+# Failed MultiBolt run (remap_span 16 collapses at low E/N)
+InputData/MultiBolt/Ar_Biagi_lowEN_sweep/
+
+# Office lock files
+~$*

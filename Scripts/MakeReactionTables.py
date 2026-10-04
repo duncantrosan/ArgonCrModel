@@ -21,6 +21,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 E_ION = 15.7596     # eV, Ar first ionization energy (as in he.CreateIonizationCrossSections)
 K_MET = 6.4e-16     # m^3/s, metastable-metastable collisions (SolveLabelEquation in MainFileV2)
+K_AR2 = 2.3e-21     # m^3/s, two-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
+K_AR3 = 1.4e-44     # m^6/s, three-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
 SIGMA_CAP = 1.0e-18 # m^2, cap on analytic cross sections (he.AddAnalyticExcitationCrossSections)
 
 # Numbered in this order in the tables
@@ -61,6 +63,8 @@ REFERENCES = {
     'SAB07': r'Spectrochim.~Acta Part~B \textbf{62}, 344--356 (2007) (metastable diffusion coefficients).',
     'Ferreira85': r'C.~M.~Ferreira, J.~Loureiro and A.~Ricard, J.~Appl.~Phys. \textbf{57}, 82 (1985), '
                   r'as used by Bogaerts \emph{et al.} (1998).',
+    'Tachibana86': r'K.~Tachibana, Phys.~Rev.~A \textbf{34}, 1007 (1986) (two- and three-body '
+                   r'quenching of the metastables by ground-state argon).',
     'MultiBolt': r'M.~Flynn \emph{et al.}, J.~Phys.~D: Appl.~Phys. \textbf{55}, 015201 (2022) '
                  r'(MultiBolt, used for numerical EEDFs).',
     'Biagi': r'S.~F.~Biagi, Magboltz 8.97 cross sections (Biagi database on LXCat), '
@@ -244,10 +248,16 @@ def build(MD):
          r'profile (Doppler and resonance broadening), lower level as absorber',
          'this work, ' + cite('BK97')],
         ['Metastable diffusion', r'$\mathrm{Ar}(1\mathrm{s}_5,1\mathrm{s}_3)\rightarrow$ wall', '2',
-         rf'$\tau_D^{{-1}}=D\,(4.493/R)^2$, $ND={sci(ND_s3, 1, False)}$ and '
-         rf'${sci(ND_s5, 1, False)}$~m$^{{-1}}$\,s$^{{-1}}$', cite('SAB07')],
+         rf'$\tau_D^{{-1}}=D\,(4.493/R)^2$, $ND={sci(ND_s5, 1, False)}$ and '
+         rf'${sci(ND_s3, 1, False)}$~m$^{{-1}}$\,s$^{{-1}}$', cite('SAB07')],
         ['Metastable--metastable collisions', r'$\mathrm{Ar}^m+\mathrm{Ar}^m\rightarrow$ products', '1',
          rf'$k={sci(K_MET, 1, False)}$~m$^3$\,s$^{{-1}}$', cite('Ferreira85')],
+        ['Two-body quenching by Ar', r'$\mathrm{Ar}^m+\mathrm{Ar}\rightarrow 2\mathrm{Ar}$', '2',
+         rf'$k_2={sci(K_AR2, 1, False)}$~m$^3$\,s$^{{-1}}$, loss frequency $k_2N_g$',
+         cite('Tachibana86')],
+        ['Three-body quenching by Ar', r'$\mathrm{Ar}^m+2\mathrm{Ar}\rightarrow\mathrm{Ar}_2^*+\mathrm{Ar}$',
+         '2', rf'$k_3={sci(K_AR3, 1, False)}$~m$^6$\,s$^{{-1}}$, loss frequency $k_3N_g^2$; '
+         r'the excimer $\mathrm{Ar}_2^*$ is not followed', cite('Tachibana86')],
     ]
     tex.append(longtable(
         r'p{0.19\linewidth}p{0.2\linewidth}rp{0.33\linewidth}p{0.12\linewidth}',

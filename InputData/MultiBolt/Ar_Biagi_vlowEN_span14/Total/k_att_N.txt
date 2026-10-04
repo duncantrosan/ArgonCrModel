@@ -1,0 +1,11 @@
+# The density-reduced total attachment collision rate coefficient.
+# col_1: E_N [Td], col_2: k_att_N [m**3 s^-1]
+E_N	k_att_N
+1.00000e+00	0.00000e+00
+1.25000e+00	0.00000e+00
+1.50000e+00	0.00000e+00
+1.75000e+00	0.00000e+00
+2.00000e+00	0.00000e+00
+2.25000e+00	0.00000e+00
+2.50000e+00	0.00000e+00
+3.00000e+00	0.00000e+00

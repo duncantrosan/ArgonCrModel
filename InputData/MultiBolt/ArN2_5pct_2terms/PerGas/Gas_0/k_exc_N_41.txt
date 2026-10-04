@@ -1,0 +1,18 @@
+# The density-reduced particular excitation collision rate coefficient.
+# Reactant: Ar
+# Product: Ar(5S4)
+# Process: E + Ar -> E + Ar(5S4), Excitation
+# col_1: E_N [Td], col_2: k_exc_N [m**3 s^-1]
+E_N	k_exc_N
+3.00000e+00	0.00000e+00
+5.00000e+00	0.00000e+00
+7.00000e+00	2.27266e-33
+1.00000e+01	4.91955e-29
+1.50000e+01	8.93729e-26
+2.00000e+01	3.78858e-24
+3.00000e+01	1.81032e-22
+5.00000e+01	5.45130e-21
+7.50000e+01	3.95681e-20
+1.00000e+02	1.25551e-19
+1.50000e+02	5.00553e-19
+2.00000e+02	1.17816e-18

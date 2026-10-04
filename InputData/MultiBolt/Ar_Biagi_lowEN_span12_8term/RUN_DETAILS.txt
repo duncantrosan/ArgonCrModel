@@ -1,0 +1,81 @@
+Export location: "C:\\Users\\dptro\\Documents\\Work\\Python\\ArgonCrModel\\InputData\\MultiBolt\\Ar_Biagi_lowEN_span12_8term"
+Exported to: Ar_Biagi_lowEN_span12_8term
+Date: 10/2/2026 11:18:58 AM
+
+Model: HD+GE
+Energy Points: 1000
+Number of terms: 8
+USE_ENERGY_REMAP: true
+Desired EEDF log-height: 12.000000
+Max # of remap grid-trials: 10
+USE_NU_REMAP: false
+Nu remap increment: 200
+Nu remap maximum: 2000
+E/N [Td]: < SWEEP >
+Temperature [K]: 3.00000e+02
+Particle Density [m**-3]: 3.21883e+22
+USE_EV_MAX_GESS: false
+Preset eV Max: 1.00000e+02
+Convergence Error: 1.00000e-06
+Max iterations: 100
+Min iterations: 4
+fNEW: 1.00000e+00
+Ionization energy sharing: 5.00000e-01
+Shy mode: false
+Allow sum(fracs)!=1: false
+
+	Species # 0
+		Name: Ar
+		Fraction [1/1]: 1
+		Attachment Collision Cross Sections
+		Elastic Collision Cross Sections
+			0	x1	E + Ar -> E + Ar, Elastic	Isotropic
+		Effective Collision Cross Sections
+		Excitation Collision Cross Sections
+			0	x1	E + Ar -> E + Ar(1S5), Excitation	Isotropic
+			1	x1	E + Ar -> E + Ar(1S4), Excitation	Isotropic
+			2	x1	E + Ar -> E + Ar(1S3), Excitation	Isotropic
+			3	x1	E + Ar -> E + Ar(1S2), Excitation	Isotropic
+			4	x1	E + Ar -> E + Ar(2P10), Excitation	Isotropic
+			5	x1	E + Ar -> E + Ar(2P9), Excitation	Isotropic
+			6	x1	E + Ar -> E + Ar(2P8), Excitation	Isotropic
+			7	x1	E + Ar -> E + Ar(2P7), Excitation	Isotropic
+			8	x1	E + Ar -> E + Ar(2P6), Excitation	Isotropic
+			9	x1	E + Ar -> E + Ar(2P5), Excitation	Isotropic
+			10	x1	E + Ar -> E + Ar(2P4), Excitation	Isotropic
+			11	x1	E + Ar -> E + Ar(2P3), Excitation	Isotropic
+			12	x1	E + Ar -> E + Ar(2P2), Excitation	Isotropic
+			13	x1	E + Ar -> E + Ar(2P1), Excitation	Isotropic
+			14	x1	E + Ar -> E + Ar(3D6), Excitation	Isotropic
+			15	x1	E + Ar -> E + Ar(3D5), Excitation	Isotropic
+			16	x1	E + Ar -> E + Ar(3D3), Excitation	Isotropic
+			17	x1	E + Ar -> E + Ar(3D4!), Excitation	Isotropic
+			18	x1	E + Ar -> E + Ar(3D4), Excitation	Isotropic
+			19	x1	E + Ar -> E + Ar(3D1!!), Excitation	Isotropic
+			20	x1	E + Ar -> E + Ar(2S5), Excitation	Isotropic
+			21	x1	E + Ar -> E + Ar(2S4), Excitation	Isotropic
+			22	x1	E + Ar -> E + Ar(3D1!), Excitation	Isotropic
+			23	x1	E + Ar -> E + Ar(3D2), Excitation	Isotropic
+			24	x1	E + Ar -> E + Ar(3S1!!!!), Excitation	Isotropic
+			25	x1	E + Ar -> E + Ar(3S1!!), Excitation	Isotropic
+			26	x1	E + Ar -> E + Ar(3S1!!!), Excitation	Isotropic
+			27	x1	E + Ar -> E + Ar(2S3), Excitation	Isotropic
+			28	x1	E + Ar -> E + Ar(2S2), Excitation	Isotropic
+			29	x1	E + Ar -> E + Ar(3S1!), Excitation	Isotropic
+			30	x1	E + Ar -> E + Ar(4D5), Excitation	Isotropic
+			31	x1	E + Ar -> E + Ar(3S4), Excitation	Isotropic
+			32	x1	E + Ar -> E + Ar(4D2), Excitation	Isotropic
+			33	x1	E + Ar -> E + Ar(4S1!), Excitation	Isotropic
+			34	x1	E + Ar -> E + Ar(3S2), Excitation	Isotropic
+			35	x1	E + Ar -> E + Ar(5D5), Excitation	Isotropic
+			36	x1	E + Ar -> E + Ar(4S4), Excitation	Isotropic
+			37	x1	E + Ar -> E + Ar(5D2), Excitation	Isotropic
+			38	x1	E + Ar -> E + Ar(6D5), Excitation	Isotropic
+			39	x1	E + Ar -> E + Ar(5S1!), Excitation	Isotropic
+			40	x1	E + Ar -> E + Ar(4S2), Excitation	Isotropic
+			41	x1	E + Ar -> E + Ar(5S4), Excitation	Isotropic
+			42	x1	E + Ar -> E + Ar(6D2), Excitation	Isotropic
+			43	x1	E + Ar -> E + Ar(HIGH), Excitation	Isotropic
+		Ionization Collision Cross Sections
+			0	x1	E + Ar -> E + E + Ar+, Ionization	Isotropic
+		Super-elastic Collision Cross Sections

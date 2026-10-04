@@ -1,0 +1,16 @@
+# The density-reduced effective (net) ionization growth coefficient.
+# Also known as the 'first Townsend coefficient' or 'primary ionization coefficient'
+# col_1: E_N [Td], col_2: alpha_eff_N [m**2]
+E_N	alpha_eff_N
+3.00000e+00	0.00000e+00
+5.00000e+00	0.00000e+00
+7.00000e+00	1.05324e-35
+1.00000e+01	3.48750e-31
+1.50000e+01	9.09898e-28
+2.00000e+01	4.45644e-26
+3.00000e+01	2.12178e-24
+5.00000e+01	4.91314e-23
+7.50000e+01	2.54370e-22
+1.00000e+02	6.10274e-22
+1.50000e+02	1.59451e-21
+2.00000e+02	2.76077e-21

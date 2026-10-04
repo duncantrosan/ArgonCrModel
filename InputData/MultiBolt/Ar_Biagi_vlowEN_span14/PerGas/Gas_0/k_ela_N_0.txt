@@ -1,0 +1,14 @@
+# The density-reduced particular elastic collision rate coefficient.
+# Reactant: Ar
+# Product: Ar
+# Process: E + Ar -> E + Ar, Elastic
+# col_1: E_N [Td], col_2: k_ela_N [m**3 s^-1]
+E_N	k_ela_N
+1.00000e+00	3.40750e-14
+1.25000e+00	4.02759e-14
+1.50000e+00	4.61893e-14
+1.75000e+00	5.18856e-14
+2.00000e+00	3.06606e-16
+2.25000e+00	6.27884e-14
+2.50000e+00	6.80467e-14
+3.00000e+00	7.82300e-14

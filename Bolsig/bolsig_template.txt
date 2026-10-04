@@ -1,0 +1,71 @@
+/ ============================================================================
+/ BOLSIG+ input template for bolsigminus.exe (BOLSIG+ version 11/2019).
+/ Filled in by HelperFunctions.RunBolsigScript (RunBolsig / BuildBolsigLibrary).
+/
+/ BOLSIG+ ignores everything after '/' on a line. The '@@' lines split the
+/ template into three sections and are removed before BOLSIG+ sees the file:
+/   @@HEADER  written once  - cross-section file and species
+/   @@RUN     once per run  - one CONDITIONS block followed by RUN
+/   @@FOOTER  written once  - SAVERESULTS and END
+/ Each $name is filled from HelperFunctions.BOLSIG_DEFAULTS, overridden by the
+/ keyword arguments of RunBolsig(...). To change a setting for every run, either
+/ change BOLSIG_DEFAULTS or replace $name below by a number.
+/
+/ Version 11/2019 specifics, found by testing:
+/  - the gas composition is fixed by the first CONDITIONS block of a script;
+/    later blocks change E/N, ionization degree, ... but not the mole fractions,
+/    so RunBolsigScript runs one script per composition.
+/  - the CONDITIONS block has 22 lines (incl. 'Normalize composition') and
+/    SAVERESULTS 9 lines (incl. 'Skip failed runs'); a missing line aborts.
+/  - 'Precision' also sets how far the tail is computed: the EEDF table ends
+/    where f falls below ~precision x f(0). 1e-25 reaches the 5p thresholds
+/    (14.5 eV) and ionization down to ~2.5 Td; 1e-30 is unstable.
+/ ============================================================================
+@@HEADER
+NOSCREEN
+
+READCOLLISIONS
+$xsec_file  / File
+$species  / Species
+$extrapolate  / Extrapolate: 0= No 1= Yes
+@@RUN
+
+CONDITIONS
+$EN_Td  / Electric field / N (Td)
+$omega_N  / Angular field frequency / N (m3/s)
+$cos_EB  / Cosine of E-B field angle
+$Tg  / Gas temperature (K)
+$Texc  / Excitation temperature (K)
+$E_transition  / Transition energy (eV)
+$ionization_degree  / Ionization degree (> 0: electron-electron and electron-ion collisions)
+$plasma_density  / Plasma density (1/m3) (Coulomb logarithm)
+$ion_charge  / Ion charge parameter
+$ion_mass_ratio  / Ion/neutral mass ratio
+$coulomb_model  / Coulomb collision model
+$energy_sharing  / Energy sharing
+$growth_model  / Growth model: 1=Temporal 2=Spatial 3=Not included 4=Grad-n expansion
+$maxwell_mean_energy  / Maxwellian mean energy (eV)
+$n_grid  / # of grid points
+$grid_type  / Grid type
+$E_max  / Maximum energy (eV)
+$precision  / Precision
+$convergence  / Convergence
+$max_iter  / Maximum # of iterations
+$fractions  / Gas composition fractions (one per species, same order)
+$normalize  / Normalize composition to unity: 0=No 1=Yes
+
+RUN
+@@FOOTER
+
+SAVERESULTS
+$output_file  / File
+1  / Format: 1=Run by run
+1  / Conditions: 0=No 1=Yes
+1  / Transport coefficients: 0=No 1=Yes
+$save_rates  / Rate coefficients: 0=No 1=Yes
+0  / Reverse rate coefficients: 0=No 1=Yes
+0  / Energy loss coefficients: 0=No 1=Yes
+1  / Distribution function: 0=No 1=Yes
+0  / Skip failed runs: 0=No 1=Yes
+
+END
