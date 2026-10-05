@@ -205,12 +205,16 @@ def fit_cfg(pct, lib, outdir, **extra):
 
 
 def job_cfg(key, build=True):
-    """'<variant>:<pct>' (variant as library()) or 'ref:<library name>' (old pure-Ar library)
+    """'<variant>:<pct>' (variant as library()), 'dc:<pct>' (the DC BOLSIG+ library of
+    ActinometryNitrogenContent, own CR table here) or 'ref:<library name>' (old pure-Ar library)
     -> fit settings; the variants fitted at n_c only get the narrow Ne grid."""
     kind, val = key.split(":")
     if kind == "ref":
         return fit_cfg(0.0, he.BOLSIG_FOLDER / val, os.path.join(OUTDIR, f"ref_{val}"))
     pct = float(val)
+    if kind == "dc":
+        lib = anc.mixture_library(pct, "dc") if pct > 0 else he.BOLSIG_FOLDER / REF_PURE_AR["dc"]
+        return fit_cfg(pct, lib, os.path.join(OUTDIR, f"fit_dc_{pct:g}pct_N2"))
     lib = library(pct, kind) if build else lib_folder(pct, kind)
     if kind == "lowEN":
         return fit_cfg(pct, lib, os.path.join(OUTDIR, f"fit_{pct:g}pct_N2"))
