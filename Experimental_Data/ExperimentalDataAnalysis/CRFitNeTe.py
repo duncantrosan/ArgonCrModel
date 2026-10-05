@@ -97,6 +97,8 @@ CONFIG = dict(
     N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
                                         # levels by N2 and dilution of the Ar ground state, as in
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
+    quench_4p=True,                     # with N2: also quench the 4p levels measured by Sadeghi 2001
+                                        # (4p10, 4p6, 4p5, 4p3; he.ImportAr2pQuenchingData)
     eedf=MULTIBOLT_RUN,                 # 'maxwell', a MultiBolt export folder (E/N sweep), or a
                                         # BOLSIG+ library folder (he.RunBolsig / he.BuildBolsigLibrary;
                                         # E/N x Ne libraries must use the same Ne_grid)
@@ -149,14 +151,24 @@ def load_cr_model(outdir):
     return cr, he, ModelData, interp
 
 
+def quench_4p_applied(cfg):
+    """True when the CR model of cfg quenches the 4p levels by N2 (stored with the CR table)."""
+    return bool(cfg.get("quench_4p", True)) and cfg.get("N2_percent", 0.0) > 0
+
+
 def apply_nitrogen(MD, cfg, he):
     """N2 admixture cfg['N2_percent'] (Scripts/MainFileWithNitrogen.py): sets the loss of
-    the Ar(4s) levels by N2 quenching on MD and returns the Ar partial pressure [Torr]
-    to give CRModel (dilution of the Ar ground state). Metastable diffusion keeps the
-    total pressure. Rate coefficients: median of InputData/Ar_1s_quenching_data.csv."""
+    the Ar(4s) levels - and with cfg['quench_4p'] of the 4p levels Sadeghi 2001 measured -
+    by N2 quenching on MD and returns the Ar partial pressure [Torr] to give CRModel
+    (dilution of the Ar ground state). Metastable diffusion keeps the total pressure.
+    Rate coefficients: median of InputData/Ar_1s_quenching_data.csv (4s) and
+    InputData/Ar_2p_quenching_Sadeghi2001.csv (4p; quenching to products outside the
+    model, mostly N2(C, B) + Ar ground)."""
     x = cfg.get("N2_percent", 0.0) / 100
     N = he.Torr2Volume(cfg["P_Torr"], cfg["Tg"])
     Q = he.ImportArQuenchingData("N2", verbose=False) if x > 0 else {}
+    if quench_4p_applied(cfg):
+        Q.update({lbl: dict(q, kQM=0.0) for lbl, q in he.ImportAr2pQuenchingData("N2", verbose=False).items()})
     for lbl, s in MD.items():
         q = Q.get(lbl)
         s["GasQuenching_s^-1"] = q["kQ"] * x * N + q["kQM"] * x * N * (1 - x) * N if q else 0.0
@@ -250,7 +262,8 @@ def _cached_subset(tab, cfg, x):
         same = (np.allclose(tab["Ne_grid"], cfg["Ne_grid"])
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
-                and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0)))
+                and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
+                and bool(tab["quench_4p"] if "quench_4p" in tab else False) == quench_4p_applied(cfg))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -317,6 +330,7 @@ def build_model_table(cfg=CONFIG):
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
+               quench_4p=quench_4p_applied(cfg),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),

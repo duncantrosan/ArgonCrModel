@@ -55,6 +55,14 @@ def load_fit(eedf, pct):
     """A saved ActinometryNitrogenContent fit, in the form CRFitNeTe.run returns."""
     cfg = dict(anc.CONFIG["fit"], eedf=str(anc.mixture_library(pct, eedf)), N2_percent=pct,
                Ne_grid=anc.CONFIG["Ne_grid"], outdir=os.path.join(anc.CONFIG["outdir"], f"fit_{eedf}_{pct:g}pct_N2"))
+    path = crf._table_path(cfg)
+    if os.path.exists(path):           # the saved posteriors belong to the CR model of the saved table
+        with np.load(path) as t:
+            q4p = bool(t["quench_4p"]) if "quench_4p" in t.files else False
+        if q4p != crf.quench_4p_applied(cfg):
+            print(f"note: saved {eedf} fit at {pct:g} % N2 was made with quench_4p={q4p} - loaded as is "
+                  "(rerun ActinometryNitrogenContent.py to refit with the current CR model)")
+            cfg["quench_4p"] = q4p
     with contextlib.redirect_stdout(io.StringIO()):
         tab = crf.build_model_table(cfg)
         eedfs = crf.eedf_axis(cfg)[0]

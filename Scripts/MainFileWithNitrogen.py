@@ -13,8 +13,10 @@ Nitrogen enters in three ways:
     mixture (Biagi cross sections), run on first use and reused afterwards
     (InputData/Bolsig/ArN2_<x>pct_bolsig, InputData/MultiBolt/ArN2_<x>pct_6terms).
     With 'maxwell' the EEDF is set by Te and does not see the N2.
-Not included: quenching of the 4p levels by N2, the N2 emission itself, and
-superelastic / e-e effects on the EEDF.
+  - quenching of the 4p levels Sadeghi et al. 2001 measured (4p10, 4p6, 4p5, 4p3) by N2,
+    from InputData/Ar_2p_quenching_Sadeghi2001.csv (he.ImportAr2pQuenchingData), QUENCH_4P
+Not included: quenching of the other 4p levels and of 5p by N2, the N2 emission itself,
+and superelastic / e-e effects on the EEDF.
 
 Uses the functions of MainFileV2.py (loaded without running its own sweep); the
 quenching enters its solvers through each level's 'GasQuenching_s^-1'.
@@ -37,6 +39,7 @@ R = 2/100                                # radius [m]
 N2_PERCENT = [0, 1, 2, 5, 10]            # % N2 in the Ar/N2 mixture, swept
 N2_MAX_PERCENT = 10                      # the mixtures studied so far go up to 10 %
 QUENCH_CHOICE = 'median'                 # 'median' of the measurements, or a reference, e.g. 'Velazco1978'
+QUENCH_4P = True                         # also quench the 4p levels measured by Sadeghi 2001 (kQ only)
 Ne = [1e16, 1e17, 1e18]                  # electron density [m^-3]
 NE_SHOW = 1e17                           # Ne of the figures (all Ne go to the csv)
 TRAP_LINES = 'all'                       # 'all' or 'ground' (Bogaerts), see SolveDirect
@@ -124,7 +127,7 @@ def MixtureEEDFs(pct):
 
 
 def SetNitrogenQuenching(ModelData, Q, n_N2, n_Ar):
-    """Loss frequency [s^-1] by N2 on the 4s levels (0 on all others); returns {label: frequency}."""
+    """Loss frequency [s^-1] by N2 on the levels in Q (0 on all others); returns {label: frequency}."""
     nu = {lbl: q['kQ'] * n_N2 + q['kQM'] * n_N2 * n_Ar for lbl, q in Q.items()}
     for lbl, MD in ModelData.items():
         MD['GasQuenching_s^-1'] = nu.get(lbl, 0.0)
@@ -133,6 +136,8 @@ def SetNitrogenQuenching(ModelData, Q, n_N2, n_Ar):
 
 #%% Sweep
 Q = he.ImportArQuenchingData('N2', QUENCH_CHOICE)
+if QUENCH_4P:
+    Q.update({lbl: dict(q, kQM=0.0) for lbl, q in he.ImportAr2pQuenchingData('N2').items()})
 ModelData = he.AddDiffusionLoss(ModelData, Pressure, Tg, R)    # Ar* diffusing in the total gas
 N_total = he.Torr2Volume(Pressure, Tg)
 rows = []

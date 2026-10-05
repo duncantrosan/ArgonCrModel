@@ -359,7 +359,8 @@ def build(MD):
         r'$\mathrm{Ar}(2\mathrm{p})+\mathrm{N}_2\rightarrow$ products, measured by two-photon laser '
         r'excitation from the ground state and time-resolved fluorescence (so only $J=0$ and 2 levels) '
         rf'{cite("Sadeghi01")}; $\sigma_Q=k_Q/\langle v\rangle$, loss frequency $k_Q\,x_{{\mathrm{{N}}_2}}N_g$. '
-        r'Not yet in the CR model, which quenches only the $4\mathrm{s}$ levels by N$_2$.',
+        r'In the CR model as a loss of these four levels (CRFitNeTe \texttt{quench\_4p}); the other '
+        r'$4\mathrm{p}$ levels have no data and are not quenched.',
         'tab:ar_n2_quenching'))
 
     # ---- 8. references -----------------------------------------------------

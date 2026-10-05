@@ -1152,6 +1152,36 @@ def ImportArQuenchingData(quencher='N2', choose='median', verbose=True):
     return out
 
 
+def ImportAr2pQuenchingData(quencher='N2', verbose=True):
+    """
+    Total quenching rate coefficients of Ar(2p) = Ar(4p) levels at 300 K,
+        Ar(2p) + Q -> products   kQ [m^3/s],
+    from InputData/Ar_2p_quenching_Sadeghi2001.csv (Sadeghi et al., J. Chem. Phys. 115,
+    3144 (2001): two-photon excitation from the ground state, so only the J = 0 and 2
+    levels 2p1, 2p5, 2p6, 2p8 = CR 4p10, 4p6, 4p5, 4p3; the other 4p levels have no data).
+    Several rows for a level (e.g. a Stern-Volmer refit) -> their median.
+    quencher : as in the file, e.g. 'N2', 'Ar', 'H2'
+    Returns {CR label: {'kQ', 'paschen', 'source'}}.
+    """
+    import csv
+    path = Path(__file__).resolve().parent.parent / 'InputData' / 'Ar_2p_quenching_Sadeghi2001.csv'
+    with open(path, newline='', encoding='utf-8-sig') as file:
+        rows = [r for r in csv.DictReader(file) if r['quencher'].strip() == quencher]
+    if not rows:
+        raise ValueError(f'{path.name}: no data for quencher {quencher!r}')
+    out = {}
+    for label in dict.fromkeys(r['CR_label'] for r in rows):
+        use = [r for r in rows if r['CR_label'] == label]
+        out[label] = {'kQ': float(np.median([float(r['10^10_kQ_cm3_s']) for r in use])) * 1e-10 * 1e-6,
+                      'paschen': use[0]['Ar_state'],
+                      'source': ', '.join(sorted({f"{r['reference']} {r['table']}" for r in use}))}
+    if verbose:
+        print(f'Ar(2p) + {quencher} quenching, from {path.name}:')
+        for label, q in out.items():
+            print(f"  {label} ({q['paschen']})  kQ = {q['kQ']:.3e} m^3/s  [{q['source']}]")
+    return out
+
+
 #%% Parsing data an helper lookups
 
 def _level_lookup(levels):
