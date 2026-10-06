@@ -426,7 +426,7 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
     return InputModel
 
 
-def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
+def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all', trap_density=None):
     """
     The balance equations of all excited levels as one linear system,
         sum_j G_ij n_j - L_i n_i = -S_i ,
@@ -444,6 +444,9 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
     trap_lines : 'all'    - escape factor on every line, lower level as absorber
                  'ground' - escape factor only on lines to the ground state, as
                             in Bogaerts, Gijbels & Vlcek, J. Appl. Phys. 84, 121 (1998)
+    trap_density : {label: density [m^-3]} of the absorbing (lower) excited levels used for the
+                   escape factors instead of the current densities, i.e. trapping frozen at a
+                   reference solution (None = self-consistent)
     """
     Levels = [lbl for lbl, s in InputModel.items() if s['kind'] != 'ground']
     idx = {lbl: i for i, lbl in enumerate(Levels)}
@@ -465,10 +468,13 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
                 continue
             Lower = InputModel[Rad['partner']]
             key = (Upper['label'], Lower['label'], Rad['coeff'])
-            if (trap_lines == 'ground' and Lower['kind'] != 'ground') or Lower['density_m^-3'] == 0:
+            n_low = Lower['density_m^-3']
+            if trap_density is not None and Lower['kind'] != 'ground':
+                n_low = trap_density.get(Lower['label'], n_low)
+            if (trap_lines == 'ground' and Lower['kind'] != 'ground') or n_low == 0:
                 EtaOf[key] = 1.0
                 continue
-            Pt = he.Volume2Torr(Lower['density_m^-3'], T)
+            Pt = he.Volume2Torr(n_low, T)
             a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
             if Lower['kind'] == 'ground':
                 keys_g.append(key)
@@ -731,7 +737,8 @@ def PlotEEDFs(EEDFs):
 
 def CRModel(ModelData, eedf, Ne, P, T, R, interp,
             max_iter=500, tol=1e-6, relax=1.0, verbose=False,
-            solver='direct', trap_lines='all', compute_rates=True, atom_transfer=True):
+            solver='direct', trap_lines='all', compute_rates=True, atom_transfer=True,
+            trap_density=None):
     """
     Solve the CR balance to self-consistency.
 
@@ -751,9 +758,10 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
              previous call with the same EEDF (a sweep over Ne): they depend on the EEDF only
     atom_transfer : population transfer 2p <-> 2p and 2p -> 1s by collisions with ground-state
              Ar (AttachAtomTransfer, Zhu & Pu 2010); False leaves it out
+    trap_density : fixed absorber densities for the escape factors, see SolveDirect
     """
-    if solver == 'gauss-seidel' and trap_lines != 'all':
-        raise ValueError("trap_lines='ground' needs solver='direct'")
+    if solver == 'gauss-seidel' and (trap_lines != 'all' or trap_density is not None):
+        raise ValueError("trap_lines='ground' and trap_density need solver='direct'")
     eedf = he.AsEEDF(eedf)
     if compute_rates:
         ModelData = CreateExcitationReactionRates(ModelData, eedf)
@@ -771,7 +779,7 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
         old = {lbl: Data[lbl]['density_m^-3'] for lbl in labels}
 
         if solver == 'direct':
-            Data = SolveDirect(Data, Ne, T, R, interp, trap_lines)
+            Data = SolveDirect(Data, Ne, T, R, interp, trap_lines, trap_density)
         else:
             Data = SolveLabelEquation(Data, Ng, Ne, P, T, R, interp)
 

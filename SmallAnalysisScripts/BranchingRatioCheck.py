@@ -9,15 +9,22 @@ upper-state atom), whatever populates the level. eta = escape factor of the line
 ln of each line's value relative to the mean of its group shows a calibration (or trapping) error of
 that line, independent of the CR excitation physics.
 
-Groups (lines in the echelle data, i.e. outside the order gaps):
+Groups: every model line (< 870 nm) of the level outside the echelle order gaps:
   2p1: 750.39, 667.73     2p2: 727.29, 772.42, 826.45     2p4: 794.82, 852.14, 747.12
-  2p6: 800.62, 763.51
-794.82 and 852.14 nm sit 2.8 and 3.4 nm after an order gap, 763.51 nm 2.9 nm before one.
+The other lines of these levels and of 2p3, 2p6, 2p7, 2p8 are in order gaps in every spectrum
+(696.54, 714.70, 738.40, 763.51, 810.37, 840.82, 842.47, 866.79 nm) or beyond the data (922.45 nm),
+so 706.72 (2p3), 800.62 (2p6) and 801.48 nm (2p8) cannot be checked this way.
+The distance of each line to the nearest order gap is taken from one spectrum (gap_distance).
 
-Output: Experimental_Data/Output/LiteratureComparison/branching_check.png, branching_check.csv
+772.38 (2p7 -> 1s5) and 772.42 nm (2p2 -> 1s3) are 0.045 nm apart, about one instrumental FWHM; the
+line fit splits them with fixed centres. doublet_check compares that split with the CR model ratio.
+
+Output: Experimental_Data/Output/LiteratureComparison/branching_check.png, branching_check.csv,
+        branching_doublet_772.csv
 """
 import os
 import sys
+from glob import glob
 
 import numpy as np
 import pandas as pd
@@ -30,10 +37,22 @@ import PressureSweepAnalysis as ps                   # noqa: E402
 
 crf, he = ps.crf, ps.he
 GROUPS = {"2p1": [750.387, 667.728], "2p2": [727.294, 772.421, 826.452], "2p4": [794.818, 852.144, 747.117],
-          "2p6": [800.616, 763.511]}
-EDGE = {794.818: "2.8 nm after a gap", 852.144: "3.4 nm after a gap", 763.511: "2.9 nm before a gap"}
+          "2p7": [772.376]}                         # 2p7: doublet partner only (not plotted)
+DOUBLET = {"2p7": 772.376, "2p2": 772.421}          # one feature at the instrumental resolution
 FAMILY = "dc"
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "LiteratureComparison")
+
+
+def gap_distance(wls):
+    """{wl: text} distance of each line to the nearest order gap (or data edge), from one sweep spectrum."""
+    f = sorted(glob(os.path.join(ps.SWEEP["folder"], "1000mTorr_*.spa")))[0]
+    sp = crf.als.arn.load_spectrum(f, "gaps", crf.als.arn.CONFIG)
+    edges = [(a, "before") for a, _ in sp.gaps] + [(b, "after") for _, b in sp.gaps]
+    out = {}
+    for w in wls:
+        e, side = min(edges, key=lambda t: abs(t[0] - w))
+        out[w] = f"{abs(w - e):.1f} nm {'after' if w > e else 'before'} a gap"
+    return out
 
 
 def measure_lines():
@@ -47,15 +66,34 @@ def measure_lines():
     return m[m.status.isin(("ok", "weak", "blend"))]
 
 
+def doublet_check(R, model_ratio):
+    """772.38 / 772.42 nm as split by the line fit, per spectrum, against the CR model ratio at the same
+    fit point (model_ratio: {(p, mode): photon-rate ratio}) -> ln(measured / model).  The other lines of
+    2p7 (810.37, 866.79 nm) lie in order gaps, so the split can only be compared with the model."""
+    a, b = DOUBLET["2p7"], DOUBLET["2p2"]
+    rows = []
+    for (p, mode, f), g in R.groupby(["p_mTorr", "mode", "file"]):
+        ia, ib = g[np.abs(g.wl - a) < 1e-3], g[np.abs(g.wl - b) < 1e-3]
+        if ia.empty or ib.empty:
+            continue
+        meas = np.exp(ia.thin.iloc[0] - ib.thin.iloc[0]) * ia.A.iloc[0] / ib.A.iloc[0]   # photon-rate ratio
+        rows.append(dict(p_mTorr=p, mode=mode, file=f, ratio_meas=meas, ratio_model=model_ratio[(p, mode)],
+                         ln_meas_over_model=np.log(meas / model_ratio[(p, mode)])))
+    return pd.DataFrame(rows)
+
+
 def main():
     m = measure_lines()
     feats, ft = ps.measurements(ps.pressures())
-    rows = []
+    rows, model_ratio = [], {}
     for p in ps.pressures():
         FIT, row, pin, _ = ps.fit_condition(FAMILY, p, feats, ft)
         tab = FIT["tab"]
         lx, ln = np.log(tab["x_grid"]), np.log(tab["Ne_grid"])
+        ka, kb = (int(np.argmin(np.abs(tab["line_wl"] - DOUBLET[u]))) for u in ("2p7", "2p2"))
+        f_ratio = RectBivariateSpline(lx, ln, np.log(tab["I_obs"][:, :, ka] / tab["I_obs"][:, :, kb]), kx=1, ky=1)
         for mode, c in (("free", FIT["cond"].iloc[0]), ("nc", pin)):
+            model_ratio[(p, mode)] = float(np.exp(f_ratio(np.log(c.x_best), np.log(c.Ne_best))[0, 0]))
             for up, wls in GROUPS.items():
                 for wl in wls:
                     k = int(np.argmin(np.abs(tab["line_wl"] - wl)))
@@ -74,9 +112,15 @@ def main():
     S = R.groupby(["mode", "upper", "wl"]).agg(ln_rel=("val_rel", "mean"), ln_rel_sd=("val_rel", "std"),
                                                ln_rel_thin=("thin_rel", "mean"), eta=("eta", "median"),
                                                n=("val_rel", "size")).reset_index()
+    EDGE = gap_distance(sorted({w for ws in GROUPS.values() for w in ws}))
+    S["gap"] = S.wl.map(EDGE)
     S.to_csv(os.path.join(OUTDIR, "branching_check.csv"), index=False)
-    fig, axs = plt.subplots(1, len(GROUPS), figsize=(4.2 * len(GROUPS), 4.6), sharey=True)
-    for ax, (up, wls) in zip(axs, GROUPS.items()):
+    Dd = doublet_check(R, model_ratio)
+    Dd.to_csv(os.path.join(OUTDIR, "branching_doublet_772.csv"), index=False)
+    S = S[S.upper.map(lambda u: len(GROUPS[u]) > 1)]
+    plot_groups = {u: w for u, w in GROUPS.items() if len(w) > 1}
+    fig, axs = plt.subplots(1, len(plot_groups), figsize=(4.2 * len(plot_groups), 4.6), sharey=True)
+    for ax, (up, wls) in zip(axs, plot_groups.items()):
         for k, (mode, mk, col) in enumerate((("nc", "D", "#1baf7a"), ("free", "s", "#8a3ffc"))):
             g = S[(S["mode"] == mode) & (S.upper == up)].set_index("wl").reindex(wls)
             x = np.arange(len(wls)) + (k - 0.5) * 0.2
@@ -97,8 +141,12 @@ def main():
     plt.close(fig)
     with pd.option_context("display.width", 200):
         print(S.round(3).to_string(index=False))
-    return S
+        print("\n772.38 / 772.42 nm photon-rate ratio from the line fit vs the CR model at the fit point:")
+        print(Dd.groupby("mode")[["ratio_meas", "ratio_model", "ln_meas_over_model"]]
+              .agg(["mean", "std"]).round(3).to_string())
+        print(Dd.groupby(["mode", "p_mTorr"]).ln_meas_over_model.mean().unstack(0).round(2).to_string())
+    return S, Dd
 
 
 if __name__ == "__main__":
-    S = main()
+    S, DOUBLET_772 = main()

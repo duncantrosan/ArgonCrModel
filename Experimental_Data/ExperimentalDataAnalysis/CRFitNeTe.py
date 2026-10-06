@@ -94,6 +94,9 @@ CONFIG = dict(
     # --- CR model ------------------------------------------------------------
     P_Torr=1.0, Tg=300.0, R=0.04,       # both sweeps are at 1 Torr
     trap_lines="all",                   # see SolveDirect in MainFileV2
+    trap_ref_Ne=None,                   # m^-3: escape factors of the lines to excited levels frozen at
+                                        # the absorber densities of the solution at this Ne (per EEDF
+                                        # row), so trapping does not change with Ne; None = self-consistent
     N2_percent=0.0,                     # N2 admixture of the CR model [%]: quenching of the Ar(4s)
                                         # levels by N2 and dilution of the Ar ground state, as in
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
@@ -293,7 +296,8 @@ def _same_settings(tab, cfg):
                 == bool(cfg.get("atom_transfer", True))
                 and str(tab["trap_table"] if "trap_table" in tab else "RadiationTrappingLookupTable.json")
                 == _helpers().TRAPPING_TABLE_FILE
-                and str(tab["escape_mode"] if "escape_mode" in tab else "table") == cfg.get("escape_mode", "table"))
+                and str(tab["escape_mode"] if "escape_mode" in tab else "table") == cfg.get("escape_mode", "table")
+                and float(tab["trap_ref_Ne"] if "trap_ref_Ne" in tab else 0.0) == float(cfg.get("trap_ref_Ne") or 0.0))
     except (KeyError, ValueError):
         return False
 
@@ -339,25 +343,36 @@ def build_model_table(cfg=CONFIG):
     fdir = np.zeros_like(dens)
     conv = np.zeros(shp, bool)
 
-    def escape(up, lo, rad):          # same escape factor as SolveDirect
+    def escape(up, lo, rad, trap=None):   # same escape factor as SolveDirect
         if cfg["trap_lines"] == "ground" and lo["kind"] != "ground":
             return 1.0
-        if lo["density_m^-3"] == 0:
+        n_lo = trap.get(lo["label"], lo["density_m^-3"]) if trap is not None and lo["kind"] != "ground" \
+            else lo["density_m^-3"]
+        if n_lo == 0:
             return 1.0
-        a, tau = he.FindTauInModel(up, lo, rad, he.Volume2Torr(lo["density_m^-3"], Tg), Tg, R)
+        a, tau = he.FindTauInModel(up, lo, rad, he.Volume2Torr(n_lo, Tg), Tg, R)
         return float(np.squeeze(cr["GetEta"](interp, tau, a)))
 
+    def solve(eedf, ne, compute_rates, trap=None):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp, trap_lines=cfg["trap_lines"],
+                                 atom_transfer=cfg.get("atom_transfer", True), compute_rates=compute_rates,
+                                 trap_density=trap)
+
+    ref_Ne = cfg.get("trap_ref_Ne")
     rad_of = {(u, l): next(r for r in MD[u]["RadiativeDecay"] if r["direction"] == "loss" and r["partner"] == l)
               for u, l, _, _ in lines}
     for i, eedf_row in enumerate(eedfs):
+        trap = None
+        if ref_Ne:                    # absorber densities of the solution at ref_Ne, frozen for this row
+            j_ref = int(np.argmin(np.abs(np.log(Ne) - np.log(ref_Ne))))
+            e_ref = eedf_row[j_ref] if isinstance(eedf_row, list) else eedf_row
+            D_ref = solve(e_ref, ref_Ne, True)[0]
+            trap = {lbl: s["density_m^-3"] for lbl, s in D_ref.items() if s["kind"] != "ground"}
         for j, ne in enumerate(Ne):
             eedf = eedf_row[j] if isinstance(eedf_row, list) else eedf_row   # E/N x Ne library
-            with contextlib.redirect_stdout(io.StringIO()):
-                D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp,
-                                                trap_lines=cfg["trap_lines"],
-                                                atom_transfer=cfg.get("atom_transfer", True),
-                                                # rates depend on the EEDF only: once per row of a 1D library
-                                                compute_rates=(j == 0 or isinstance(eedf_row, list)))
+            # rates depend on the EEDF only: once per row of a 1D library
+            D, _, _, solver = solve(eedf, ne, j == 0 or isinstance(eedf_row, list), trap)
             conv[i, j] = solver["converged"]
             ng = D["ground"]["density_m^-3"]
             for k, lbl in enumerate(levels):
@@ -369,7 +384,7 @@ def build_model_table(cfg=CONFIG):
                 fdir[i, j, k] = direct / prod if prod > 0 else np.nan
             for k, (u, l, wl, A) in enumerate(lines):
                 I_thin[i, j, k] = D[u]["density_m^-3"] * A
-                I_obs[i, j, k] = I_thin[i, j, k] * escape(D[u], D[l], rad_of[(u, l)])
+                I_obs[i, j, k] = I_thin[i, j, k] * escape(D[u], D[l], rad_of[(u, l)], trap)
         te = (f"{Te_eff[i]:.2f}" if np.ndim(Te_eff) == 1
               else f"{np.min(Te_eff[i]):.2f}-{np.max(Te_eff[i]):.2f}")
         print(f"  CR grid: {x_name} = {x[i]:.3g} (Te_eff {te} eV) done ({i + 1}/{len(x)}), "
@@ -379,6 +394,7 @@ def build_model_table(cfg=CONFIG):
                quench_4p=quench_4p_applied(cfg), N2_dissociation=float(cfg.get("N2_dissociation", 0.0)),
                xsec=_xsec_set(), atom_transfer=bool(cfg.get("atom_transfer", True)),
                trap_table=_helpers().TRAPPING_TABLE_FILE, escape_mode=cfg.get("escape_mode", "table"),
+               trap_ref_Ne=float(ref_Ne or 0.0),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),
