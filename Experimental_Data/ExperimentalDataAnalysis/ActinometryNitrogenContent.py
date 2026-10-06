@@ -29,8 +29,10 @@ Steps
    the Ar(4s) levels + Ar dilution) of its own N2 fraction -> posterior over (E/N, Ne).
 3. Per condition, pair and variant the posterior is pushed through
        ln(n_N/n_Ar)(x, Ne) = ln(I_N/I_Ar b_Ar/b_N lam_N/lam_Ar) - ln(k_N/k_Ar) [- ln f_direct]
-   -> median and 16-84 % per pair.
-4. The pairs of a condition are combined at every (x, Ne) point (weights from their
+   -> median and 16-84 % per pair.  Pairs whose median lies outside the Tukey fences
+   (iqr_fence x IQR beyond the quartiles of the condition's pairs, in ln) are outliers
+   (column 'outlier') and are left out.
+4. The remaining pairs of a condition are combined at every (x, Ne) point (weights from their
    line-ratio errors) before the posterior quantiles are taken, so the Te/Ne error they
    share is not averaged down; the line-ratio error of the weighted mean is added, scaled
    by the Birge ratio when the pairs disagree beyond their errors.  The cross-section
@@ -76,6 +78,13 @@ CONFIG = dict(
     rel_err_xs_N=0.20, rel_err_xs_Ar=0.15,   # cross sections (BSR N I, Ar I), systematic
     k_margin_eV=1.0,                    # k valid only where the EEDF reaches threshold + this
     min_valid_mass=0.9,                 # posterior mass with a valid result needed per pair
+    iqr_fence=1.5,                      # per condition, pairs whose ln(n_N/n_Ar) lies outside
+                                        # [Q1 - k IQR, Q3 + k IQR] of the valid pairs are outliers and
+                                        # left out of the combination (Tukey); None = keep all
+    iqr_min_pairs=5,                    # ... only with at least this many valid pairs
+    pin_Ne=7.45e16,                    # m^-3: use only the E/N posterior at this Ne (critical density of
+                                        # 2.45 GHz; the free fits run to the Ne grid edge); None = Ne free
+                                        # (outputs then have no _Ne_nc suffix)
     outdir=os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "ActinometryN2Content"),
 )
 
@@ -167,9 +176,18 @@ def estimate(terms, pairs, post, variant, cfg=CONFIG):
         ok = mass >= cfg["min_valid_mass"]
         rows.append(dict(n_wl=p.n_wl, ar_wl=p.ar_wl, ar_upper=p.ar_upper, I_ratio=p.I_ratio,
                          I_rel_err=p.I_err / p.I_ratio, n_rep=p.n_rep, f_direct_Ar=fd, valid_mass=mass,
-                         used=ok, nN_nAr=np.exp(med), nN_nAr_lo=np.exp(lo), nN_nAr_hi=np.exp(hi)))
+                         outlier=False, used=ok, nN_nAr=np.exp(med), nN_nAr_lo=np.exp(lo), nN_nAr_hi=np.exp(hi)))
         if ok:
             keep.append((F, (p.I_err / p.I_ratio) ** 2, med))
+    k = cfg.get("iqr_fence")
+    if k and len(keep) >= cfg["iqr_min_pairs"]:      # Tukey fences on the per-pair ln(n_N/n_Ar)
+        q1, q3 = np.percentile([m for _, _, m in keep], [25, 75])
+        lo_f, hi_f = q1 - k * (q3 - q1), q3 + k * (q3 - q1)
+        out = [not lo_f <= m <= hi_f for _, _, m in keep]
+        for r in (r for r in rows if r["used"]):
+            r["outlier"] = out.pop(0)
+            r["used"] = not r["outlier"]
+        keep = [t for t in keep if lo_f <= t[2] <= hi_f]
     if not keep:
         return rows, None
     w = np.array([1 / v for _, v, _ in keep])
@@ -185,6 +203,20 @@ def estimate(terms, pairs, post, variant, cfg=CONFIG):
     return rows, dict(n_pairs=len(keep), nN_nAr=np.exp(med), ln_err_TeNe=s_TeNe, ln_err_meas=s_meas,
                       birge_pairs=birge, ln_err_stat=s_stat, ln_err_xs=s_xs,
                       ln_err_total=np.hypot(s_stat, s_xs))
+
+
+def pinned_posterior(fit, post, Ne):
+    """The posterior restricted to the fine-grid Ne column nearest Ne (E/N refitted there),
+    renormalised -> (posterior, Te_eff, E/N) with Te_eff and E/N its posterior means."""
+    fX, fN = fit["grid"]
+    j = int(np.argmin(np.abs(fN - np.log(Ne))))
+    p = np.zeros_like(post)
+    p[:, j] = post[:, j]
+    if not p.sum() > 0:
+        raise ValueError(f"posterior is zero along Ne = {Ne:.2e}")
+    p /= p.sum()
+    Te = fit["Te_f"] if np.ndim(fit["Te_f"]) == 1 else fit["Te_f"][:, j]
+    return p, float((p[:, j] * Te).sum()), float(np.exp((p[:, j] * fX).sum()))
 
 
 def condition_estimates(fits, act, cfg=CONFIG):
@@ -212,14 +244,17 @@ def condition_estimates(fits, act, cfg=CONFIG):
                 print(f"no CR fit for {sweep} {x:g} ({eedf}) - skipped")
                 continue
             meta = dict(sweep=sweep, x=x, N2_percent=pct, eedf=eedf, variant=variant)
+            fc = fit["cond"].set_index(["sweep", "x"]).loc[(sweep, x)]
+            state = dict(Te_eff=fc.Te_med, Ne=fc.Ne_med, Ne_lo=fc.Ne_lo, Ne_hi=fc.Ne_hi, EN_Td=fc.x_med)
+            if cfg.get("pin_Ne"):
+                post, te, en = pinned_posterior(fit, post, cfg["pin_Ne"])
+                state = dict(Te_eff=te, Ne=cfg["pin_Ne"], Ne_lo=cfg["pin_Ne"], Ne_hi=cfg["pin_Ne"], EN_Td=en)
             per_pair, est = estimate(terms[eedf, pct], pairs, post, variant, cfg)
             pair_rows += [dict(meta, **r) for r in per_pair]
             if est is None:
                 continue
-            fc = fit["cond"].set_index(["sweep", "x"]).loc[(sweep, x)]
             n, s = est["nN_nAr"], est["ln_err_stat"]
-            cond_rows.append(dict(meta, Te_eff=fc.Te_med, Ne=fc.Ne_med, Ne_lo=fc.Ne_lo, Ne_hi=fc.Ne_hi,
-                                  EN_Td=fc.x_med, chi2_red_fit=fc.chi2_red, edge_Ne=fc.edge_Ne,
+            cond_rows.append(dict(meta, **state, chi2_red_fit=fc.chi2_red, edge_Ne=fc.edge_Ne,
                                   edge_EN=fc.edge_x, **est,
                                   nN_nAr_lo=n * np.exp(-s), nN_nAr_hi=n * np.exp(s),
                                   n_N=n * (1 - f) * N, n_N_lo=n * (1 - f) * N * np.exp(-s),
@@ -318,12 +353,45 @@ def plot_pairs(pairs, sweeps, eedf, path):
     plt.close(fig)
 
 
+def plot_microwave_n2_sweep(cond, outdir, tag=""):
+    """N2-percent sweep, microwave EEDF only (with pin_Ne: Ne = n_c): Te_eff, n_N/n_Ar and the
+    dissociation degree against N2 percent, one graph per file, both Ar-level variants."""
+    g = cond[(cond.sweep == "N2 fraction") & (cond.eedf == "microwave")].sort_values("x")
+    ne = "Ne = n$_c$" if tag else "Ne free"
+    for key, ylab, fname, log in (
+            ("Te_eff", r"$T_{e,\mathrm{eff}} = \frac{2}{3}\langle\varepsilon\rangle$ [eV]", "Te_eff", False),
+            ("nN_nAr", "n$_N$ / n$_{Ar}$", "nN_nAr", True),
+            ("dissociation", r"dissociation degree $n_N / (2 n_{N_2})$", "dissociation", True)):
+        fig, ax = plt.subplots(figsize=(8, 5.5))
+        for v in ("direct", "stepwise") if key != "Te_eff" else ("direct",):
+            h = g[g.variant == v]
+            y, s = h[key].to_numpy(), h.ln_err_stat.to_numpy()
+            yerr = None if key == "Te_eff" else [y - y * np.exp(-s), y * np.exp(s) - y]
+            st = VSTYLE[v]
+            ax.errorbar(h.x, y, yerr=yerr, fmt=st["marker"] + "-", color=st["color"] if key != "Te_eff" else "k",
+                        ms=6, capsize=3, label=st["label"] if key != "Te_eff" else None)
+        if key == "dissociation":
+            ax.axhline(1, color="k", ls=":", lw=1, label="complete dissociation")
+        if log:
+            ax.set_yscale("log")
+        ax.set_xlabel("N$_2$ in the feed [%]")
+        ax.set_ylabel(ylab)
+        ax.set_title(f"N$_2$ percent sweep (85 W, 1 Torr), microwave EEDF, {ne}")
+        ax.grid(alpha=0.3, which="both")
+        if ax.get_legend_handles_labels()[0]:
+            ax.legend(fontsize=8)
+        fig.tight_layout()
+        fig.savefig(os.path.join(outdir, f"n2_sweep_microwave_{fname}{tag}.png"), dpi=200)
+        plt.close(fig)
+
+
 # ----------------------------------------------------------------------------
 # 4. Driver
 # ----------------------------------------------------------------------------
 def run(cfg=CONFIG):
     os.makedirs(cfg["outdir"], exist_ok=True)
-    out = lambda f: os.path.join(cfg["outdir"], f)
+    tag = "_Ne_nc" if cfg.get("pin_Ne") else ""          # pinned results next to the free-Ne ones
+    out = lambda f: os.path.join(cfg["outdir"], f.replace(".", f"{tag}.", 1))
     acfg = cfg["actinometry"]
     print("=== actinometry lines and measured ratios ===")
     xs = ar.load_all_cross_sections()
@@ -339,6 +407,7 @@ def run(cfg=CONFIG):
     pairs.to_csv(out("nN_nAr_per_pair.csv"), index=False)
     cond.to_csv(out("nN_nAr_per_condition.csv"), index=False)
     plot_content(cond, acfg["sweeps"], out("nitrogen_content.png"))
+    plot_microwave_n2_sweep(cond, cfg["outdir"], tag)
     for eedf in cfg["eedfs"]:
         plot_pairs(pairs, acfg["sweeps"], eedf, out(f"nitrogen_content_per_pair_{eedf}.png"))
     cols = ["sweep", "x", "eedf", "variant", "n_pairs", "Te_eff", "Ne", "chi2_red_fit", "edge_Ne", "nN_nAr",

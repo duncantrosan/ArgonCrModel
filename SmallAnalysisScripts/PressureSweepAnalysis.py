@@ -21,7 +21,8 @@ Per pressure and family
         Te_eff, chi^2/dof, Delta chi^2 / s^2 against the free fit, CR 1s5 / 1s3 metastables (best E/N and
         the range with Delta chi^2 <= 1 s^2 along E/N)
 Output in Experimental_Data/Output/PressureSweep/ (one graph per file):
-  figures/<quantity>_vs_pressure.png   Te_eff, EN, Ne, chi2_dof, dchi2_nc, density_1s5/1s4/1s3/1s2
+  figures/<quantity>_vs_pressure.png   Te_eff, EN, Ne, chi2_dof, dchi2_nc; the four 1s densities on one
+                                       graph (microwave, Ne = n_c only)
                                        against pressure, both families, Ne free and Ne = n_c
   figures/chi2_vs_Ne_<dchi2|chi2_red|Te_eff>_<family>.png
                               chi^2 profiled over E/N at each Ne (Delta chi^2 / s^2 and chi^2/dof with Ne
@@ -299,9 +300,9 @@ def plot_vs_pressure(res, outdir):
     """Te_eff, E/N, Ne, chi^2/dof, Delta chi^2(n_c) and the CR 1s5 and 1s3 metastable densities against
     pressure, both EEDF families, Ne free and Ne = n_c: one file per graph in outdir."""
     os.makedirs(outdir, exist_ok=True)
-    names = ["Te_eff", "EN", "Ne", "chi2_dof", "dchi2_nc"] + [f"density_{m}" for m in LEVELS_1S]
+    names = ["Te_eff", "EN", "Ne", "chi2_dof", "dchi2_nc"]
     F = {n: plt.subplots(figsize=FIGSIZE) for n in names}
-    aT, aE, aN, aC, aD = (F[n][1] for n in names[:5])
+    aT, aE, aN, aC, aD = (F[n][1] for n in names)
     for fam in FAMILIES:
         g = res[res.family == fam].sort_values("p_mTorr")
         if g.empty:
@@ -320,10 +321,6 @@ def plot_vs_pressure(res, outdir):
         aC.plot(p, g.chi2_red, "o-", color=c, ms=5, label=f"{fam}, Ne free")
         aC.plot(p, g.chi2_red_nc, "s--", color=c, mfc="white", ms=5, label=f"{fam}, Ne = n$_c$")
         aD.plot(p, g.dchi2_nc, "o-", color=c, ms=5, label=fam)
-        for m in LEVELS_1S:
-            ax = F[f"density_{m}"][1]
-            ax.plot(p, g[f"n_{m}"], "o-", color=c, ms=5, label=f"{fam}, Ne free")
-            ax.plot(p, g[f"n_{m}_nc"], "s--", color=c, mfc="white", ms=5, label=f"{fam}, Ne = n$_c$")
     aN.axhline(N_C, color="k", lw=1, ls=":", label=f"n$_c$ = {N_C:.2e} m$^{{-3}}$ ({FREQ_HZ / 1e9:g} GHz)")
     aN.plot([], [], "kx", ms=9, mew=2, label="posterior at the Ne grid edge")
     aC.axhline(1, color="0.6", lw=0.8)
@@ -333,17 +330,31 @@ def plot_vs_pressure(res, outdir):
               "EN": ("E/N [Td]", "Reduced field of the fitted EEDF"),
               "Ne": ("$N_e$ [m$^{-3}$]", "Electron density (Ne free)"),
               "chi2_dof": (r"$\chi^2$/dof", "Fit quality"),
-              "dchi2_nc": (r"$\Delta\chi^2/s^2$ for $N_e = n_c$", "Cost of pinning Ne at the critical density"),
-              **{f"density_{m}": (f"CR Ar({m[:2]}$_{m[2]}$) density [m$^{{-3}}$]",
-                                  f"Ar({m[:2]}$_{m[2]}$) {KIND_1S[m]} density (CR model)") for m in LEVELS_1S}}
+              "dchi2_nc": (r"$\Delta\chi^2/s^2$ for $N_e = n_c$", "Cost of pinning Ne at the critical density")}
     for n in names:
         fig, ax = F[n]
         ylab, title = labels[n]
         ax.set_ylabel(ylab)
-        if n in ("EN", "Ne") or n.startswith("density_"):
+        if n in ("EN", "Ne"):
             ax.set_yscale("log")
         _save(fig, ax, os.path.join(outdir, f"{n}_vs_pressure.png"),
               f"{title}: pure Ar, 80 W, $T_g$ = {TG:g} K")
+    plot_1s_densities(res, os.path.join(outdir, "1s_densities_vs_pressure_microwave_nc.png"))
+
+
+def plot_1s_densities(res, path):
+    """CR densities of the four 1s levels (metastable 1s5, 1s3; resonant 1s4, 1s2) against pressure on
+    one graph, microwave EEDF with Ne = n_c (band: Delta chi^2 <= 1 s^2 along E/N)."""
+    g = res[res.family == "microwave"].sort_values("p_mTorr")
+    p = g.p_mTorr
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    for m, mk, col in (("1s5", "s-", "C3"), ("1s4", "D--", "C0"), ("1s3", "^-", "C1"), ("1s2", "v--", "C2")):
+        ax.fill_between(p, g[f"n_{m}_nc_lo"], g[f"n_{m}_nc_hi"], color=col, alpha=0.15, lw=0)
+        ax.plot(p, g[f"n_{m}_nc"], mk, color=col, ms=5, label=f"Ar({m[:2]}$_{m[2]}$), {KIND_1S[m]}")
+    ax.set_yscale("log")
+    ax.set_ylabel("CR density [m$^{-3}$]")
+    _save(fig, ax, path, "Ar(1s) metastable and resonant densities (CR model; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ "
+          f"along E/N)\nmicrowave EEDF, Ne = n$_c$ = {N_C:.2e} m$^{{-3}}$, pure Ar, $T_g$ = {TG:g} K")
 
 
 def plot_residuals(lines, checks, sigma_model, outdir, combos=None):
@@ -454,14 +465,7 @@ def plot_microwave_nc(res, lines, checks, outdir):
     ax.axhline(1, color="0.6", lw=0.8)
     ax.set_ylabel(r"$\chi^2$/dof")
     _save(fig, ax, os.path.join(outdir, "chi2_dof_vs_pressure_microwave_nc.png"), f"Fit quality\n{tag}", legend=False)
-    fig, ax = plt.subplots(figsize=FIGSIZE)
-    for m, mk, col in (("1s5", "s-", "C3"), ("1s4", "D--", "C0"), ("1s3", "^-", "C1"), ("1s2", "v--", "C2")):
-        ax.fill_between(p, g[f"n_{m}_nc_lo"], g[f"n_{m}_nc_hi"], color=col, alpha=0.15, lw=0)
-        ax.plot(p, g[f"n_{m}_nc"], mk, color=col, ms=5, label=f"Ar({m[:2]}$_{m[2]}$), {KIND_1S[m]}")
-    ax.set_yscale("log")
-    ax.set_ylabel("CR density [m$^{-3}$]")
-    _save(fig, ax, os.path.join(outdir, "1s_densities_vs_pressure_microwave_nc.png"),
-          f"Ar(1s) metastable and resonant densities (CR model; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N)\n{tag}")
+    plot_1s_densities(res, os.path.join(outdir, "1s_densities_vs_pressure_microwave_nc.png"))
     if lines is not None:
         plot_residuals(lines, checks, crf.CONFIG["sigma_model"], outdir, combos=[("microwave", "nc")])
     pd.DataFrame({"Pressure (mTorr)": p.round().astype(int).to_numpy(),
