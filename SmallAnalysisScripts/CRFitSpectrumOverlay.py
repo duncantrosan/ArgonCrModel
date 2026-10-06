@@ -5,9 +5,17 @@ CRFitSpectrumOverlay.py
 Synthetic CR-model spectrum at the best-fit (Te_eff, Ne) of one sweep condition,
 overlaid on the measured spectrum.
 
+EEDF   'microwave'     BOLSIG+ 2.45 GHz library from 3 Td of the condition's N2 fraction
+                       (MicrowaveLowENFit), CR model with that fraction's N2 quenching
+       'dc'            BOLSIG+ DC library of the condition's N2 fraction, same CR model
+       'multibolt_dc'  CRFitNeTe.CONFIG as it stands (MultiBolt DC, pure-Ar CR model even
+                       for the mixtures) - the original overlay
+NE_MODE 'free'  best (E/N, Ne) of the joint fit
+        'nc'    Ne pinned at the critical density n_c (2.42 GHz), E/N refitted there
+
 1. CRFitNeTe.run() -> joint Te/Ne fit of every condition (uses its caches).
 2. CR-model line intensities of all Ar I lines between model levels at the
-   best-fit grid point (spline of ln I over ln x - ln Ne, as in the fit).
+   best-fit point (spline of ln I over ln x - ln Ne, as in the fit).
 3. Same nuisances as the fit, evaluated at that point: one scale per spectrum
    and the linear ln R(lambda) response; the synthetic spectrum uses the mean
    scale of the repeats.
@@ -15,7 +23,8 @@ overlaid on the measured spectrum.
    (HelperFunctions.BroadenWithSlit) and plotted over the repeat-averaged,
    baseline-subtracted measurement.
 
-Run from Spyder: edit SWEEP / X, press F5.  Figure in Experimental_Data/Output/CRFit.
+Run from Spyder: edit SWEEP / X / EEDF / NE_MODE, press F5.  Figures in
+Experimental_Data/Output/CRFit/overlays.
 """
 import os
 import sys
@@ -29,10 +38,15 @@ from scipy.ndimage import minimum_filter1d, uniform_filter1d
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                 "Experimental_Data", "ExperimentalDataAnalysis"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import CRFitNeTe as crf                             # noqa: E402
+import MicrowaveLowENFit as mlf                     # noqa: E402
 
 SWEEP = "N2 fraction"           # sweep name in crf.CONFIG["sweeps"]
 X = 0                         # condition within the sweep (0 % N2 = pure Ar)
+EEDF = "microwave"              # 'microwave', 'dc' or 'multibolt_dc' (see the docstring)
+NE_MODE = "nc"                  # 'free' or 'nc' (Ne pinned at the critical density)
+OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "CRFit", "overlays")
 PANELS = [(400.0, 475.0), (690.0, 860.0)]          # 5p -> 4s and 4p -> 4s ranges
 BASELINE_NM = 1.5               # window of the rolling-minimum baseline
 # Check lines (lines between model levels that are not in the fit) are shown only when the
@@ -47,6 +61,35 @@ CHECK = dict(
     width_ratio=(0.8, 1.2),     # free single-line FWHM / group (instrument) FWHM: broadening, hidden blend
     max_resid_peaks=0,          # unexplained residual peaks within 3 FWHM of the line
 )
+
+
+def fit_config(sweep, x, eedf=EEDF):
+    """CRFitNeTe settings for the condition: EEDF library and CR model of its N2 fraction."""
+    if eedf == "multibolt_dc":
+        return crf.CONFIG
+    pct = mlf.anc.n2_percent(sweep, x)
+    if eedf == "microwave":
+        return mlf.job_cfg(f"lowEN:{pct:g}", build=False)
+    if eedf == "dc":
+        return mlf.job_cfg(f"ref:{mlf.REF_PURE_AR['dc']}" if pct == 0 else f"dc:{pct:g}")
+    raise ValueError(f"EEDF {eedf!r}")
+
+
+def pinned_at_nc(FIT, c):
+    """The condition's fit with Ne = n_c and E/N refitted (chi^2 from the saved posterior,
+    as CriticalDensityFit): a copy of the cond row with x/Te/Ne/chi2 replaced."""
+    (fX, fN), Te_f = FIT["grid"], FIT["Te_f"]
+    post = FIT["posts"][f"{c.sweep}|{c.x:g}"]
+    j = int(np.argmin(np.abs(fN - np.log(mlf.N_C))))
+    row = mlf.cdf.chi2_grid(post, c.chi2_min, c.birge)[:, j]
+    i = int(np.argmin(row))
+    ok = row <= row[i] + c.birge ** 2                 # Delta chi^2 = 1 s^2 along E/N
+    Te = Te_f if np.ndim(Te_f) == 1 else Te_f[:, j]
+    c = c.copy()
+    c["x_best"], c["Te_best"], c["Te_lo"], c["Te_hi"] = np.exp(fX[i]), Te[i], Te[ok].min(), Te[ok].max()
+    c["Ne_best"] = c["Ne_lo"] = c["Ne_hi"] = mlf.N_C
+    c["chi2_red"] = row[i] / (c.dof + 1)
+    return c
 
 
 def model_lines_at(tab, x, Ne, cfg):
@@ -125,7 +168,7 @@ def check_line_candidates(wl_m, I_syn, fit_wl, sweep, x, cfg, check=CHECK):
     """Model lines outside the fit, each with the verdict of the line analysis:
     catalogue wavelength, upper level, keep (bool) and the reasons it was dropped."""
     sel = cfg["selection_dir"]
-    pure = sweep == "N2 fraction" and x == 0
+    pure = (sweep == "N2 fraction" and x == 0) or any(sw.get("pure_ar") for sw in cfg["sweeps"] if sw["name"] == sweep)
     cat = pd.read_csv(os.path.join(sel, "lines_pure.csv" if pure else cfg["lines_file"]))
     ratings = pd.read_csv(os.path.join(sel, cfg["ar_ratings"]))
     rmap = dict(zip(ratings.key, ratings.rating))
@@ -224,7 +267,7 @@ def check_line_residuals(wl_m, I_syn, wl_meas, I_meas, fit_wl, min_frac=0.005, i
     return pd.DataFrame(rows)
 
 
-def plot_line_residuals(res_fit, res_chk, feats, c, cfg, label, path):
+def plot_line_residuals(res_fit, res_chk, feats, c, cfg, label, path, show=True):
     fig, axs = plt.subplots(1, len(PANELS), figsize=(13, 5), sharey=True,
                             gridspec_kw=dict(width_ratios=[hi - lo for lo, hi in PANELS], wspace=0.04))
     sm = cfg["sigma_model"]
@@ -265,13 +308,25 @@ def plot_line_residuals(res_fit, res_chk, feats, c, cfg, label, path):
     fig.suptitle(rf"{label}: line-integral residuals at $T_{{e,\mathrm{{eff}}}}$ = {c.Te_best:.2f} eV, "
                  rf"$N_e$ = {c.Ne_best:.2e} m$^{{-3}}$   ($\chi^2$/dof = {c.chi2_red:.2f})", fontsize=12)
     fig.savefig(path, dpi=200, bbox_inches="tight")
-    plt.show()
+    plt.show() if show else plt.close(fig)
 
 
-def run(sweep=SWEEP, x=X, cfg=crf.CONFIG):
+def run(sweep=SWEEP, x=X, eedf=EEDF, ne_mode=NE_MODE, cfg=None):
+    cfg = cfg or fit_config(sweep, x, eedf)
     FIT = crf.run(cfg)
-    tab, feats, ft = FIT["tab"], FIT["feats"], FIT["ft"]
     c = FIT["cond"].query("sweep == @sweep and x == @x").iloc[0]
+    if ne_mode == "nc":
+        c = pinned_at_nc(FIT, c)
+    label = "Pure Ar" if (sweep == "N2 fraction" and x == 0) else f"{sweep} = {x:g}"
+    label += f", {eedf.replace('_', ' ')} EEDF"
+    tag = f"{sweep.replace(' ', '_')}_{x:g}_{eedf}_Ne{ne_mode}"
+    return dict(FIT=FIT, **plot_condition(FIT, c, sweep, x, cfg, label, tag, pinned=ne_mode == "nc"))
+
+
+def plot_condition(FIT, c, sweep, x, cfg, label, tag, outdir=OUTDIR, pinned=False, show=True, verbose=True):
+    """Spectrum overlay and line-integral residuals of one condition at the point of c (a row of
+    the fit's cond table, or of pinned_at_nc).  FIT needs tab, feats and ft (CRFitNeTe.run)."""
+    tab, feats, ft = FIT["tab"], FIT["feats"], FIT["ft"]
     d = ft.query("sweep == @sweep and x == @x")
     folder = next(sw["folder"] for sw in cfg["sweeps"] if sw["name"] == sweep)
 
@@ -308,37 +363,41 @@ def run(sweep=SWEEP, x=X, cfg=crf.CONFIG):
         ax.grid(alpha=0.25)
     for ax in np.atleast_1d(axs):
         ax.legend(loc="upper left", fontsize=9)
-    label = "Pure Ar" if (sweep == "N2 fraction" and x == 0) else f"{sweep} = {x:g}"
+    ne_txt = (rf"$N_e$ = $n_c$ = {c.Ne_best:.2e} m$^{{-3}}$ (pinned)" if pinned else
+              rf"$N_e$ = {c.Ne_best:.2e} m$^{{-3}}$ (68 %: {c.Ne_lo:.1e}-{c.Ne_hi:.1e})")
     fig.suptitle(
         rf"{label}:  $T_{{e,\mathrm{{eff}}}}$ = {c.Te_best:.2f} eV "
-        rf"(68 %: {c.Te_lo:.2f}-{c.Te_hi:.2f}),   "
-        rf"$N_e$ = {c.Ne_best:.2e} m$^{{-3}}$ (68 %: {c.Ne_lo:.1e}-{c.Ne_hi:.1e})",
+        rf"(68 %: {c.Te_lo:.2f}-{c.Te_hi:.2f}),   {ne_txt},   $\chi^2$/dof = {c.chi2_red:.2f}",
         fontsize=13)
     fig.tight_layout()
-    tag = f"{sweep.replace(' ', '_')}_{x:g}"
-    path = os.path.join(cfg["outdir"], f"spectrum_overlay_{tag}.png")
+    os.makedirs(outdir, exist_ok=True)
+    path = os.path.join(outdir, f"spectrum_overlay_{tag}.png")
     fig.savefig(path, dpi=200)
-    plt.show()
-    print(f"\nbest fit: Te_eff = {c.Te_best:.2f} eV, Ne = {c.Ne_best:.3e} m^-3, "
-          f"chi2/dof = {c.chi2_red:.2f};  response slope {coef}  ->  {path}")
+    plt.show() if show else plt.close(fig)
 
     res_fit = fit_line_residuals(d, feats, wl_m, I_m, scales, coef)
     res_chk, cand = confident_check_residuals(wl_m, I_m, scales, coef, fit_wl, sweep, x, cfg)
-    rpath = os.path.join(cfg["outdir"], f"line_residuals_{tag}.png")
-    plot_line_residuals(res_fit, res_chk, feats, c, cfg, label, rpath)
+    rpath = os.path.join(outdir, f"line_residuals_{tag}.png")
+    plot_line_residuals(res_fit, res_chk, feats, c, cfg, label, rpath, show)
+    if len(cand):
+        cand.to_csv(os.path.join(outdir, f"check_lines_{tag}.csv"), index=False)
+    out = dict(cond=c, wl_model=wl_m, I_model=I_syn, wl_meas=wl_meas, I_meas=I_meas,
+               res_fit=res_fit, res_chk=res_chk, cand=cand)
+    if not verbose:
+        return out
+    print(f"\nbest fit: Te_eff = {c.Te_best:.2f} eV, Ne = {c.Ne_best:.3e} m^-3, "
+          f"chi2/dof = {c.chi2_red:.2f};  response slope {coef}  ->  {path}")
     print("\nfitted lines, mean ln(measured/model):")
     print(res_fit.groupby("feature", sort=False).resid.mean().round(3).to_string())
     if len(cand):
         print("\ncheck-line candidates (model lines outside the fit):")
         print(cand.round(3).to_string(index=False))
-        cand.to_csv(os.path.join(cfg["outdir"], f"check_lines_{tag}.csv"), index=False)
     if not res_chk.empty:
         g = res_chk.groupby(["wl", "upper"]).resid.agg(["mean", "std", "count"]).round(3)
         print(f"\n{g.shape[0]} confident check lines, mean ln(meas/model) per line:")
         print(g.to_string())
     print(f"-> {rpath}")
-    return dict(FIT=FIT, cond=c, wl_model=wl_m, I_model=I_syn, wl_meas=wl_meas, I_meas=I_meas,
-                res_fit=res_fit, res_chk=res_chk)
+    return out
 
 
 if __name__ == "__main__":
