@@ -1,0 +1,377 @@
+discharge,quantity,level,variant,ours,zhupu_crm,zhupu_oes
+EBP 1 Pa,"2p n/g, sum 100",2p1,"morning model (NGFSRDW, no AT, old table)",50.123811868802946,21.06,19.11
+EBP 1 Pa,"2p n/g, sum 100",2p5,"morning model (NGFSRDW, no AT, old table)",5.785919678319433,12.47,13.34
+EBP 1 Pa,"2p n/g, sum 100",2p3,"morning model (NGFSRDW, no AT, old table)",3.7085813530610525,5.31,4.5
+EBP 1 Pa,"2p n/g, sum 100",2p7,"morning model (NGFSRDW, no AT, old table)",4.207876994526015,8.25,9.23
+EBP 1 Pa,"2p n/g, sum 100",2p8,"morning model (NGFSRDW, no AT, old table)",3.3455759977219865,9.08,7.71
+EBP 1 Pa,"2p n/g, sum 100",2p4,"morning model (NGFSRDW, no AT, old table)",4.678786103989852,6.22,5.98
+EBP 1 Pa,"2p n/g, sum 100",2p9,"morning model (NGFSRDW, no AT, old table)",3.5506050075196876,8.18,7.06
+EBP 1 Pa,"2p n/g, sum 100",2p2,"morning model (NGFSRDW, no AT, old table)",5.3843091115137875,4.63,5.93
+EBP 1 Pa,"2p n/g, sum 100",2p6,"morning model (NGFSRDW, no AT, old table)",2.9245550863305145,6.07,6.34
+EBP 1 Pa,"2p n/g, sum 100",2p10,"morning model (NGFSRDW, no AT, old table)",16.289978798214733,19.86,19.89
+EBP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, old table",21.914159872759654,21.06,19.11
+EBP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, old table",8.675501883884676,12.47,13.34
+EBP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, old table",9.849177708407966,5.31,4.5
+EBP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, old table",6.0254335785326845,8.25,9.23
+EBP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, old table",6.48613688900681,9.08,7.71
+EBP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, old table",7.911616811888274,6.22,5.98
+EBP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, old table",4.388162148670358,8.18,7.06
+EBP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, old table",10.526501026725978,4.63,5.93
+EBP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, old table",6.13877264157121,6.07,6.34
+EBP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, old table",18.084537438552385,19.86,19.89
+EBP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table (current)",21.92247018346843,21.06,19.11
+EBP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table (current)",8.67735991107171,12.47,13.34
+EBP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table (current)",9.838640392886324,5.31,4.5
+EBP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table (current)",6.026396035100573,8.25,9.23
+EBP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table (current)",6.484251625846247,9.08,7.71
+EBP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table (current)",7.911810461146191,6.22,5.98
+EBP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table (current)",4.390148263373719,8.18,7.06
+EBP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table (current)",10.528334702102121,4.63,5.93
+EBP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table (current)",6.137270327185535,6.07,6.34
+EBP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table (current)",18.083318097819138,19.86,19.89
+EBP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table, box diffusion",21.483931252000318,21.06,19.11
+EBP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table, box diffusion",8.512046695974844,12.47,13.34
+EBP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table, box diffusion",9.667051427584948,5.31,4.5
+EBP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table, box diffusion",5.982582258297608,8.25,9.23
+EBP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table, box diffusion",6.468161957483483,9.08,7.71
+EBP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table, box diffusion",7.95344228213844,6.22,5.98
+EBP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table, box diffusion",4.841683359591689,8.18,7.06
+EBP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table, box diffusion",10.470395218875616,4.63,5.93
+EBP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table, box diffusion",6.271258593473667,6.07,6.34
+EBP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table, box diffusion",18.349446954579378,19.86,19.89
+EBP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, Walsh trapping, box diffusion",22.578851274902185,21.06,19.11
+EBP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, Walsh trapping, box diffusion",8.767611536188191,12.47,13.34
+EBP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, Walsh trapping, box diffusion",8.865030854248092,5.31,4.5
+EBP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, Walsh trapping, box diffusion",6.327393275752368,8.25,9.23
+EBP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, Walsh trapping, box diffusion",6.316007529671398,9.08,7.71
+EBP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, Walsh trapping, box diffusion",8.51431863239588,6.22,5.98
+EBP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, Walsh trapping, box diffusion",4.363024719903224,8.18,7.06
+EBP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, Walsh trapping, box diffusion",11.33553269060551,4.63,5.93
+EBP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, Walsh trapping, box diffusion",5.892018782383257,6.07,6.34
+EBP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, Walsh trapping, box diffusion",17.040210703949903,19.86,19.89
+EBP 1 Pa,1s n/g/n_g [ppm],1s5,"morning model (NGFSRDW, no AT, old table)",9.072575375827812,26.1,30.1
+EBP 1 Pa,1s n/g/n_g [ppm],1s3,"morning model (NGFSRDW, no AT, old table)",8.538986925800543,21.7,20.5
+EBP 1 Pa,1s n/g/n_g [ppm],1s4,"morning model (NGFSRDW, no AT, old table)",0.6703083854737403,0.838,2.93
+EBP 1 Pa,1s n/g/n_g [ppm],1s2,"morning model (NGFSRDW, no AT, old table)",1.2214365451003282,0.928,1.57
+EBP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, old table",1.877039012765767,26.1,30.1
+EBP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, old table",2.1166825713870336,21.7,20.5
+EBP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, old table",0.18072983410378987,0.838,2.93
+EBP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, old table",0.365818366057722,0.928,1.57
+EBP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table (current)",1.876600074836248,26.1,30.1
+EBP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table (current)",2.1166187131725773,21.7,20.5
+EBP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table (current)",0.18137205098728593,0.838,2.93
+EBP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table (current)",0.3753465645625744,0.928,1.57
+EBP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table, box diffusion",14.234503569896349,26.1,30.1
+EBP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table, box diffusion",15.846366645734623,21.7,20.5
+EBP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table, box diffusion",0.18336881319436918,0.838,2.93
+EBP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table, box diffusion",0.37650149450792997,0.928,1.57
+EBP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, Walsh trapping, box diffusion",14.78048030817594,26.1,30.1
+EBP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, Walsh trapping, box diffusion",18.47347022936813,21.7,20.5
+EBP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, Walsh trapping, box diffusion",0.8393642144244784,0.838,2.93
+EBP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, Walsh trapping, box diffusion",2.300592814551315,0.928,1.57
+ICP 1 Pa,"2p n/g, sum 100",2p1,"morning model (NGFSRDW, no AT, old table)",23.195195597851892,4.56,4.25
+ICP 1 Pa,"2p n/g, sum 100",2p5,"morning model (NGFSRDW, no AT, old table)",3.190382170466303,2.98,2.39
+ICP 1 Pa,"2p n/g, sum 100",2p3,"morning model (NGFSRDW, no AT, old table)",2.4016335844141805,1.7,1.46
+ICP 1 Pa,"2p n/g, sum 100",2p7,"morning model (NGFSRDW, no AT, old table)",3.740993178062585,2.9,2.7
+ICP 1 Pa,"2p n/g, sum 100",2p8,"morning model (NGFSRDW, no AT, old table)",3.7807716515960332,4.86,3.35
+ICP 1 Pa,"2p n/g, sum 100",2p4,"morning model (NGFSRDW, no AT, old table)",4.402402700340394,4.11,2.91
+ICP 1 Pa,"2p n/g, sum 100",2p9,"morning model (NGFSRDW, no AT, old table)",24.775532367459835,44.2,47.96
+ICP 1 Pa,"2p n/g, sum 100",2p2,"morning model (NGFSRDW, no AT, old table)",3.804188625864494,2.22,1.84
+ICP 1 Pa,"2p n/g, sum 100",2p6,"morning model (NGFSRDW, no AT, old table)",5.103597708873088,6.82,7.0
+ICP 1 Pa,"2p n/g, sum 100",2p10,"morning model (NGFSRDW, no AT, old table)",25.605302415071204,26.04,24.26
+ICP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, old table",10.078329232279561,4.56,4.25
+ICP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, old table",4.475432623600868,2.98,2.39
+ICP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, old table",3.94532474291492,1.7,1.46
+ICP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, old table",4.254798601600998,2.9,2.7
+ICP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, old table",6.21631213969996,4.86,3.35
+ICP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, old table",5.640520268654514,4.11,2.91
+ICP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, old table",25.014307806469482,44.2,47.96
+ICP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, old table",6.690109510260684,2.22,1.84
+ICP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, old table",9.347203037877541,6.82,7.0
+ICP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, old table",24.337662036641465,26.04,24.26
+ICP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table (current)",10.143796155447792,4.56,4.25
+ICP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table (current)",4.492633422708177,2.98,2.39
+ICP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table (current)",3.992093689070167,1.7,1.46
+ICP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table (current)",4.279830442884419,2.9,2.7
+ICP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table (current)",6.259817813138805,4.86,3.35
+ICP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table (current)",5.700017071219467,4.11,2.91
+ICP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table (current)",24.762170609591475,44.2,47.96
+ICP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table (current)",6.734272743323663,2.22,1.84
+ICP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table (current)",9.354902652771782,6.82,7.0
+ICP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table (current)",24.280465399844253,26.04,24.26
+ICP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table, box diffusion",8.3071399524826,4.56,4.25
+ICP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table, box diffusion",3.7792435499005155,2.98,2.39
+ICP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table, box diffusion",3.3710811493376402,1.7,1.46
+ICP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table, box diffusion",3.8527632288596694,2.9,2.7
+ICP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table, box diffusion",5.867072907806842,4.86,3.35
+ICP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table, box diffusion",5.156188660008367,4.11,2.91
+ICP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table, box diffusion",29.6320926668577,44.2,47.96
+ICP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table, box diffusion",5.996986256246135,2.22,1.84
+ICP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table, box diffusion",9.523701755586373,6.82,7.0
+ICP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table, box diffusion",24.513729872914162,26.04,24.26
+ICP 1 Pa,"2p n/g, sum 100",2p1,"BSR + AT, Walsh trapping, box diffusion",7.963472695211554,4.56,4.25
+ICP 1 Pa,"2p n/g, sum 100",2p5,"BSR + AT, Walsh trapping, box diffusion",3.782622450173524,2.98,2.39
+ICP 1 Pa,"2p n/g, sum 100",2p3,"BSR + AT, Walsh trapping, box diffusion",3.935334569016442,1.7,1.46
+ICP 1 Pa,"2p n/g, sum 100",2p7,"BSR + AT, Walsh trapping, box diffusion",4.175912633087486,2.9,2.7
+ICP 1 Pa,"2p n/g, sum 100",2p8,"BSR + AT, Walsh trapping, box diffusion",6.463339149537633,4.86,3.35
+ICP 1 Pa,"2p n/g, sum 100",2p4,"BSR + AT, Walsh trapping, box diffusion",5.478697579295639,4.11,2.91
+ICP 1 Pa,"2p n/g, sum 100",2p9,"BSR + AT, Walsh trapping, box diffusion",29.194789309521852,44.2,47.96
+ICP 1 Pa,"2p n/g, sum 100",2p2,"BSR + AT, Walsh trapping, box diffusion",6.129088538076949,2.22,1.84
+ICP 1 Pa,"2p n/g, sum 100",2p6,"BSR + AT, Walsh trapping, box diffusion",9.509687761175268,6.82,7.0
+ICP 1 Pa,"2p n/g, sum 100",2p10,"BSR + AT, Walsh trapping, box diffusion",23.367055314903645,26.04,24.26
+ICP 1 Pa,1s n/g/n_g [ppm],1s5,"morning model (NGFSRDW, no AT, old table)",157.6826230572168,85.3,110.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s3,"morning model (NGFSRDW, no AT, old table)",95.44732660701393,68.2,80.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s4,"morning model (NGFSRDW, no AT, old table)",12.507757175449695,8.07,3.94
+ICP 1 Pa,1s n/g/n_g [ppm],1s2,"morning model (NGFSRDW, no AT, old table)",8.92305676788623,7.15,2.95
+ICP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, old table",46.80600466745409,85.3,110.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, old table",33.15362894817572,68.2,80.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, old table",0.9513245044490498,8.07,3.94
+ICP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, old table",0.9110760128181621,7.15,2.95
+ICP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table (current)",47.04947634622541,85.3,110.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table (current)",33.4332290187095,68.2,80.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table (current)",1.0344822589957785,8.07,3.94
+ICP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table (current)",1.2290247643876475,7.15,2.95
+ICP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table, box diffusion",61.08700653451946,85.3,110.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table, box diffusion",41.05743512604926,68.2,80.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table, box diffusion",1.1580326281047153,8.07,3.94
+ICP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table, box diffusion",1.2806686286769033,7.15,2.95
+ICP 1 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, Walsh trapping, box diffusion",68.5216711486176,85.3,110.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, Walsh trapping, box diffusion",49.31454505893565,68.2,80.0
+ICP 1 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, Walsh trapping, box diffusion",8.434237674248763,8.07,3.94
+ICP 1 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, Walsh trapping, box diffusion",10.252981459870883,7.15,2.95
+CCP 100 Pa,"2p n/g, sum 100",2p1,"morning model (NGFSRDW, no AT, old table)",9.202138835564668,3.5,3.3
+CCP 100 Pa,"2p n/g, sum 100",2p5,"morning model (NGFSRDW, no AT, old table)",7.000248025744059,3.72,4.19
+CCP 100 Pa,"2p n/g, sum 100",2p3,"morning model (NGFSRDW, no AT, old table)",8.090464716368581,5.61,2.81
+CCP 100 Pa,"2p n/g, sum 100",2p7,"morning model (NGFSRDW, no AT, old table)",9.030109634522063,5.76,7.04
+CCP 100 Pa,"2p n/g, sum 100",2p8,"morning model (NGFSRDW, no AT, old table)",10.784350269737992,11.55,11.09
+CCP 100 Pa,"2p n/g, sum 100",2p4,"morning model (NGFSRDW, no AT, old table)",10.53143809472949,5.46,3.52
+CCP 100 Pa,"2p n/g, sum 100",2p9,"morning model (NGFSRDW, no AT, old table)",14.76674568007163,24.34,25.09
+CCP 100 Pa,"2p n/g, sum 100",2p2,"morning model (NGFSRDW, no AT, old table)",6.794356508476805,3.35,2.48
+CCP 100 Pa,"2p n/g, sum 100",2p6,"morning model (NGFSRDW, no AT, old table)",9.0746009891126,8.69,8.47
+CCP 100 Pa,"2p n/g, sum 100",2p10,"morning model (NGFSRDW, no AT, old table)",14.725547245672107,28.56,30.74
+CCP 100 Pa,"2p n/g, sum 100",2p1,"BSR + AT, old table",4.978496739179038,3.5,3.3
+CCP 100 Pa,"2p n/g, sum 100",2p5,"BSR + AT, old table",4.58209471090822,3.72,4.19
+CCP 100 Pa,"2p n/g, sum 100",2p3,"BSR + AT, old table",2.4532852080631904,5.61,2.81
+CCP 100 Pa,"2p n/g, sum 100",2p7,"BSR + AT, old table",5.451163995811382,5.76,7.04
+CCP 100 Pa,"2p n/g, sum 100",2p8,"BSR + AT, old table",10.901099603056705,11.55,11.09
+CCP 100 Pa,"2p n/g, sum 100",2p4,"BSR + AT, old table",3.6761067762307658,5.46,3.52
+CCP 100 Pa,"2p n/g, sum 100",2p9,"BSR + AT, old table",25.99715892819764,24.34,25.09
+CCP 100 Pa,"2p n/g, sum 100",2p2,"BSR + AT, old table",4.700948914348343,3.35,2.48
+CCP 100 Pa,"2p n/g, sum 100",2p6,"BSR + AT, old table",10.100620260197092,8.69,8.47
+CCP 100 Pa,"2p n/g, sum 100",2p10,"BSR + AT, old table",27.15902486400764,28.56,30.74
+CCP 100 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table (current)",4.41313046584849,3.5,3.3
+CCP 100 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table (current)",4.692903743702829,3.72,4.19
+CCP 100 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table (current)",2.3895834995887286,5.61,2.81
+CCP 100 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table (current)",5.753749646175788,5.76,7.04
+CCP 100 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table (current)",11.54085486089349,11.55,11.09
+CCP 100 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table (current)",3.532375026727942,5.46,3.52
+CCP 100 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table (current)",26.32229826200899,24.34,25.09
+CCP 100 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table (current)",4.454243075349344,3.35,2.48
+CCP 100 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table (current)",9.982730578933213,8.69,8.47
+CCP 100 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table (current)",26.91813084077119,28.56,30.74
+CCP 100 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table, box diffusion",4.370401659892487,3.5,3.3
+CCP 100 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table, box diffusion",4.6702828539188275,3.72,4.19
+CCP 100 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table, box diffusion",2.37646604425772,5.61,2.81
+CCP 100 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table, box diffusion",5.7390393005469855,5.76,7.04
+CCP 100 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table, box diffusion",11.525748537117071,11.55,11.09
+CCP 100 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table, box diffusion",3.5189113086306434,5.46,3.52
+CCP 100 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table, box diffusion",26.433165141994593,24.34,25.09
+CCP 100 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table, box diffusion",4.435430374653576,3.35,2.48
+CCP 100 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table, box diffusion",9.978727798195264,8.69,8.47
+CCP 100 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table, box diffusion",26.951826980792838,28.56,30.74
+CCP 100 Pa,"2p n/g, sum 100",2p1,"BSR + AT, Walsh trapping, box diffusion",3.6415389277952475,3.5,3.3
+CCP 100 Pa,"2p n/g, sum 100",2p5,"BSR + AT, Walsh trapping, box diffusion",4.748837581914261,3.72,4.19
+CCP 100 Pa,"2p n/g, sum 100",2p3,"BSR + AT, Walsh trapping, box diffusion",2.448254311553624,5.61,2.81
+CCP 100 Pa,"2p n/g, sum 100",2p7,"BSR + AT, Walsh trapping, box diffusion",6.070406076699723,5.76,7.04
+CCP 100 Pa,"2p n/g, sum 100",2p8,"BSR + AT, Walsh trapping, box diffusion",12.541922678785483,11.55,11.09
+CCP 100 Pa,"2p n/g, sum 100",2p4,"BSR + AT, Walsh trapping, box diffusion",3.431610991680388,5.46,3.52
+CCP 100 Pa,"2p n/g, sum 100",2p9,"BSR + AT, Walsh trapping, box diffusion",26.484100668166946,24.34,25.09
+CCP 100 Pa,"2p n/g, sum 100",2p2,"BSR + AT, Walsh trapping, box diffusion",4.166057578995395,3.35,2.48
+CCP 100 Pa,"2p n/g, sum 100",2p6,"BSR + AT, Walsh trapping, box diffusion",9.717676250407088,8.69,8.47
+CCP 100 Pa,"2p n/g, sum 100",2p10,"BSR + AT, Walsh trapping, box diffusion",26.749594934001845,28.56,30.74
+CCP 100 Pa,1s n/g/n_g [ppm],1s5,"morning model (NGFSRDW, no AT, old table)",23.906779484281365,6.08,10.9
+CCP 100 Pa,1s n/g/n_g [ppm],1s3,"morning model (NGFSRDW, no AT, old table)",20.27658623154424,6.49,5.51
+CCP 100 Pa,1s n/g/n_g [ppm],1s4,"morning model (NGFSRDW, no AT, old table)",18.72198005135067,5.75,5.95
+CCP 100 Pa,1s n/g/n_g [ppm],1s2,"morning model (NGFSRDW, no AT, old table)",12.085986101908851,5.39,1.67
+CCP 100 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, old table",2.3113286174868266,6.08,10.9
+CCP 100 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, old table",1.4242508330652808,6.49,5.51
+CCP 100 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, old table",1.067921567169535,5.75,5.95
+CCP 100 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, old table",0.5296253355922965,5.39,1.67
+CCP 100 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table (current)",2.569544395236073,6.08,10.9
+CCP 100 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table (current)",1.5846326704397744,6.49,5.51
+CCP 100 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table (current)",1.4128884628972769,5.75,5.95
+CCP 100 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table (current)",0.5902342337478323,5.39,1.67
+CCP 100 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table, box diffusion",2.5981408987946186,6.08,10.9
+CCP 100 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table, box diffusion",1.6015835318628202,6.49,5.51
+CCP 100 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table, box diffusion",1.4238969844282587,5.75,5.95
+CCP 100 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table, box diffusion",0.593387052561682,5.39,1.67
+CCP 100 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, Walsh trapping, box diffusion",3.258318047718363,6.08,10.9
+CCP 100 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, Walsh trapping, box diffusion",2.0907942022514625,6.49,5.51
+CCP 100 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, Walsh trapping, box diffusion",2.2144381458043987,5.75,5.95
+CCP 100 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, Walsh trapping, box diffusion",0.8964779682147184,5.39,1.67
+SRR 1e5 Pa,"2p n/g, sum 100",2p1,"morning model (NGFSRDW, no AT, old table)",8.485996149325876,5.3,4.24
+SRR 1e5 Pa,"2p n/g, sum 100",2p5,"morning model (NGFSRDW, no AT, old table)",9.188077196243327,4.48,3.15
+SRR 1e5 Pa,"2p n/g, sum 100",2p3,"morning model (NGFSRDW, no AT, old table)",8.358486583970508,3.95,3.68
+SRR 1e5 Pa,"2p n/g, sum 100",2p7,"morning model (NGFSRDW, no AT, old table)",10.535669811019226,6.43,5.31
+SRR 1e5 Pa,"2p n/g, sum 100",2p8,"morning model (NGFSRDW, no AT, old table)",11.133858621085754,6.96,5.47
+SRR 1e5 Pa,"2p n/g, sum 100",2p4,"morning model (NGFSRDW, no AT, old table)",8.40869355044345,5.3,4.95
+SRR 1e5 Pa,"2p n/g, sum 100",2p9,"morning model (NGFSRDW, no AT, old table)",11.478673771070044,6.21,5.25
+SRR 1e5 Pa,"2p n/g, sum 100",2p2,"morning model (NGFSRDW, no AT, old table)",8.261425834405125,11.55,14.88
+SRR 1e5 Pa,"2p n/g, sum 100",2p6,"morning model (NGFSRDW, no AT, old table)",10.23302627464808,11.25,10.89
+SRR 1e5 Pa,"2p n/g, sum 100",2p10,"morning model (NGFSRDW, no AT, old table)",13.9160922077886,39.16,39.51
+SRR 1e5 Pa,"2p n/g, sum 100",2p1,"BSR + AT, old table",6.20285410052807,5.3,4.24
+SRR 1e5 Pa,"2p n/g, sum 100",2p5,"BSR + AT, old table",6.220848899527058,4.48,3.15
+SRR 1e5 Pa,"2p n/g, sum 100",2p3,"BSR + AT, old table",1.385659857748367,3.95,3.68
+SRR 1e5 Pa,"2p n/g, sum 100",2p7,"BSR + AT, old table",6.000779691138155,6.43,5.31
+SRR 1e5 Pa,"2p n/g, sum 100",2p8,"BSR + AT, old table",8.172535043201526,6.96,5.47
+SRR 1e5 Pa,"2p n/g, sum 100",2p4,"BSR + AT, old table",2.524808626426668,5.3,4.95
+SRR 1e5 Pa,"2p n/g, sum 100",2p9,"BSR + AT, old table",6.953206765473008,6.21,5.25
+SRR 1e5 Pa,"2p n/g, sum 100",2p2,"BSR + AT, old table",9.479123481797979,11.55,14.88
+SRR 1e5 Pa,"2p n/g, sum 100",2p6,"BSR + AT, old table",10.499670713089348,11.25,10.89
+SRR 1e5 Pa,"2p n/g, sum 100",2p10,"BSR + AT, old table",42.560512821069835,39.16,39.51
+SRR 1e5 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table (current)",5.998730633309811,5.3,4.24
+SRR 1e5 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table (current)",5.413895553172418,4.48,3.15
+SRR 1e5 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table (current)",2.3186665238341697,3.95,3.68
+SRR 1e5 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table (current)",6.203903301743864,6.43,5.31
+SRR 1e5 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table (current)",7.598496031402373,6.96,5.47
+SRR 1e5 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table (current)",4.0177046470666635,5.3,4.95
+SRR 1e5 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table (current)",6.198702493778529,6.21,5.25
+SRR 1e5 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table (current)",13.852000352591828,11.55,14.88
+SRR 1e5 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table (current)",11.031834365197215,11.25,10.89
+SRR 1e5 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table (current)",37.366066097903136,39.16,39.51
+SRR 1e5 Pa,"2p n/g, sum 100",2p1,"BSR + AT, v2 table, box diffusion",5.982763652781461,5.3,4.24
+SRR 1e5 Pa,"2p n/g, sum 100",2p5,"BSR + AT, v2 table, box diffusion",5.409663953353032,4.48,3.15
+SRR 1e5 Pa,"2p n/g, sum 100",2p3,"BSR + AT, v2 table, box diffusion",2.3171991617421983,3.95,3.68
+SRR 1e5 Pa,"2p n/g, sum 100",2p7,"BSR + AT, v2 table, box diffusion",6.203081833524249,6.43,5.31
+SRR 1e5 Pa,"2p n/g, sum 100",2p8,"BSR + AT, v2 table, box diffusion",7.598364958058012,6.96,5.47
+SRR 1e5 Pa,"2p n/g, sum 100",2p4,"BSR + AT, v2 table, box diffusion",4.016290503302918,5.3,4.95
+SRR 1e5 Pa,"2p n/g, sum 100",2p9,"BSR + AT, v2 table, box diffusion",6.203161694664161,6.21,5.25
+SRR 1e5 Pa,"2p n/g, sum 100",2p2,"BSR + AT, v2 table, box diffusion",13.847847025769092,11.55,14.88
+SRR 1e5 Pa,"2p n/g, sum 100",2p6,"BSR + AT, v2 table, box diffusion",11.030634841750679,11.25,10.89
+SRR 1e5 Pa,"2p n/g, sum 100",2p10,"BSR + AT, v2 table, box diffusion",37.3909923750542,39.16,39.51
+SRR 1e5 Pa,"2p n/g, sum 100",2p1,"BSR + AT, Walsh trapping, box diffusion",6.0757837225359115,5.3,4.24
+SRR 1e5 Pa,"2p n/g, sum 100",2p5,"BSR + AT, Walsh trapping, box diffusion",5.564858610939506,4.48,3.15
+SRR 1e5 Pa,"2p n/g, sum 100",2p3,"BSR + AT, Walsh trapping, box diffusion",2.121698802922512,3.95,3.68
+SRR 1e5 Pa,"2p n/g, sum 100",2p7,"BSR + AT, Walsh trapping, box diffusion",6.152576759500075,6.43,5.31
+SRR 1e5 Pa,"2p n/g, sum 100",2p8,"BSR + AT, Walsh trapping, box diffusion",7.701957800972151,6.96,5.47
+SRR 1e5 Pa,"2p n/g, sum 100",2p4,"BSR + AT, Walsh trapping, box diffusion",3.70508632889517,5.3,4.95
+SRR 1e5 Pa,"2p n/g, sum 100",2p9,"BSR + AT, Walsh trapping, box diffusion",6.357675184324509,6.21,5.25
+SRR 1e5 Pa,"2p n/g, sum 100",2p2,"BSR + AT, Walsh trapping, box diffusion",12.947386161692755,11.55,14.88
+SRR 1e5 Pa,"2p n/g, sum 100",2p6,"BSR + AT, Walsh trapping, box diffusion",10.919130485333946,11.25,10.89
+SRR 1e5 Pa,"2p n/g, sum 100",2p10,"BSR + AT, Walsh trapping, box diffusion",38.45384614288346,39.16,39.51
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s5,"morning model (NGFSRDW, no AT, old table)",0.18976098189454466,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s3,"morning model (NGFSRDW, no AT, old table)",0.09911695920695693,1.45,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s4,"morning model (NGFSRDW, no AT, old table)",0.16960785742982348,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s2,"morning model (NGFSRDW, no AT, old table)",0.044440148050791814,1.64,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, old table",0.0381709316788301,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, old table",0.026237188574123056,1.45,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, old table",0.03586485304315595,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, old table",0.0013654469633671584,1.64,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table (current)",0.12496756470946614,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table (current)",0.1259850023521155,1.45,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table (current)",0.1308503503985061,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table (current)",0.11727151607438786,1.64,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, v2 table, box diffusion",0.12675668223924402,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, v2 table, box diffusion",0.12773547043787548,1.45,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, v2 table, box diffusion",0.13237011080627364,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, v2 table, box diffusion",0.11854538086848619,1.64,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s5,"BSR + AT, Walsh trapping, box diffusion",0.07910727173461958,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s3,"BSR + AT, Walsh trapping, box diffusion",0.0736369167122662,1.45,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s4,"BSR + AT, Walsh trapping, box diffusion",0.07943040985940689,1.18,
+SRR 1e5 Pa,1s n/g/n_g [ppm],1s2,"BSR + AT, Walsh trapping, box diffusion",0.05686175619105654,1.64,
+EBP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.3941059577959783e+20,5.1e+20,
+EBP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",7.643190947799882e+19,3e+20,
+EBP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.0669790761819362e+20,3.6e+20,
+EBP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",8.308647449589496e+19,4.5e+20,
+EBP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",7.616466566586947e+16,,
+EBP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",4.475099658987809e+17,,
+EBP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.2699972644128212e+18,,
+EBP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.9332648733908454e+18,3.9e+19,
+EBP 1 Pa,2p rate: cascade [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.751555656098121e+20,7e+19,
+EBP 1 Pa,2p rate: cascade [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",4.630990840567805e+20,2.3e+20,
+EBP 1 Pa,2p rate: cascade [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",2.2611860340600436e+20,2.3e+20,
+EBP 1 Pa,2p rate: cascade [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.3340449799367728e+20,4.7e+20,
+EBP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",3.145799874546301e+20,5.8e+20,
+EBP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",5.399314159013474e+20,5.3e+20,
+EBP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",3.348583301626016e+20,6.4e+20,
+EBP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",3.216981583091232e+20,1.17e+21,
+EBP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",5600398269501386.0,,
+EBP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",2.3413381416617565e+17,,
+EBP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",7.581557660846278e+17,3.8e+19,
+EBP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.3715021331730714e+18,2.2e+20,
+EBP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",5.036917197026568e+16,,
+EBP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",2.637285823091356e+17,,
+EBP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",7.104143622737043e+16,,
+EBP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.6225683367837485e+17,,
+ICP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",5.402522744611133e+19,2.1e+20,
+ICP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.9766970598850654e+19,1.3e+20,
+ICP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",4.720603892941618e+19,1.6e+20,
+ICP 1 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",3.8668284085548245e+19,2.1e+20,
+ICP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",2.0033250929997445e+18,,
+ICP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.3483200099034438e+19,8.3e+19,
+ICP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.0931549713820233e+20,4.4e+20,
+ICP 1 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.8579798534970897e+20,1.27e+21,
+ICP 1 Pa,2p rate: cascade [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",4.610737014782197e+19,2.9e+19,
+ICP 1 Pa,2p rate: cascade [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.1730586439878253e+20,9.6e+19,
+ICP 1 Pa,2p rate: cascade [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",8.783114951822554e+19,9.6e+19,
+ICP 1 Pa,2p rate: cascade [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.2521718670128867e+20,1.9e+20,
+ICP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.028197624449869e+20,2.7e+20,
+ICP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.5475287127740953e+20,4e+20,
+ICP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",3.605451077413049e+20,1.57e+21,
+ICP 1 Pa,2p rate: emission A n [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.2817182817207562e+21,1.39e+22,
+ICP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",7.42728780998499e+17,2.4e+19,
+ICP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",4.2652899769456297e+18,9.1e+19,
+ICP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.165658545027232e+20,8.7e+20,
+ICP 1 Pa,2p rate: re-absorbed [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",8.343076468611624e+20,1.22e+22,
+ICP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.4257420168153978e+16,,
+ICP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",6.546180105626942e+16,,
+ICP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",6.7319405434429624e+16,,
+ICP 1 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",5.778062532678802e+17,,
+CCP 100 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",6.074563672231688e+20,7e+20,
+CCP 100 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.3963620664523552e+20,4.8e+20,
+CCP 100 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",6.613799012558267e+20,6.4e+20,
+CCP 100 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",4.969729906805652e+20,8.1e+20,
+CCP 100 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",2.6090713683578192e+20,1.5e+21,
+CCP 100 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.0614683741761841e+21,1.04e+22,
+CCP 100 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",3.917558028213826e+21,1.37e+22,
+CCP 100 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",8.337426498966965e+21,2.8e+22,
+CCP 100 Pa,2p rate: cascade [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.9131378217999594e+20,1.7e+20,
+CCP 100 Pa,2p rate: cascade [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",7.091126975736059e+20,5.5999999999999993e+20,
+CCP 100 Pa,2p rate: cascade [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.2000174317186837e+21,5.5999999999999993e+20,
+CCP 100 Pa,2p rate: cascade [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.0911324147565517e+21,1.1e+21,
+CCP 100 Pa,2p rate: emission A n [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.1332979451714841e+21,6.4e+21,
+CCP 100 Pa,2p rate: emission A n [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",2.3468290371546901e+21,3.95e+22,
+CCP 100 Pa,2p rate: emission A n [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",9.747448208940174e+21,6.3e+22,
+CCP 100 Pa,2p rate: emission A n [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",3.4518262331580946e+22,2.41e+23,
+CCP 100 Pa,2p rate: re-absorbed [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",9.439559432293342e+19,4.1e+21,
+CCP 100 Pa,2p rate: re-absorbed [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",5.089844383530523e+20,2.95e+22,
+CCP 100 Pa,2p rate: re-absorbed [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",4.118907514453241e+21,4.86e+22,
+CCP 100 Pa,2p rate: re-absorbed [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.5244952060607242e+22,2.22e+23,
+CCP 100 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.5714785364010711e+19,,
+CCP 100 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",9.927289508438534e+19,,
+CCP 100 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.82000089264718e+20,,
+CCP 100 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.5561038733372702e+21,,
+SRR 1e5 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",1.858871454014278e+24,1.05e+25,
+SRR 1e5 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",3.108707980921375e+23,7.5e+24,
+SRR 1e5 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",2.3938667988406653e+24,1.0300000000000001e+25,
+SRR 1e5 Pa,2p rate: ground-state excitation [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.7531041319804456e+24,1.31e+25,
+SRR 1e5 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",6.241359095448866e+24,7e+25,
+SRR 1e5 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.7412774131254591e+25,4.34e+26,
+SRR 1e5 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",4.4432671942609845e+25,4.52e+26,
+SRR 1e5 Pa,2p rate: excitation from 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",6.923796786887102e+25,8.34e+26,
+SRR 1e5 Pa,2p rate: cascade [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",2.345404638773478e+23,,
+SRR 1e5 Pa,2p rate: cascade [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",1.4494737785952266e+24,,
+SRR 1e5 Pa,2p rate: cascade [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",1.7262059187655784e+24,,
+SRR 1e5 Pa,2p rate: cascade [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",2.4811459822824937e+24,,
+SRR 1e5 Pa,2p rate: emission A n [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",6.672685154520308e+23,6.8e+24,
+SRR 1e5 Pa,2p rate: emission A n [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",9.86373673264254e+23,1.7999999999999999e+25,
+SRR 1e5 Pa,2p rate: emission A n [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",4.6658766868817266e+24,5.2e+25,
+SRR 1e5 Pa,2p rate: emission A n [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",3.5210310109115846e+24,3.9e+25,
+SRR 1e5 Pa,2p rate: re-absorbed [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",2.1523713211178773e+22,,
+SRR 1e5 Pa,2p rate: re-absorbed [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",7.684311988857845e+22,,
+SRR 1e5 Pa,2p rate: re-absorbed [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",3.4606509434047304e+23,,
+SRR 1e5 Pa,2p rate: re-absorbed [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",6.691442480586993e+23,,
+SRR 1e5 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p1,"BSR + AT, v2 table (current)",8.27579986209349e+24,8.4e+25,
+SRR 1e5 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p3,"BSR + AT, v2 table (current)",3.7319489988279137e+25,2.98e+26,
+SRR 1e5 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p6,"BSR + AT, v2 table (current)",7.976348617400945e+25,,
+SRR 1e5 Pa,2p rate: Ar-atom transfer to 1s [m^-3 s^-1],2p9,"BSR + AT, v2 table (current)",1.4540178836465533e+26,6.39e+26,
