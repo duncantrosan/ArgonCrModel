@@ -855,12 +855,13 @@ def FindDiffusionCoeff(P=1,Tg = 300):
     Deff_s5 = D_s5 * 1/n * np.sqrt(Tg/300) # m^2 /s
     return Deff_s3 , Deff_s5
 
-def FindDiffusionTime(P,Tg,R):
-    # P in torr Tg in K R in m
+def FindDiffusionTime(P,Tg,R,Lambda=None):
+    # P in torr Tg in K R in m; Lambda: diffusion length [m], default R/4.493 (hemisphere of radius R)
     s3,s5 = FindDiffusionCoeff(P,Tg)
     Lam = 4.493 # Derived from transport geomettry in hemispherical Coord. 
-    T_s3 = (R/Lam)**2 / s3
-    T_s5 = (R/Lam)**2 / s5
+    L = R/Lam if Lambda is None else Lambda
+    T_s3 = L**2 / s3
+    T_s5 = L**2 / s5
     return T_s3, T_s5
 
 
@@ -947,13 +948,17 @@ def FindRadiationTrapping(RadiationTrappingMatrix,Tau,a):
 #%%  Level List
 ###############################################################################
 ## Import JSON Files and Build Dicts
+CROSS_SECTION_FILE = 'ArgonCrossSections_BSR.json'   # BSR-500 + NGFSRDW for 5p (Scripts/ParserforBSRData.py);
+                                                     # the old NGFSRDW-only set is ArgonCrossSections.json
+
+
 def ImportCrossSections():
     # 1. Get the directory
     MainDir = Path(__file__).resolve().parent.parent
-    
+
     # 2. Join using the / operator
     DataFolder = MainDir / 'InputData'
-    CSPath = DataFolder / 'ArgonCrossSections.json'
+    CSPath = DataFolder / CROSS_SECTION_FILE
     
     # 3. Open the file directly using the Path object
     with open(CSPath, 'r') as file:
@@ -1062,6 +1067,7 @@ def AddElectronExcitation(ModelData, CrossSectionList):
                     'threshold_eV': CS['threshold_eV'],
                     'energy_eV': CS['energy_eV'],
                     'cross_section': CS['cross_section'],
+                    'database': CS.get('source', 'NGFSRDW'),
                 })
             if UpperLevel == label:
                 level['Electron Impact CrossSections']['Products'].append({
@@ -1069,6 +1075,7 @@ def AddElectronExcitation(ModelData, CrossSectionList):
                     'threshold_eV': CS['threshold_eV'],
                     'energy_eV': CS['energy_eV'],
                     'cross_section': CS['cross_section'],
+                    'database': CS.get('source', 'NGFSRDW'),
                 })
     return ModelData
 
@@ -1081,21 +1088,30 @@ def resolve_label(lxcat_name, crosswalk):
         return 'ground'
     return crosswalk.get(cleaned)
 
-def ImportRadiationTrappingMatrix():
+# Escape-factor table (Monte Carlo, uniformly emitting hemisphere of radius R, Voigt line):
+#   v2: a = 1e-6 - 0.2, tau0_R = 1e-3 - 1e6 (Scripts/ExtendTrappingLookup.py)
+#   the original RadiationTrappingLookupTable.json covers a = 0.01 - 0.2 only, below which the model
+#   extrapolated; the Ar resonance lines have a ~ 1e-3 - 5e-3 at 0.5-1.5 Torr, ~2e-5 at 1 Pa
+TRAPPING_TABLE_FILE = 'RadiationTrappingLookupTable_v2.json'
+
+
+def ImportRadiationTrappingMatrix(name=None):
     # 1. Get the directory
     MainDir = Path(__file__).resolve().parent.parent
     
     # 2. Join using the / operator
     DataFolder = MainDir / 'InputData'
-    CSPath = DataFolder / 'RadiationTrappingLookupTable.json'
+    CSPath = DataFolder / (name or TRAPPING_TABLE_FILE)
     
     # 3. Open the file directly using the Path object
     with open(CSPath, 'r') as file:
         TrappingMatrix = json.load(file)
         return TrappingMatrix
 
-def AddDiffusionLoss(ModelData,P,T,R):
-    T_s3 , T_s5 = FindDiffusionTime(P, T, R)
+def AddDiffusionLoss(ModelData,P,T,R,Lambda=None):
+    # Lambda: diffusion length [m] of another geometry (e.g. a box: 1/Lambda^2 = sum (pi/L_i)^2);
+    # default None = hemisphere of radius R (FindDiffusionTime)
+    T_s3 , T_s5 = FindDiffusionTime(P, T, R, Lambda)
     for MD in ModelData.values() :
         if MD['label'] == '4s1': # 4s1 (J=2) is 1s5 in Paschen notation
             MD['DiffusionLoss'] = T_s5
@@ -1179,6 +1195,116 @@ def ImportAr2pQuenchingData(quencher='N2', verbose=True):
         print(f'Ar(2p) + {quencher} quenching, from {path.name}:')
         for label, q in out.items():
             print(f"  {label} ({q['paschen']})  kQ = {q['kQ']:.3e} m^3/s  [{q['source']}]")
+    return out
+
+
+def EscapeFactorWalsh(tau, a):
+    """Holstein-Walsh escape factor of a Voigt line in an infinite cylinder of radius R
+    (P. J. Walsh, Phys. Rev. 116, 511 (1959); as used by Bogaerts et al., J. Appl. Phys. 84, 121
+    (1998)); tau = k0 R (line centre), a = Voigt parameter. Valid for tau >~ 3."""
+    from scipy.special import erf
+    tau = np.asarray(tau, float)
+    a = np.asarray(a, float)
+    lt = np.log(np.maximum(tau, 3.0))
+    TD = 1.0 / (tau * np.sqrt(np.pi * lt))
+    TC = np.sqrt(a / (np.sqrt(np.pi) * tau))
+    TCD = 2.0 * a / (np.pi * np.sqrt(lt))
+    with np.errstate(divide='ignore', invalid='ignore', over='ignore'):
+        core = 1.9 * TD * np.exp(-np.pi * TCD ** 2 / (4.0 * TC ** 2))
+        wing = 1.3 * TC * erf(np.sqrt(np.pi) * TCD / (2.0 * TC))
+    return np.minimum(np.nan_to_num(core + wing), 1.0)
+
+
+class EscapeFactorInterpolator:
+    """
+    log10(escape factor) at points (log10 tau0_R, a): the call signature of the RegularGridInterpolator
+    the model used before (SolveDirect, GetEta), but interpolating the table in (log10 tau, log10 a);
+    a outside the table is clipped to its range (below a ~ 1e-6 the line is pure Doppler).
+    __call__     the Monte Carlo hemisphere table (every line)
+    resonance()  the lines to the ground state (MainFileV2.SolveDirect): the table in mode 'table'
+                 (default); in mode 'walsh' the Holstein-Walsh cylinder formula (EscapeFactorWalsh), as
+                 Bogaerts et al. 1998 use it for these lines, for tau > 30, the table below tau = 3 and a
+                 log-linear blend in between (a hard switch made the escape-factor iteration oscillate)
+    """
+    def __init__(self, RTM=None, mode='table'):
+        from scipy.interpolate import RegularGridInterpolator
+        RTM = ImportRadiationTrappingMatrix() if RTM is None else RTM
+        tau = np.unique([d['Tau_R'] for d in RTM])
+        a = np.unique([d['Shape'] for d in RTM])
+        E = {(d['Tau_R'], d['Shape']): (d['EscapeFactor'][0] if np.ndim(d['EscapeFactor']) else d['EscapeFactor'])
+             for d in RTM}
+        eta = np.array([[E[(t, s)] for s in a] for t in tau])
+        self.a_min, self.a_max, self.mode = a.min(), a.max(), mode
+        self._f = RegularGridInterpolator((np.log10(tau), np.log10(a)), np.log10(eta),
+                                          bounds_error=False, fill_value=None)
+
+    def __call__(self, pts):
+        p = np.array(pts, dtype=float)
+        shape = p.shape[:-1]
+        p = p.reshape(-1, 2)
+        a = np.clip(p[:, 1], self.a_min, self.a_max)
+        return self._f(np.column_stack([p[:, 0], np.log10(a)])).reshape(shape)
+
+    def resonance(self, pts):
+        out = np.array(self(pts), dtype=float)
+        if self.mode != 'walsh':
+            return out
+        p = np.array(pts, dtype=float)
+        shape = p.shape[:-1]
+        p = p.reshape(-1, 2)
+        out = out.reshape(-1)
+        w = np.clip((p[:, 0] - np.log10(3.0)) / (np.log10(30.0) - np.log10(3.0)), 0.0, 1.0)
+        on = w > 0
+        walsh = np.log10(EscapeFactorWalsh(10 ** p[on, 0], np.maximum(p[on, 1], 0.0)))
+        out[on] = (1 - w[on]) * out[on] + w[on] * walsh
+        return out.reshape(shape)
+
+
+# Paschen names -> CR-model labels: 1s5-1s2 = 4s1-4s4, 2p10-2p1 = 4p1-4p10 (both in order of
+# energy), with the J of each level as a check of the mapping
+PASCHEN_LABELS = {'1s5': ('4s1', 2), '1s4': ('4s2', 1), '1s3': ('4s3', 0), '1s2': ('4s4', 1),
+                  '2p10': ('4p1', 1), '2p9': ('4p2', 3), '2p8': ('4p3', 2), '2p7': ('4p4', 1),
+                  '2p6': ('4p5', 2), '2p5': ('4p6', 0), '2p4': ('4p7', 1), '2p3': ('4p8', 2),
+                  '2p2': ('4p9', 1), '2p1': ('4p10', 0)}
+ATOM_TRANSFER_FILE = Path(__file__).resolve().parent.parent / 'InputData' / 'Ar_2p_atom_transfer.csv'
+
+
+def AtomTransferRates(ModelData, Tg, path=ATOM_TRANSFER_FILE):
+    """
+    Rate coefficients of population transfer between excited levels by collisions with
+    ground-state Ar atoms, Ar(x) + Ar -> Ar(y) + Ar, from path (default
+    InputData/Ar_2p_atom_transfer.csv: the 2p -> 2p and 2p -> 1s rates of X.-M. Zhu and
+    Y.-K. Pu, J. Phys. D 43, 015204 (2010), Table 3; measured at 300 K, Refs. therein).
+    The file lists the downhill rates, k = k_300K (Tg/300)^Tg_exponent; the uphill rates follow
+    from detailed balance at Tg,
+        k(y -> x) = k(x -> y) (g_x / g_y) exp(-(E_x - E_y) / kTg).
+    A transfer to '1s' (level not given) is shared among the four 1s levels in proportion
+    to their statistical weights.
+    Returns a list of (from label, to label, k [m^3/s]) with both directions.
+    """
+    import csv
+    for name, (label, J) in PASCHEN_LABELS.items():
+        if float(ModelData[label]['J']) != J:
+            raise ValueError(f'Paschen {name} -> {label}: J = {ModelData[label]["J"]}, expected {J}')
+    with open(path, newline='', encoding='utf-8-sig') as file:
+        rows = list(csv.DictReader(line for line in file if not line.startswith('#')))
+    kTg = constants.k * Tg / constants.e                    # eV
+    one_s = [lbl for name, (lbl, _) in PASCHEN_LABELS.items() if name.startswith('1s')]
+    g_1s = sum(ModelData[lbl]['g'] for lbl in one_s)
+    out = []
+    for r in rows:
+        k = float(r['k_cm3_s_300K']) * 1e-6 * (Tg / 300.0) ** float(r['Tg_exponent'])   # m^3/s
+        x = PASCHEN_LABELS[r['from'].strip()][0]
+        if r['to'].strip() == '1s':
+            targets = [(lbl, k * ModelData[lbl]['g'] / g_1s) for lbl in one_s]
+        else:
+            targets = [(PASCHEN_LABELS[r['to'].strip()][0], k)]
+        for y, k_xy in targets:
+            X, Y = ModelData[x], ModelData[y]
+            if X['energy_eV'] <= Y['energy_eV']:
+                raise ValueError(f'{path.name}: {r["from"]} -> {r["to"]} is not downhill')
+            k_yx = k_xy * X['g'] / Y['g'] * np.exp(-(X['energy_eV'] - Y['energy_eV']) / kTg)
+            out += [(x, y, k_xy), (y, x, k_yx)]
     return out
 
 

@@ -230,6 +230,25 @@ def CreateIonizationReactionRates(ModelData, eedf):
     
     return ModelData
 
+def AttachAtomTransfer(ModelData, Tg, enabled=True):
+    """
+    Population transfer between excited levels by collisions with ground-state Ar atoms,
+    Ar(x) + Ar -> Ar(y) + Ar (he.AtomTransferRates: the 2p <-> 2p and 2p -> 1s rates of
+    Zhu & Pu, J. Phys. D 43, 015204 (2010), uphill rates by detailed balance at Tg).
+    Adds an 'AtomTransfer' list to every level, like 'Superelastic':
+        {'partner': label, 'coeff': k (m^3/s), 'direction': 'loss'|'gain'}
+    'loss' on the level the population leaves, 'gain' on the level it enters; both are
+    multiplied by the ground-state Ar density when used. enabled=False: empty lists.
+    """
+    for MD in ModelData.values():
+        MD['AtomTransfer'] = []
+    if enabled:
+        for x, y, k in he.AtomTransferRates(ModelData, Tg):
+            ModelData[x]['AtomTransfer'].append({'partner': y, 'coeff': k, 'direction': 'loss'})
+            ModelData[y]['AtomTransfer'].append({'partner': x, 'coeff': k, 'direction': 'gain'})
+    return ModelData
+
+
 def AttachRadiationTrapping(ModelData,P,Tg,R,interp):
     # Radiation trapping is only applied to 4s resonant states 
     LowerLevel = next(MD for MD in ModelData.values() if MD['label'] == 'ground')
@@ -329,7 +348,11 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
                 Sum = A * Eta * UpperStateDensity + Sum
         RadiativeGainSum = Sum
 
-        Prod = CollisionalSum + RadiativeGainSum + SuperelasticGain
+        # ---- Transfer from other levels by collisions with ground-state Ar ----
+        AtomGain = Ng * sum(AT['coeff'] * InputModel[AT['partner']]['density_m^-3']
+                            for AT in US.get('AtomTransfer', []) if AT['direction'] == 'gain')
+
+        Prod = CollisionalSum + RadiativeGainSum + SuperelasticGain + AtomGain
         US['Production_m^-3s^-1'] = Prod
 
         # ---- Ionization loss ----
@@ -382,8 +405,10 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
         QuenchLoss = GroundQuenchingLoss(Ng) if kind == 'metastable' else 0
         # Quenching by an admixed gas, set by the caller (MainFileWithNitrogen); 0 in pure Ar
         QuenchLoss += US.get('GasQuenching_s^-1', 0.0)
+        # Transfer to other levels by collisions with ground-state Ar (AttachAtomTransfer)
+        AtomLoss = Ng * sum(AT['coeff'] for AT in US.get('AtomTransfer', []) if AT['direction'] == 'loss')
         Loss = (IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss + DiffusionLoss
-                + MetLoss + QuenchLoss)
+                + MetLoss + QuenchLoss + AtomLoss)
         US['Loss_s^-1'] = Loss
         US['density_m^-3'] = Prod / Loss
 
@@ -428,14 +453,36 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
     n_meta = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'metastable')
     Ng = next(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'ground')
 
+    # Escape factors of every line at the current densities, with one interpolator call for
+    # all lines (GetEta line by line took most of the solve time). A line's escape factor
+    # depends on its upper and lower level and A, so the gain entry of the lower level gets
+    # the value of the loss entry of the upper level.
+    EtaOf, keys, tau_a, keys_g, tau_a_g = {}, [], [], [], []
+    resonance = getattr(interp, 'resonance', interp)   # lines to the ground state (EscapeFactorInterpolator)
+    for Upper in InputModel.values():
+        for Rad in Upper['RadiativeDecay']:
+            if Rad['direction'] != 'loss':
+                continue
+            Lower = InputModel[Rad['partner']]
+            key = (Upper['label'], Lower['label'], Rad['coeff'])
+            if (trap_lines == 'ground' and Lower['kind'] != 'ground') or Lower['density_m^-3'] == 0:
+                EtaOf[key] = 1.0
+                continue
+            Pt = he.Volume2Torr(Lower['density_m^-3'], T)
+            a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
+            if Lower['kind'] == 'ground':
+                keys_g.append(key)
+                tau_a_g.append((np.log10(tau), a))
+            else:
+                keys.append(key)
+                tau_a.append((np.log10(tau), a))
+    if keys:
+        EtaOf.update(zip(keys, 10**interp(np.array(tau_a, dtype=float))))
+    if keys_g:
+        EtaOf.update(zip(keys_g, 10**resonance(np.array(tau_a_g, dtype=float))))
+
     def Eta(Upper, Lower, Rad):
-        if trap_lines == 'ground' and Lower['kind'] != 'ground':
-            return 1.0
-        if Lower['density_m^-3'] == 0:
-            return 1.0
-        Pt = he.Volume2Torr(Lower['density_m^-3'], T)
-        a, tau = he.FindTauInModel(Upper, Lower, Rad, Pt, T, R)
-        return float(np.squeeze(GetEta(interp, tau, a)))
+        return float(EtaOf[Upper['label'], Lower['label'], Rad['coeff']])
 
     def Gain(i, partner, rate):
         if partner in idx:
@@ -454,6 +501,9 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
         for Rad in US['RadiativeDecay']:
             if Rad['direction'] == 'gain':
                 Gain(i, Rad['partner'], Rad['coeff'] * Eta(InputModel[Rad['partner']], US, Rad))
+        for AT in US.get('AtomTransfer', []):      # collisions with ground-state Ar
+            if AT['direction'] == 'gain':
+                Gain(i, AT['partner'], Ng * AT['coeff'])
 
         # ---- loss frequency (same terms as SolveLabelEquation) ----
         IonLoss = US['Ionization Data']['Rate_cm^3'] * Ne
@@ -469,8 +519,9 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all'):
         MetLoss = k_met * n_meta
         QuenchLoss = GroundQuenchingLoss(Ng) if US['kind'] == 'metastable' else 0
         QuenchLoss += US.get('GasQuenching_s^-1', 0.0)     # admixed gas (MainFileWithNitrogen)
+        AtomLoss = Ng * sum(AT['coeff'] for AT in US.get('AtomTransfer', []) if AT['direction'] == 'loss')
         US['Loss_s^-1'] =(IonLoss + RadiativeLossSum + SuperelasticLoss + CollisionalLoss
-                           + DiffusionLoss + MetLoss + QuenchLoss)
+                           + DiffusionLoss + MetLoss + QuenchLoss + AtomLoss)
         M[i, i] -= US['Loss_s^-1']
 
     # Newton step on F(n) = M n + S, where d/dn_m of -k_met n_meta n_i adds
@@ -680,7 +731,7 @@ def PlotEEDFs(EEDFs):
 
 def CRModel(ModelData, eedf, Ne, P, T, R, interp,
             max_iter=500, tol=1e-6, relax=1.0, verbose=False,
-            solver='direct', trap_lines='all'):
+            solver='direct', trap_lines='all', compute_rates=True, atom_transfer=True):
     """
     Solve the CR balance to self-consistency.
 
@@ -696,13 +747,19 @@ def CRModel(ModelData, eedf, Ne, P, T, R, interp,
              'gauss-seidel' - level-by-level iteration (SolveLabelEquation);
                               slow to converge at high Ne
     trap_lines : 'all' or 'ground', see SolveDirect ('direct' solver only)
+    compute_rates : False reuses the electron-impact rates already in ModelData, i.e. from a
+             previous call with the same EEDF (a sweep over Ne): they depend on the EEDF only
+    atom_transfer : population transfer 2p <-> 2p and 2p -> 1s by collisions with ground-state
+             Ar (AttachAtomTransfer, Zhu & Pu 2010); False leaves it out
     """
     if solver == 'gauss-seidel' and trap_lines != 'all':
         raise ValueError("trap_lines='ground' needs solver='direct'")
     eedf = he.AsEEDF(eedf)
-    ModelData = CreateExcitationReactionRates(ModelData, eedf)
-    ModelData = CreateIonizationReactionRates(ModelData, eedf)
-    ModelData = CreateSuperelasticRates(ModelData, eedf)   # was `t` - global leak
+    if compute_rates:
+        ModelData = CreateExcitationReactionRates(ModelData, eedf)
+        ModelData = CreateIonizationReactionRates(ModelData, eedf)
+        ModelData = CreateSuperelasticRates(ModelData, eedf)   # was `t` - global leak
+    ModelData = AttachAtomTransfer(ModelData, T, atom_transfer)
 
     Ng = he.Torr2Volume(P, T)
     Data = InitializeStateDensities(ModelData, P, T)
@@ -841,15 +898,7 @@ Ng = he.Torr2Volume(Pressure)
 StateDensities = []
 EmissionIntensities = []
 # build once, reuse many times
-tau_grid   = np.unique([d['Tau_R'] for d in RadiationTrappingMatrix])
-shape_grid = np.unique([d['Shape'] for d in RadiationTrappingMatrix])
-eta = np.array([d['EscapeFactor'][0] for d in RadiationTrappingMatrix]).reshape(len(tau_grid), len(shape_grid))
-
-interp = RegularGridInterpolator(
-    (np.log10(tau_grid), shape_grid),
-    np.log10(eta),                    # eta spans ~4 decades, so interpolate its log
-    bounds_error=False, fill_value=None
-)
+interp = he.EscapeFactorInterpolator(RadiationTrappingMatrix)   # log10(eta) on (log10 tau, log10 a)
 
 # Electron energy distributions to sweep over (see EEDF_MODE at the top)
 if EEDF_MODE == 'maxwell':

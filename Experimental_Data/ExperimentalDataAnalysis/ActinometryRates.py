@@ -21,7 +21,7 @@ so  n_N / n_Ar = (I_N / I_Ar) * (k_Ar b_Ar) / (k_N b_N) * (lam_N / lam_Ar)**p
 Cross-section sources
     N I : AtomicNitrogen_LevelData.json  (BSR term-resolved, statistically
           J-split by Build_Nitrogen_Level_Data.py)
-    Ar I: InputData/ArgonCrossSections.json, ground-state 'excitation' entries.
+    Ar I: InputData/ArgonCrossSections_BSR.json (the CR model's set), ground-state 'excitation' entries.
           The 5p entries carry no model label there, so they are matched to
           ArgonLevelList.json by threshold energy and J.
 
@@ -42,7 +42,7 @@ from scipy import constants
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PATHS = dict(
     n_level_data=os.path.join(ROOT_DIR, "Experimental_Data", "EchelleData", "TestData", "AtomicNitrogen_LevelData.json"),
-    ar_cross_sections=os.path.join(ROOT_DIR, "InputData", "ArgonCrossSections.json"),
+    ar_cross_sections=os.path.join(ROOT_DIR, "InputData", "ArgonCrossSections_BSR.json"),
     ar_levels=os.path.join(ROOT_DIR, "InputData", "ArgonLevelList.json"),
     ar_transitions=os.path.join(ROOT_DIR, "InputData", "ArgonReactionList.json"),
 )

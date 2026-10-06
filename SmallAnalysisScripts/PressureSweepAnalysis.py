@@ -21,13 +21,17 @@ Per pressure and family
         Te_eff, chi^2/dof, Delta chi^2 / s^2 against the free fit, CR 1s5
 Output in Experimental_Data/Output/PressureSweep/:
   Te_Ne_vs_pressure.png       Te_eff, E/N, Ne, chi^2/dof, Delta chi^2(n_c) and CR 1s5 against pressure
+  chi2_vs_Ne.png              chi^2 profiled over E/N at each Ne (Delta chi^2 / s^2 and chi^2/dof with Ne
+                              fixed), with Te_eff along the profile, one curve per pressure; local minima
+                              marked (chi2_vs_Ne.csv, chi2_local_minima.csv)
   residuals_vs_pressure.png   mean ln(measured / model) of every fitted line and of the trustworthy
                               check lines (not fitted) against pressure, per family and Ne mode
   pressure_sweep_fits.csv, line_residuals.csv, check_line_residuals.csv
   overlays/<family>_<free|nc>/  spectrum overlay and line residuals of every pressure
                                 (CRFitSpectrumOverlay.plot_condition)
-Run from Spyder (F5) or python SmallAnalysisScripts/PressureSweepAnalysis.py.  Libraries, CR tables
-and line measurements are cached; delete one to rebuild it.
+Run from Spyder (F5) or python SmallAnalysisScripts/PressureSweepAnalysis.py (--profiles: only the
+chi^2-vs-Ne figure, from the cached tables).  Libraries, CR tables and line measurements are cached;
+delete one to rebuild it.
 """
 import os
 import re
@@ -72,7 +76,9 @@ PREC_MAX_TD = 150                                   # precision 1e-30 up to here
                                                     # thresholds at low E/N), 1e-25 above
 BOLSIG_TIMEOUT = 1200                               # s per library; then retried at 1e-25
 NE_GRID = crf.CONFIG["Ne_grid"]                     # 1e15-3e19 m^-3
-OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "PressureSweep")
+ESCAPE_MODE = os.environ.get("CR_ESCAPE_MODE", "table")   # 'walsh': Holstein-Walsh escape factors (systematic)
+OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output",
+                      "PressureSweep" + ("" if ESCAPE_MODE == "table" else f"_{ESCAPE_MODE}"))
 COLORS = {"microwave": "C3", "dc": "C0"}
 
 
@@ -116,6 +122,7 @@ def library(family, p=None):
 
 def base_cfg():
     return dict(crf.CONFIG, sweeps=[SWEEP], Tg=TG, Ne_grid=NE_GRID, N2_percent=0.0, outdir=OUTDIR,
+                escape_mode=ESCAPE_MODE,
                 measure_dir=os.path.join(OUTDIR, "measurements"))
 
 
@@ -154,7 +161,7 @@ def build_all(ps):
     libs = [f"dc:"] + [f"microwave:{p:g}" for p in ps]
     _run_workers("--lib", [k for k in libs if not he.IsBolsigLibrary(lib_folder(*_split(k)))], "BOLSIG+ libraries")
     tabs = [f"{fam}:{p:g}" for fam in FAMILIES for p in ps]
-    _run_workers("--build", [k for k in tabs if not os.path.exists(crf._table_path(fit_cfg(*_split(k))))],
+    _run_workers("--build", [k for k in tabs if not crf.table_is_current(fit_cfg(*_split(k)))],
                  "CR tables")
 
 
@@ -191,6 +198,12 @@ def fit_condition(family, p, feats, ft):
     chi2 = mlf.cdf.chi2_grid(post, c.chi2_min, c.birge)
     i = int(np.argmin(chi2[:, j]))
     pin = ov.pinned_at_nc(FIT, c)
+    k = np.argmin(chi2, axis=0)                       # best E/N at each Ne
+    T2 = np.broadcast_to(Te_f[:, None], chi2.shape) if np.ndim(Te_f) == 1 else Te_f
+    prof = pd.DataFrame(dict(family=family, p_mTorr=p, Ne=np.exp(fN),
+                             dchi2=(chi2[k, np.arange(len(fN))] - c.chi2_min) / c.birge ** 2,
+                             chi2_red=chi2[k, np.arange(len(fN))] / (c.dof + 1), EN=np.exp(fX[k]),
+                             Te_eff=T2[k, np.arange(len(fN))]))
     row = dict(family=family, p_mTorr=p, n_spec=c.n_spec, Te_best=c.Te_best, Te_lo=c.Te_lo, Te_med=c.Te_med,
                Te_hi=c.Te_hi, EN_best=c.x_best, EN_lo=c.x_lo, EN_hi=c.x_hi, Ne_best=c.Ne_best, Ne_lo=c.Ne_lo,
                Ne_med=c.Ne_med, Ne_hi=c.Ne_hi, chi2_red=c.chi2_red, birge=c.birge, edge_EN=c.edge_x,
@@ -198,7 +211,25 @@ def fit_condition(family, p, feats, ft):
                n_1s5=float(np.exp((post * ln1s5).sum())),
                EN_nc=pin.x_best, Te_nc=pin.Te_best, Te_nc_lo=pin.Te_lo, Te_nc_hi=pin.Te_hi, chi2_red_nc=pin.chi2_red,
                dchi2_nc=(chi2[i, j] - c.chi2_min) / c.birge ** 2, n_1s5_nc=float(np.exp(ln1s5[i, j])))
-    return FIT, row, pin
+    return FIT, row, pin, prof
+
+
+def local_minima(prof, min_depth=1.0):
+    """Interior local minima of one Delta chi^2 / s^2 profile: points below both neighbours whose barrier
+    on each side (highest point between them and the next lower point, or the grid edge) is >= min_depth.
+    Grid-edge points are never minima (the curve just runs off the grid there)."""
+    y = prof.dchi2.to_numpy()
+    out = []
+    for i in range(1, len(y) - 1):
+        if y[i - 1] < y[i] or y[i + 1] < y[i]:
+            continue
+        lower_l = np.flatnonzero(y[:i] < y[i])
+        lower_r = np.flatnonzero(y[i + 1:] < y[i]) + i + 1
+        left = y[(lower_l[-1] if len(lower_l) else 0):i].max() - y[i]
+        right = y[i + 1:(lower_r[0] + 1 if len(lower_r) else len(y))].max() - y[i]
+        if min(left, right) >= min_depth:
+            out.append(prof.iloc[i])
+    return pd.DataFrame(out, columns=prof.columns)
 
 
 def premeasure_check_lines(fits, feats, ft):
@@ -308,6 +339,70 @@ def plot_residuals(lines, checks, sigma_model, path):
     plt.close(fig)
 
 
+def save_profiles(profs):
+    profs.to_csv(os.path.join(OUTDIR, "chi2_vs_Ne.csv"), index=False)
+    mins = pd.concat([local_minima(g) for _, g in profs.groupby(["family", "p_mTorr"])], ignore_index=True)
+    mins.to_csv(os.path.join(OUTDIR, "chi2_local_minima.csv"), index=False)
+    plot_chi2_vs_ne(profs, mins, os.path.join(OUTDIR, "chi2_vs_Ne.png"))
+    with pd.option_context("display.width", 200, "display.max_rows", 200):
+        print(f"\ninterior local minima of chi^2(Ne) (E/N profiled; depth >= 1 s^2): {len(mins)}")
+        if len(mins):
+            print(mins[["family", "p_mTorr", "Ne", "dchi2", "chi2_red", "EN", "Te_eff"]]
+                  .to_string(index=False, float_format=lambda v: f"{v:.3g}"))
+    return mins
+
+
+def plot_chi2_vs_ne(profs, mins, path):
+    ps = sorted(profs.p_mTorr.unique())
+    cmap = plt.cm.viridis
+    col = {p: cmap(i / max(len(ps) - 1, 1)) for i, p in enumerate(ps)}
+    keys = [("dchi2", r"$\Delta\chi^2/s^2$ (E/N profiled)", "log"), ("chi2_red", r"$\chi^2$/dof, Ne fixed", "linear"),
+            ("Te_eff", r"$T_{e,\mathrm{eff}}$ along the profile [eV]", "linear")]
+    fig, axs = plt.subplots(len(keys), len(FAMILIES), figsize=(7.5 * len(FAMILIES), 4.2 * len(keys)), sharex=True,
+                            squeeze=False)
+    for j, fam in enumerate(FAMILIES):
+        for p in ps:
+            g = profs[(profs.family == fam) & (profs.p_mTorr == p)]
+            m = mins[(mins.family == fam) & (mins.p_mTorr == p)] if len(mins) else mins
+            for i, (k, _, _) in enumerate(keys):
+                y = g[k] + (0.1 if k == "dchi2" else 0)        # +0.1 so the best point shows on the log axis
+                axs[i, j].plot(g.Ne, y, color=col[p], lw=1.2)
+                if len(m):
+                    axs[i, j].plot(m.Ne, m[k] + (0.1 if k == "dchi2" else 0), "o", color=col[p], ms=6, mec="k", mew=0.6)
+                b = g.loc[g.dchi2.idxmin()]
+                axs[i, j].plot([b.Ne], [b[k] + (0.1 if k == "dchi2" else 0)], "*", color=col[p], ms=9, mec="k", mew=0.5)
+        for i, (k, ylab, scale) in enumerate(keys):
+            ax = axs[i, j]
+            ax.axvline(N_C, color="k", ls=":", lw=1.2)
+            ax.set_xscale("log")
+            ax.set_yscale(scale)
+            ax.set_ylabel(ylab)
+            ax.grid(alpha=0.3, which="both")
+        for v in (1, 4):
+            axs[0, j].axhline(v + 0.1, color="0.6", lw=0.8, ls="--")
+        axs[1, j].axhline(1, color="0.6", lw=0.8)
+        axs[0, j].set_title(f"{fam} EEDF ({TG:g} K)")
+        axs[-1, j].set_xlabel("$N_e$ [m$^{-3}$]")
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(min(ps), max(ps)))
+    fig.colorbar(sm, ax=axs, shrink=0.6, label=SWEEP["xlabel"])
+    axs[0, 0].plot([], [], "ko", ms=6, label="interior local minimum (depth >= 1 s$^2$)")
+    axs[0, 0].plot([], [], "k*", ms=9, label="best fit")
+    axs[0, 0].plot([], [], "k:", label=f"n$_c$ = {N_C:.2e} m$^{{-3}}$")
+    axs[0, 0].legend(fontsize=8, loc="upper left")
+    fig.suptitle(rf"Pure-Ar pressure sweep: $\chi^2$ against $N_e$ (minimised over E/N), cross sections "
+                 f"{he.CROSS_SECTION_FILE}", fontsize=12)
+    fig.savefig(path, dpi=140, bbox_inches="tight")
+    plt.close(fig)
+
+
+def profiles_only():
+    """chi^2-vs-Ne figure from the cached tables and measurements (no overlays)."""
+    ps = pressures()
+    feats, ft = measurements(ps)
+    return save_profiles(pd.concat([fit_condition(f, p, feats, ft)[3] for f in FAMILIES for p in ps],
+                                   ignore_index=True))
+
+
 # ---- driver -------------------------------------------------------------------------
 def main():
     os.makedirs(OUTDIR, exist_ok=True)
@@ -317,11 +412,12 @@ def main():
     build_all(ps)
     feats, ft = measurements(ps)
     print(f"\n{len(feats)} features: {', '.join(feats.feature)}")
-    rows, fits = [], {}
+    rows, fits, profs = [], {}, []
     for fam in FAMILIES:
         for p in ps:
-            FIT, row, pin = fit_condition(fam, p, feats, ft)
+            FIT, row, pin, prof = fit_condition(fam, p, feats, ft)
             rows.append(row)
+            profs.append(prof)
             fits[(fam, p, "free")] = (FIT, FIT["cond"].iloc[0])
             fits[(fam, p, "nc")] = (FIT, pin)
             print(f"  {fam:<9s} {p:5.0f} mTorr  Te_eff = {row['Te_best']:.2f} eV  Ne = {row['Ne_best']:.2e}  "
@@ -330,6 +426,7 @@ def main():
     res = pd.DataFrame(rows)
     res.to_csv(os.path.join(OUTDIR, "pressure_sweep_fits.csv"), index=False)
     plot_vs_pressure(res, os.path.join(OUTDIR, "Te_Ne_vs_pressure.png"))
+    save_profiles(pd.concat(profs, ignore_index=True))
 
     print("\nspectrum overlays and line residuals ...", flush=True)
     premeasure_check_lines(fits, feats, ft)
@@ -365,5 +462,7 @@ if __name__ == "__main__":
     elif len(sys.argv) > 2 and sys.argv[1] == "--build":
         tab = crf.build_model_table(fit_cfg(*_split(sys.argv[2])))
         print(f"{sys.argv[2]}: {len(tab['x_grid'])} E/N rows, {(~tab['converged']).sum()} not converged")
+    elif "--profiles" in sys.argv:
+        MINIMA = profiles_only()
     else:
         RES, LINES, CHECKS = main()

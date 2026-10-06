@@ -1,0 +1,28 @@
+# Ar(x) + Ar -> Ar(y) + Ar, population transfer by ground-state Ar atoms (Paschen notation).
+# X.-M. Zhu and Y.-K. Pu, J. Phys. D: Appl. Phys. 43, 015204 (2010), Table 3, processes 9-26.
+# k = k_300K * (Tg/300)^Tg_exponent [cm^3/s], listed downhill in energy; the reverse (uphill) rate
+# follows from detailed balance at Tg (HelperFunctions.AtomTransferRates). to = 1s: the 1s level
+# is not given, it is shared among 1s2-1s5 in proportion to their statistical weights.
+# References as in that paper: [23] Zhu et al., J. Phys. D 42, 142003 (2009), derived from
+# experiment; [36] Inoue, Setser & Sadeghi, J. Chem. Phys. 76, 977 (1982); [37] Sadeghi et al.,
+# J. Chem. Phys. 115, 3144 (2001); [38] Chang & Setser, J. Chem. Phys. 69, 3885 (1978);
+# [39] Nguyen & Sadeghi, Phys. Rev. A 18, 1388 (1978).
+process,from,to,k_cm3_s_300K,Tg_exponent,source
+9,2p1,1s,3e-11,0.5,"[36,37]"
+10,2p2,1s,1e-11,0.5,[23]
+11,2p3,1s,3e-11,0.5,[38]
+12,2p4,1s,3e-11,0.5,[38]
+13,2p7,1s,4e-11,0.5,[38]
+14,2p8,1s,4e-11,0.5,[38]
+15,2p9,1s,3e-11,0.5,[38]
+16,2p10,1s,1.5e-11,0.5,[38]
+17,2p3,2p4,2e-11,0.5,"[38,39]"
+18,2p3,2p6,2e-11,0.5,"[38,39]"
+19,2p5,2p6,2.5e-11,0.5,"[36,37,39]"
+20,2p5,2p8,1.5e-11,0.5,"[36,37,39]"
+21,2p6,2p7,2e-11,0.5,"[37,38,39]"
+22,2p6,2p8,1e-11,0.5,"[37,38,39]"
+23,2p7,2p8,1e-11,0.5,"[38,39]"
+24,2p7,2p9,2e-11,0.5,"[38,39]"
+25,2p8,2p9,2.5e-11,0.5,"[38,39]"
+26,2p9,2p10,3e-11,0.5,"[38,39]"

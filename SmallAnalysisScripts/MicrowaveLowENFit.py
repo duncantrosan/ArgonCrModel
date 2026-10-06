@@ -230,12 +230,8 @@ def build_job(key):
 
 
 def table_current(cfg):
-    """A cached CR table exists for cfg and was made with the current N2 physics (quench_4p)."""
-    path = crf._table_path(cfg)
-    if not os.path.exists(path):
-        return False
-    with np.load(path) as t:
-        return (bool(t["quench_4p"]) if "quench_4p" in t.files else False) == crf.quench_4p_applied(cfg)
+    """A cached CR table exists for cfg and was made with its settings and the current cross sections."""
+    return crf.table_is_current(cfg)
 
 
 def build_tables(jobs=None):

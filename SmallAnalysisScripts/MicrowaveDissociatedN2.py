@@ -197,7 +197,7 @@ def build_libraries():
 
 def build_tables():
     _run_workers("--build", [f"{p:g}:{v}" for p in FRACTIONS for v in VARIANTS
-                             if not os.path.exists(crf._table_path(job_cfg(p, v)))], "CR tables")
+                             if not crf.table_is_current(job_cfg(p, v))], "CR tables")
 
 
 # ---- EEPF comparison -------------------------------------------------------------

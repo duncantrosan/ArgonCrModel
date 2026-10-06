@@ -99,6 +99,10 @@ CONFIG = dict(
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
     quench_4p=True,                     # with N2: also quench the 4p levels measured by Sadeghi 2001
                                         # (4p10, 4p6, 4p5, 4p3; he.ImportAr2pQuenchingData)
+    escape_mode="table",                # escape factors: 'table' (Monte Carlo hemisphere, v2 table) or
+                                        # 'walsh' (Holstein-Walsh cylinder for tau > 10), he.EscapeFactorInterpolator
+    atom_transfer=True,                 # 2p <-> 2p and 2p -> 1s transfer by collisions with ground-state Ar
+                                        # (Zhu & Pu 2010 rates, MainFileV2.AttachAtomTransfer)
     N2_dissociation=0.0,                # fraction of the N2 feed dissociated to N atoms: only the rest
                                         # quenches, and N2 -> 2N dilutes the Ar ground state further
                                         # (gas_fractions; no quenching of Ar levels by N atoms)
@@ -138,7 +142,7 @@ def _helpers():
     return he
 
 
-def load_cr_model(outdir):
+def load_cr_model(outdir, escape_mode="table"):
     he = _helpers()
     path = os.path.join(SCRIPTS_DIR, "MainFileV2.py")
     tree = ast.parse(open(path, encoding="utf-8").read())
@@ -147,10 +151,7 @@ def load_cr_model(outdir):
     exec(compile(defs, path, "exec"), cr)
     with contextlib.redirect_stdout(io.StringIO()):
         ModelData, RTM = he.GetData()
-    tau = np.unique([d["Tau_R"] for d in RTM])
-    shape = np.unique([d["Shape"] for d in RTM])
-    eta = np.array([d["EscapeFactor"][0] for d in RTM]).reshape(len(tau), len(shape))
-    interp = RegularGridInterpolator((np.log10(tau), shape), np.log10(eta), bounds_error=False, fill_value=None)
+    interp = he.EscapeFactorInterpolator(RTM, mode=escape_mode)   # escape factors on (log10 tau, log10 a)
     return cr, he, ModelData, interp
 
 
@@ -190,14 +191,15 @@ def apply_nitrogen(MD, cfg, he):
 def cr_density_solver(cfg=CONFIG):
     """Function (eedf, Ne) -> {level: density [m^-3]} of the CR model with the
     settings of cfg, e.g. for the superelastic populations of he.BuildBolsigLibrary."""
-    cr, he, MD, interp = load_cr_model(cfg["outdir"])
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], cfg.get("escape_mode", "table"))
     MD = he.AddDiffusionLoss(MD, cfg["P_Torr"], cfg["Tg"], cfg["R"])
     P_Ar = apply_nitrogen(MD, cfg, he)
 
     def solve(eedf, Ne):
         with contextlib.redirect_stdout(io.StringIO()):
             D, _, _, _ = cr["CRModel"](MD, eedf, float(Ne), P_Ar, cfg["Tg"], cfg["R"],
-                                       interp, trap_lines=cfg["trap_lines"])
+                                       interp, trap_lines=cfg["trap_lines"],
+                                       atom_transfer=cfg.get("atom_transfer", True))
         return {lbl: s["density_m^-3"] for lbl, s in D.items()}
     return solve
 
@@ -270,20 +272,45 @@ def _table_path(cfg):
 _PER_X = ("x_grid", "Te_eff", "I_obs", "I_thin", "dens", "fdirect", "converged")
 
 
-def _cached_subset(tab, cfg, x):
-    """The cached table restricted to the axis values x, or None if it does not hold them."""
+def _xsec_set():
+    """Name of the electron-impact cross-section file of the CR model (stored with each table)."""
+    return _helpers().CROSS_SECTION_FILE
+
+
+def _same_settings(tab, cfg):
+    """A cached table was made with the settings of cfg (tables without an xsec entry predate the
+    BSR set and were made with ArgonCrossSections.json)."""
     try:
-        same = (np.allclose(tab["Ne_grid"], cfg["Ne_grid"])
+        return (np.allclose(tab["Ne_grid"], cfg["Ne_grid"])
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
                 and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
                 and bool(tab["quench_4p"] if "quench_4p" in tab else False) == quench_4p_applied(cfg)
                 and float(tab["N2_dissociation"] if "N2_dissociation" in tab else 0.0)
-                == float(cfg.get("N2_dissociation", 0.0)))
+                == float(cfg.get("N2_dissociation", 0.0))
+                and str(tab["xsec"] if "xsec" in tab else "ArgonCrossSections.json") == _xsec_set()
+                and bool(tab["atom_transfer"] if "atom_transfer" in tab else False)
+                == bool(cfg.get("atom_transfer", True))
+                and str(tab["trap_table"] if "trap_table" in tab else "RadiationTrappingLookupTable.json")
+                == _helpers().TRAPPING_TABLE_FILE
+                and str(tab["escape_mode"] if "escape_mode" in tab else "table") == cfg.get("escape_mode", "table"))
     except (KeyError, ValueError):
-        return None
+        return False
+
+
+def table_is_current(cfg):
+    """A cached CR table exists for cfg and was made with its settings and the current cross sections."""
+    path = _table_path(cfg)
+    if not os.path.exists(path):
+        return False
+    with np.load(path, allow_pickle=False) as t:
+        return _same_settings(t, cfg)
+
+
+def _cached_subset(tab, cfg, x):
+    """The cached table restricted to the axis values x, or None if it does not hold them."""
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
-    if not same or any(len(r) != 1 for r in rows):
+    if not _same_settings(tab, cfg) or any(len(r) != 1 for r in rows):
         return None
     rows = np.concatenate(rows)
     return {k: (v[rows] if k in _PER_X else v) for k, v in tab.items()}
@@ -298,7 +325,7 @@ def build_model_table(cfg=CONFIG):
         if tab is not None:
             print(f"reusing {path}")
             return tab
-    cr, he, MD, interp = load_cr_model(cfg["outdir"])
+    cr, he, MD, interp = load_cr_model(cfg["outdir"], cfg.get("escape_mode", "table"))
     P, Tg, R = cfg["P_Torr"], cfg["Tg"], cfg["R"]
     MD = he.AddDiffusionLoss(MD, P, Tg, R)
     P_Ar = apply_nitrogen(MD, cfg, he)
@@ -327,7 +354,10 @@ def build_model_table(cfg=CONFIG):
             eedf = eedf_row[j] if isinstance(eedf_row, list) else eedf_row   # E/N x Ne library
             with contextlib.redirect_stdout(io.StringIO()):
                 D, _, _, solver = cr["CRModel"](MD, eedf, float(ne), P_Ar, Tg, R, interp,
-                                                trap_lines=cfg["trap_lines"])
+                                                trap_lines=cfg["trap_lines"],
+                                                atom_transfer=cfg.get("atom_transfer", True),
+                                                # rates depend on the EEDF only: once per row of a 1D library
+                                                compute_rates=(j == 0 or isinstance(eedf_row, list)))
             conv[i, j] = solver["converged"]
             ng = D["ground"]["density_m^-3"]
             for k, lbl in enumerate(levels):
@@ -347,6 +377,8 @@ def build_model_table(cfg=CONFIG):
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
                quench_4p=quench_4p_applied(cfg), N2_dissociation=float(cfg.get("N2_dissociation", 0.0)),
+               xsec=_xsec_set(), atom_transfer=bool(cfg.get("atom_transfer", True)),
+               trap_table=_helpers().TRAPPING_TABLE_FILE, escape_mode=cfg.get("escape_mode", "table"),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),

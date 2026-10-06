@@ -61,10 +61,7 @@ load_defs("MainFileWithNitrogen.py", cr)            # SetNitrogenQuenching, Mixt
 def escape_interpolator():
     with contextlib.redirect_stdout(io.StringIO()):
         MD, RTM = he.GetData()
-    tau = np.unique([d["Tau_R"] for d in RTM])
-    shape = np.unique([d["Shape"] for d in RTM])
-    eta = np.array([d["EscapeFactor"][0] for d in RTM]).reshape(len(tau), len(shape))
-    return MD, RegularGridInterpolator((np.log10(tau), shape), np.log10(eta), bounds_error=False, fill_value=None)
+    return MD, he.EscapeFactorInterpolator(RTM)
 
 
 def eedfs_for(pct):

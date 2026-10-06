@@ -74,11 +74,7 @@ exec(compile(_defs, _path, 'exec'), cr)
 
 with contextlib.redirect_stdout(io.StringIO()):
     ModelData, RTM = he.GetData()
-tau_grid = np.unique([d['Tau_R'] for d in RTM])
-shape_grid = np.unique([d['Shape'] for d in RTM])
-eta = np.array([d['EscapeFactor'][0] for d in RTM]).reshape(len(tau_grid), len(shape_grid))
-interp = RegularGridInterpolator((np.log10(tau_grid), shape_grid), np.log10(eta),
-                                 bounds_error=False, fill_value=None)
+interp = he.EscapeFactorInterpolator(RTM)          # log10(eta) on (log10 tau, log10 a)
 
 
 def line(EI, wl):
