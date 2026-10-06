@@ -99,6 +99,9 @@ CONFIG = dict(
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
     quench_4p=True,                     # with N2: also quench the 4p levels measured by Sadeghi 2001
                                         # (4p10, 4p6, 4p5, 4p3; he.ImportAr2pQuenchingData)
+    N2_dissociation=0.0,                # fraction of the N2 feed dissociated to N atoms: only the rest
+                                        # quenches, and N2 -> 2N dilutes the Ar ground state further
+                                        # (gas_fractions; no quenching of Ar levels by N atoms)
     eedf=MULTIBOLT_RUN,                 # 'maxwell', a MultiBolt export folder (E/N sweep), or a
                                         # BOLSIG+ library folder (he.RunBolsig / he.BuildBolsigLibrary;
                                         # E/N x Ne libraries must use the same Ne_grid)
@@ -156,6 +159,14 @@ def quench_4p_applied(cfg):
     return bool(cfg.get("quench_4p", True)) and cfg.get("N2_percent", 0.0) > 0
 
 
+def gas_fractions(cfg):
+    """Mole fractions (Ar, N2, N) of the N2 feed cfg['N2_percent'] with the fraction
+    cfg['N2_dissociation'] of it dissociated, N2 -> 2 N at constant total pressure."""
+    f, d = cfg.get("N2_percent", 0.0) / 100, cfg.get("N2_dissociation", 0.0)
+    tot = 1 + f * d
+    return (1 - f) / tot, f * (1 - d) / tot, 2 * f * d / tot
+
+
 def apply_nitrogen(MD, cfg, he):
     """N2 admixture cfg['N2_percent'] (Scripts/MainFileWithNitrogen.py): sets the loss of
     the Ar(4s) levels - and with cfg['quench_4p'] of the 4p levels Sadeghi 2001 measured -
@@ -163,16 +174,17 @@ def apply_nitrogen(MD, cfg, he):
     (dilution of the Ar ground state). Metastable diffusion keeps the total pressure.
     Rate coefficients: median of InputData/Ar_1s_quenching_data.csv (4s) and
     InputData/Ar_2p_quenching_Sadeghi2001.csv (4p; quenching to products outside the
-    model, mostly N2(C, B) + Ar ground)."""
-    x = cfg.get("N2_percent", 0.0) / 100
+    model, mostly N2(C, B) + Ar ground).  With cfg['N2_dissociation'] only the undissociated
+    N2 quenches (gas_fractions)."""
+    x_ar, x, _ = gas_fractions(cfg)
     N = he.Torr2Volume(cfg["P_Torr"], cfg["Tg"])
     Q = he.ImportArQuenchingData("N2", verbose=False) if x > 0 else {}
     if quench_4p_applied(cfg):
         Q.update({lbl: dict(q, kQM=0.0) for lbl, q in he.ImportAr2pQuenchingData("N2", verbose=False).items()})
     for lbl, s in MD.items():
         q = Q.get(lbl)
-        s["GasQuenching_s^-1"] = q["kQ"] * x * N + q["kQM"] * x * N * (1 - x) * N if q else 0.0
-    return (1 - x) * cfg["P_Torr"]
+        s["GasQuenching_s^-1"] = q["kQ"] * x * N + q["kQM"] * x * N * x_ar * N if q else 0.0
+    return x_ar * cfg["P_Torr"]
 
 
 def cr_density_solver(cfg=CONFIG):
@@ -250,6 +262,8 @@ def _table_path(cfg):
     tag = "maxwell" if cfg["eedf"] == "maxwell" else os.path.basename(os.path.normpath(cfg["eedf"]))
     if cfg.get("N2_percent", 0.0):
         tag += f"_N2_{cfg['N2_percent']:g}pct"
+        if cfg.get("N2_dissociation", 0.0):
+            tag += f"_diss{100 * cfg['N2_dissociation']:g}"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -263,7 +277,9 @@ def _cached_subset(tab, cfg, x):
                 and np.allclose([tab["P_Torr"], tab["Tg"], tab["R"]], [cfg["P_Torr"], cfg["Tg"], cfg["R"]])
                 and str(tab["trap_lines"]) == cfg["trap_lines"] and str(tab["eedf"]) == str(cfg["eedf"])
                 and float(tab["N2_percent"] if "N2_percent" in tab else 0.0) == float(cfg.get("N2_percent", 0.0))
-                and bool(tab["quench_4p"] if "quench_4p" in tab else False) == quench_4p_applied(cfg))
+                and bool(tab["quench_4p"] if "quench_4p" in tab else False) == quench_4p_applied(cfg)
+                and float(tab["N2_dissociation"] if "N2_dissociation" in tab else 0.0)
+                == float(cfg.get("N2_dissociation", 0.0)))
     except (KeyError, ValueError):
         return None
     rows = [np.flatnonzero(np.isclose(tab["x_grid"], v, rtol=1e-9)) for v in x]
@@ -330,7 +346,7 @@ def build_model_table(cfg=CONFIG):
               f"{(~conv[i]).sum()} not converged")
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
-               quench_4p=quench_4p_applied(cfg),
+               quench_4p=quench_4p_applied(cfg), N2_dissociation=float(cfg.get("N2_dissociation", 0.0)),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
                line_lower=np.array([l[1] for l in lines]), line_wl=np.array([l[2] for l in lines], float),
                line_A=np.array([l[3] for l in lines], float),
