@@ -24,3 +24,7 @@ InputData/MultiBolt/Ar_Biagi_lowEN_sweep/
 
 # Office lock files
 ~$*
+
+# Raw echelle spectra (large). Already-tracked sweeps (GsaSweep, PowerSweep, TestData) stay tracked;
+# new data folders are not added unless forced (git add -f)
+Experimental_Data/EchelleData/
