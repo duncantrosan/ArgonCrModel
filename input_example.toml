@@ -1,0 +1,293 @@
+# =====================================================================================================================
+#  input_example.toml  -  example input file of Main.py
+# =====================================================================================================================
+#
+#  WHAT THIS FILE DOES
+#    It tells Main.py which echelle spectra to analyse and how.  For every data set (a folder of .spa spectra) the
+#    program
+#      1. fits the lines of every spectrum,
+#      2. picks the gas temperature of each condition (from the LAS measurements) and builds the BOLSIG+ EEDF
+#         library and the CR-model table it needs (only the ones that do not exist yet),
+#      3. fits the Ar I lines with the CR model -> E/N of the EEDF, Te_eff, Ar metastable densities,
+#      4. does the N I / Ar I actinometry -> N-atom fraction, N-atom density, dissociation degree,
+#      5. (optional) makes the figures and tables of the LaTeX report.
+#
+#  HOW TO RUN IT  (from the repo folder, ArgonCrModel)
+#      python Main.py input_example.toml --plan     <- ALWAYS DO THIS FIRST: checks the file, lists the conditions,
+#                                                     their Tg and the libraries / tables that would be built.
+#                                                     Nothing is fitted, nothing is overwritten.
+#      python Main.py input_example.toml            <- the full run
+#    In Spyder: Run > Configuration per file > "Command line options": input_example.toml   (add --plan to check)
+#
+#  HOW TO MAKE YOUR OWN
+#    Copy this file (e.g. to my_run.toml), change what you need, and run  python Main.py my_run.toml
+#    You can delete any setting you do not care about: a missing setting keeps the default shown here.
+#    A misspelled setting or section is an error (the program tells you the allowed names), so typos cannot be
+#    silently ignored.
+#
+#  TOML IN 30 SECONDS
+#    # starts a comment           text goes in "double quotes"         true / false are lower case
+#    numbers: 0.04, 2.5e17, 50      lists: [1, 2, 3]                     [section]  starts a group of settings
+#    [[dataset]] starts one data set; repeat the whole block for every data set.
+#
+#  WHERE THE RESULTS GO
+#    <output_folder>/<data set name>/   tables (.csv) and figures/ of each data set
+#    <output_folder>/                   fits_all.csv, actinometry_per_condition_all.csv, overview_*.png,
+#                                       settings_used.json (exactly which settings this run used)
+#
+#  RUN TIME
+#    Line fits and CR tables are cached and reused.  With everything cached a data set takes a few minutes.  A new
+#    BOLSIG+ library takes ~1-20 min, a new CR table ~2-3 min (six are built at the same time).
+# =====================================================================================================================
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[run]
+# ---------------------------------------------------------------------------------------------------------------------
+# Folder for all results (relative to the repo folder, or a full path like "C:/Users/me/results").
+# CAREFUL: a run overwrites the results of an earlier run in the same folder - use a new folder for a test run.
+# The line fits of the spectra are cached inside this folder (<name>/measurements/), so a NEW folder fits every
+# spectrum again the first time (1-2 min per data set); the default folder already has them.
+output_folder = "Experimental_Data/Output/N2SweepPureArEEDF"
+
+# Folder the data-set folders below are relative to.
+echelle_folder = "Experimental_Data/EchelleData"
+
+# true = only check and plan (same as adding --plan on the command line).
+plan_only = false
+
+# true = open the figures in windows at the end (the program then waits until you close them).
+# false = only save them (best for long or unattended runs).
+show_plots = false
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[model]
+# ---------------------------------------------------------------------------------------------------------------------
+# Physics of the argon CR model (Scripts/MainFileV2.py).
+#
+# !! Changing ANY setting of this section means new CR tables: they are built automatically (~2-3 min each, all
+# !! conditions) and kept in their own folder (Experimental_Data/Output/AnalyticFivePFit/tables_<code>), so the
+# !! tables of the default settings are never overwritten.  Use --plan first to see how many would be built.
+
+# Electron-impact cross-section file (in InputData/):
+#   "ArgonCrossSections_BSR_analytic5p.json"  BSR-500, with the analytic (Drawin) 5p cross sections  <- use this
+#   "ArgonCrossSections_BSR.json"             BSR-500 with the NGFSRDW 5p fallbacks (5p ~5x too bright)
+#   "ArgonCrossSections.json"                 old NGFSRDW-only set (ground -> 4s/4p 10-30x too large)
+cross_sections = "ArgonCrossSections_BSR_analytic5p.json"
+
+# Plasma radius [m]: size of the hemisphere used for radiation trapping and for metastable diffusion to the wall.
+plasma_radius_m = 0.04
+
+# Which lines are radiation trapped:
+#   "all"     every line, with its lower level as the absorber (default)
+#   "ground"  only the resonance lines to the ground state (as Bogaerts et al. 1998)
+trap_lines = "all"
+
+# Escape factors: "table" (Monte Carlo, hemisphere; default) or "walsh" (Holstein-Walsh formula, a cross-check).
+escape_mode = "table"
+
+# Population transfer between the 2p (4p) levels by collisions with ground-state Ar (Zhu & Pu 2010 rates).
+atom_transfer = true
+
+# With N2 in the feed: also quench the four 4p levels measured by Sadeghi et al. 2001 (the 4s levels are always
+# quenched by N2 when there is N2).
+quench_4p = true
+
+# Factor on every N2 quenching rate (1 = literature rates; 0 = no quenching, only the dilution of the Ar by N2).
+# Useful to test whether the quenching is too strong (the model 1s5 falls faster with N2 than LAS).
+N2_quench_scale = 1.0
+
+# Fraction of the N2 feed that is dissociated into N atoms (0 to 1).  Only the remaining N2 quenches; N atoms do
+# not quench the Ar levels in the model.
+N2_dissociation = 0.0
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[eedf]
+# ---------------------------------------------------------------------------------------------------------------------
+# The EEDF is always the pure-Ar microwave BOLSIG+ solution (2.42 GHz, Biagi cross sections, E/N 3-1000 Td): the
+# Ar/N2 EEDF does not fit the spectra.  One library is made per (pressure, Tg).
+#
+# Tg of each condition = LAS trend (fit to all LAS measurements), rounded to this step [K].  A smaller step means
+# more libraries and tables; 50 K changes the results by much less than their errors.
+# (A data set can also fix Tg itself: Tg_K in its [[dataset]] block.)
+Tg_step_K = 50
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[fit]
+# ---------------------------------------------------------------------------------------------------------------------
+# CR fit of the Ar I line intensities: ln I_measured = ln I_model(E/N, Ne) + s_spectrum, one free scale s per
+# spectrum (so only the relative intensities matter - no reference line needed).  The fit is done on a grid of E/N
+# and Ne; the free fit (best E/N AND Ne) is always reported too (fits.csv: Ne_free, chi2_red_free, dchi2_nc).
+
+# Ne used for the metastables and the actinometry:
+#   "nc"     the critical density of 2.42 GHz, 7.26e16 m^-3 (overdense microwave plasma)  <- default
+#   1.5e17   any fixed density in m^-3 (the plots still say "n_c" in their titles)
+Ne_pin = "nc"
+
+# Relative CR-model error per line, the same in every repeat (so repeats cannot average it away).
+sigma_model = 0.20
+
+# Smallest relative error of a measured line (added to 1/SNR of the line fit).
+sigma_fit_floor = 0.02
+
+# Add the measured repeat-to-repeat scatter of each line to its error (recommended: it is 10-40 %, far above 1/SNR).
+use_repeat_scatter = true
+
+# Widen the uncertainties by the Birge factor sqrt(chi2/dof) when the fit is worse than the errors allow.
+birge = true
+
+# A line is dropped from a spectrum if its relative error is larger than this.
+max_rel_err = 0.15
+
+# Lines closer than this [nm] are summed into one feature (the line fitter cannot separate them).
+merge_nm = 0.10
+
+# Wavelength ranges [nm] of the Ar I lines used: 5p -> 4s (blue) and 4p -> 4s (red).
+wavelength_ranges_nm = [[400.0, 475.0], [690.0, 860.0]]
+
+# Ar I lines [nm, air] left out by hand (852.14: at the edge of an echelle order).
+exclude_lines_nm = [852.144]
+
+# Smallest manual rating (1-5) of a line to be used; lines without a rating pass on the automatic checks.
+min_rating = 4
+
+# (There is deliberately no "response tilt" setting: the intensity calibration is trusted and the tilt is off.)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[spectra]
+# ---------------------------------------------------------------------------------------------------------------------
+# Header flags of the .spa export that a spectrum must have (pattern; ? = anything).  The 3rd flag is the
+# intensity calibration: "?-?-1-1" keeps only calibrated spectra.  Uncalibrated spectra are listed and skipped.
+export_flags = "?-?-1-1"
+
+# A condition / line ratio needs at least this many repeat spectra with the lines detected.
+min_repeats = 2
+
+# Line-fit status that counts as "detected" for the actinometry ("ok", "weak", "blend", "not_detected").
+line_status = ["ok", "weak"]
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[actinometry]
+# ---------------------------------------------------------------------------------------------------------------------
+# n_N / n_Ar from N I / Ar I line pairs, with the EEDF and Ne of the fit.  Two versions are always made:
+# "direct" (Ar line excited from the ground state only) and "cr" (CR-model emission of the Ar line, with the
+# metastables) - the "cr" one is the result.
+
+# N I lines used besides 744.23 nm (from the line selection).  746.83 nm has the same upper level and is stronger.
+extra_N_lines_nm = [746.831]
+
+# Ar I reference lines left out (4p8 706.72, 5p5 415.86, 4p7 794.82: off the other pairs by 1.5-2.5x).
+exclude_Ar_references_nm = [706.7218, 415.859, 794.8176]
+
+# Outlier rejection per condition (Tukey fences): a pair outside [Q1 - k IQR, Q3 + k IQR] of all pairs is dropped.
+tukey_fence = 1.5
+# ... only when there are at least this many valid pairs.
+tukey_min_pairs = 5
+
+# Fraction of the E/N posterior where a pair must give a valid result (both rate coefficients defined).
+min_valid_mass = 0.9
+
+# Relative cross-section errors (systematic, the same for every condition): N I and Ar I.
+xsec_error_N = 0.20
+xsec_error_Ar = 0.15
+
+# A rate coefficient is only trusted where the EEDF reaches the threshold plus this much [eV].
+k_margin_eV = 1.0
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[plots]
+# ---------------------------------------------------------------------------------------------------------------------
+# Ar I line shown in the raw-spectrum zooms (figures/raw_lines/) next to the N I lines, and the zoom half width.
+zoom_Ar_line_nm = 750.3869
+zoom_half_width_nm = 0.4
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[report]
+# ---------------------------------------------------------------------------------------------------------------------
+# true = after the run, refresh the figures/ and tables/ of the LaTeX report (LatexReport/main.tex) from this
+# run's results.  main.tex itself (the text) is not changed - its numbers in the text are from the last full run.
+make = false
+folder = "LatexReport"
+# Condition of the example figures (chi^2 map, per-spectrum scale s): data set name and sweep values.
+example_set = "80W_1Torr"
+example_x = [0.33, 2.0]
+s_example_x = 2.0
+
+
+# =====================================================================================================================
+#  DATA SETS  -  one [[dataset]] block per folder of spectra
+# =====================================================================================================================
+#  name            short name: output folder and legend of the overview plots (no spaces is safest)
+#  folder          folder of the .spa files, relative to echelle_folder (or a full path)
+#  files           file name of the spectra WITHOUT .spa, with {x} = the sweep value and {rep} = the repeat number.
+#                  The decimal point of {x} may be written "_" or ".":
+#                      "Percent_{x}__{rep}"  reads  Percent_0_33__2.spa  as x = 0.33, repeat 2
+#                      "{x}mTorr_{rep}"      reads  850mTorr_3.spa       as x = 850, repeat 3
+#                  Several patterns: files = ["pattern1", "pattern2"].  Files that match no pattern (backgrounds
+#                  such as ref1.spa, ref_1.spa) are ignored.
+#  sweep           what {x} is: "N2" (% N2 in the feed), "pressure" (mTorr) or "power" (W)
+#  power_W, pressure_mTorr, N2_percent
+#                  the plasma condition: give the TWO that are not swept
+#  optional:
+#  run = false     skip this data set but keep it in the file
+#  exclude_x       sweep values to leave out, e.g. exclude_x = [0.0, 1.5]
+#  Tg_K            gas temperature of every condition [K] instead of the LAS trend
+#  Pure-Ar data sets (N2_percent = 0) get the CR fit and the metastables, no actinometry.
+# =====================================================================================================================
+
+[[dataset]]
+name = "80W_1Torr"
+folder = "N21TorrAdmixtureSweep80W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "60W_1Torr"
+folder = "N21TorrAdmixtureSweep60W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 60
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "35W_1Torr"
+folder = "N21TorrAdmictureSweep35W"          # (the folder name really is spelled "Admicture")
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 35
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "80W_3pctN2_pressure"
+folder = "PressureSweep_80W_3%nitrogen_97%Argon"
+files = "{x}mTorr_{rep}"
+sweep = "pressure"
+power_W = 80
+N2_percent = 3
+
+[[dataset]]
+name = "2.4pctN2_1Torr_power"
+folder = "PrelijminaryNitrogenAdmixtureMini/PowerSweepN2_2.4_Ar77_6_1Torr"
+files = "{x}W_{rep}"
+sweep = "power"
+pressure_mTorr = 1000
+N2_percent = 2.4
+run = false                                  # switched off: set to true (or delete this line) to include it
+
+[[dataset]]
+name = "80W_pureAr_pressure"                 # pure Ar: CR fit and metastables only, no actinometry
+folder = "PressureSweep_80W_PureArgon/SPAFiles"
+files = "{x}mTorr_{rep}"
+sweep = "pressure"
+power_W = 80
+N2_percent = 0
+run = false

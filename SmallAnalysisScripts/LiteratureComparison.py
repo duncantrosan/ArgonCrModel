@@ -248,7 +248,7 @@ def budget(D, c, cr, interp):
     Ne = c["ne"]
     Ng = D["ground"]["density_m^-3"]
     n = {l: d["density_m^-3"] for l, d in D.items()}
-    n_meta = sum(d["density_m^-3"] for d in D.values() if d["kind"] == "metastable")
+    n_4s = sum(d["density_m^-3"] for d in D.values() if d["kind"] in ("metastable", "resonant"))
     eta = escape_factors(D, c, interp)
     kTe = c["Te"]
     rows = []
@@ -284,7 +284,8 @@ def budget(D, c, cr, interp):
         if U["kind"] == "metastable":
             L["diffusion"] = 1 / U["DiffusionLoss"]
             L["Ar quenching"] = cr["GroundQuenchingLoss"](Ng)
-        L["metastable collisions"] = K_MET * n_meta
+        if U["kind"] in ("metastable", "resonant"):
+            L["4s energy pooling"] = K_MET * n_4s
         L["atom transfer out"] = Ng * sum(AT["coeff"] for AT in U.get("AtomTransfer", []) if AT["direction"] == "loss")
         prod = sum(v for k, v in P.items() if not k.startswith("_"))
         loss = sum(v for k, v in L.items() if not k.startswith("_"))

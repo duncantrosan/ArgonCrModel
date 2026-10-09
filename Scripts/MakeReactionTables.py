@@ -21,8 +21,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 E_ION = 15.7596     # eV, Ar first ionization energy (as in he.CreateIonizationCrossSections)
-K_MET = 6.4e-16     # m^3/s, metastable-metastable collisions (SolveLabelEquation in MainFileV2)
-K_AR2 = 2.3e-21     # m^3/s, two-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
+K_MET = 6.4e-16     # m^3/s, 4s energy pooling (SolveDirect in MainFileV2)
 K_AR3 = 1.4e-44     # m^6/s, three-body quenching by ground-state Ar (GroundQuenchingLoss in MainFileV2)
 SIGMA_CAP = 1.0e-18 # m^2, cap on analytic cross sections (he.AddAnalyticExcitationCrossSections)
 QUENCH_2P_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -297,11 +296,10 @@ def build(MD):
          f'{len(q1s)}+4', r'loss frequency $k_Q x_{\mathrm{N}_2}N$ (+$k_{QM}x_{\mathrm{N}_2}x_{\mathrm{Ar}}N^2$); '
          r'only with N$_2$ admixture, which also dilutes the Ar ground state '
          r'(Tables~\ref{tab:ar_1s_n2_quenching}, \ref{tab:ar_n2_quenching})', cite('Ar1sN2', 'Sadeghi01')],
-        ['Metastable--metastable collisions', r'$\mathrm{Ar}^m+\mathrm{Ar}^m\rightarrow$ products', '1',
-         rf'$k={sci(K_MET, 1, False)}$~m$^3$\,s$^{{-1}}$', cite('Ferreira85')],
-        ['Two-body quenching by Ar', r'$\mathrm{Ar}^m+\mathrm{Ar}\rightarrow 2\mathrm{Ar}$', '2',
-         rf'$k_2={sci(K_AR2, 1, False)}$~m$^3$\,s$^{{-1}}$, loss frequency $k_2N_g$',
-         cite('Tachibana86')],
+        ['4s energy pooling', r'$\mathrm{Ar}(1\mathrm{s}_j)+\mathrm{Ar}(1\mathrm{s}_l)\rightarrow'
+         r'\mathrm{Ar}+\mathrm{Ar}^++e,\ \mathrm{Ar}_2^++e$', '1',
+         rf'$k={sci(K_MET, 1, False)}$~m$^3$\,s$^{{-1}}$ for any pair of 1s levels, loss frequency '
+         r'$k\sum_l n_{1\mathrm{s}_l}$ on the four 1s levels', cite('Ferreira85')],
         ['Three-body quenching by Ar', r'$\mathrm{Ar}^m+2\mathrm{Ar}\rightarrow\mathrm{Ar}_2^*+\mathrm{Ar}$',
          '2', rf'$k_3={sci(K_AR3, 1, False)}$~m$^6$\,s$^{{-1}}$, loss frequency $k_3N_g^2$; '
          r'the excimer $\mathrm{Ar}_2^*$ is not followed', cite('Tachibana86')],

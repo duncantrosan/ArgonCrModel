@@ -29,8 +29,8 @@ discharge is ignored for now (pure-Ar CR model at the total pressure).
        ln I_meas = ln I_model(x, Ne) + s_spectrum + ln R(lambda) + noise
    x          : Te or E/N (the EEDF axis)
    s_spectrum : free scale per spectrum (exposure, absolute calibration)
-   ln R       : residual spectral response, polynomial in lambda of degree
-                response_deg (None = trust the intensity calibration)
+   ln R       : residual spectral response - switched OFF: response_deg must be
+                None (the intensity calibration is trusted; fit_block raises otherwise)
    covariance : per point the line-fit error (1/SNR plus a floor) and the
                 measured repeat-to-repeat scatter of that line (10-40 %, far
                 above 1/SNR); plus a CR-model error sigma_model per line that
@@ -43,7 +43,9 @@ discharge is ignored for now (pure-Ar CR model at the total pressure).
 The 5p -> 4s lines (415-470 nm) carry the most EEDF information (thresholds
 ~1.3 eV above the 4p).  The intensity calibration is checked within each range
 by same-upper-level branching ratios (within ~0.2 in ln for the clean 5p and
-4p9 pairs), but nothing ties the two ranges together, hence response_deg=1.
+4p9 pairs).  A free linear tilt tying the two ranges together was used until
+2026-10-07; it only absorbed the 5p/4p mismatch of the NGFSRDW 5p cross sections
+(SmallAnalysisScripts/AnalyticFivePFit.py) and is now disabled (no_tilt).
 
 A Maxwellian EEDF fits these spectra only at Te ~0.6-1 eV (its tail above the
 11.5 eV thresholds is far too full at 1 Torr); use the MultiBolt EEDFs.
@@ -52,6 +54,7 @@ Run from Spyder: edit CONFIG, press F5.  Results in Experimental_Data/Output/CRF
 """
 import ast
 import contextlib
+import json
 import io
 import os
 import sys
@@ -102,6 +105,8 @@ CONFIG = dict(
                                         # Scripts/MainFileWithNitrogen.py (0 = pure Ar)
     quench_4p=True,                     # with N2: also quench the 4p levels measured by Sadeghi 2001
                                         # (4p10, 4p6, 4p5, 4p3; he.ImportAr2pQuenchingData)
+    N2_quench_scale=1.0,                # factor on every N2 quenching rate (test of the quenching; 0 = only
+                                        # the dilution of the Ar ground state is left)
     escape_mode="table",                # escape factors: 'table' (Monte Carlo hemisphere, v2 table) or
                                         # 'walsh' (Holstein-Walsh cylinder for tau > 10), he.EscapeFactorInterpolator
     atom_transfer=True,                 # 2p <-> 2p and 2p -> 1s transfer by collisions with ground-state Ar
@@ -122,9 +127,8 @@ CONFIG = dict(
     # --- fit -----------------------------------------------------------------
     intensity_units="energy",           # calibrated spectra: 'energy' (radiance, model x 1/lambda) or 'counts'
     response_file=None,                 # 2 columns: wavelength [nm], relative response (measured / true)
-    response_deg=1,                     # None = trust the calibration, 1 = ln R linear in lambda
-                                        # (ties the 400-475 and 690-860 nm ranges, which the
-                                        # branching-ratio checks only verify separately)
+    response_deg=None,                  # response tilt: must stay None (calibration trusted) - the
+                                        # fit raises for any other value (no_tilt)
     sigma_fit_floor=0.02,               # relative, added in quadrature to 1/SNR
     use_repeat_scatter=True,            # add the measured repeat-to-repeat scatter of each line
     sigma_model=0.20,                   # relative CR-model error per line
@@ -133,6 +137,9 @@ CONFIG = dict(
     # --- output --------------------------------------------------------------
     outdir=os.path.join(ROOT_DIR, "Experimental_Data", "Output", "CRFit"),
 )
+# Settings from the input file of Main.py (repo root), as JSON in an environment variable so that the worker
+# processes building the CR tables get them too; empty outside Main.py
+CONFIG.update(json.loads(os.environ.get("CR_CONFIG_OVERRIDES", "{}")))
 
 
 # ----------------------------------------------------------------------------
@@ -179,15 +186,16 @@ def apply_nitrogen(MD, cfg, he):
     Rate coefficients: median of InputData/Ar_1s_quenching_data.csv (4s) and
     InputData/Ar_2p_quenching_Sadeghi2001.csv (4p; quenching to products outside the
     model, mostly N2(C, B) + Ar ground).  With cfg['N2_dissociation'] only the undissociated
-    N2 quenches (gas_fractions)."""
+    N2 quenches (gas_fractions); cfg['N2_quench_scale'] multiplies every quenching rate."""
     x_ar, x, _ = gas_fractions(cfg)
     N = he.Torr2Volume(cfg["P_Torr"], cfg["Tg"])
     Q = he.ImportArQuenchingData("N2", verbose=False) if x > 0 else {}
     if quench_4p_applied(cfg):
         Q.update({lbl: dict(q, kQM=0.0) for lbl, q in he.ImportAr2pQuenchingData("N2", verbose=False).items()})
+    scale = cfg.get("N2_quench_scale", 1.0)
     for lbl, s in MD.items():
         q = Q.get(lbl)
-        s["GasQuenching_s^-1"] = q["kQ"] * x * N + q["kQM"] * x * N * x_ar * N if q else 0.0
+        s["GasQuenching_s^-1"] = scale * (q["kQ"] * x * N + q["kQM"] * x * N * x_ar * N) if q else 0.0
     return x_ar * cfg["P_Torr"]
 
 
@@ -269,6 +277,8 @@ def _table_path(cfg):
         tag += f"_N2_{cfg['N2_percent']:g}pct"
         if cfg.get("N2_dissociation", 0.0):
             tag += f"_diss{100 * cfg['N2_dissociation']:g}"
+        if cfg.get("N2_quench_scale", 1.0) != 1.0:
+            tag += f"_Q{cfg['N2_quench_scale']:g}"
     return os.path.join(cfg["outdir"], f"cr_model_table_{tag}.npz")
 
 
@@ -291,6 +301,8 @@ def _same_settings(tab, cfg):
                 and bool(tab["quench_4p"] if "quench_4p" in tab else False) == quench_4p_applied(cfg)
                 and float(tab["N2_dissociation"] if "N2_dissociation" in tab else 0.0)
                 == float(cfg.get("N2_dissociation", 0.0))
+                and float(tab["N2_quench_scale"] if "N2_quench_scale" in tab else 1.0)
+                == float(cfg.get("N2_quench_scale", 1.0))
                 and str(tab["xsec"] if "xsec" in tab else "ArgonCrossSections.json") == _xsec_set()
                 and bool(tab["atom_transfer"] if "atom_transfer" in tab else False)
                 == bool(cfg.get("atom_transfer", True))
@@ -392,7 +404,7 @@ def build_model_table(cfg=CONFIG):
     tab = dict(x_grid=x, x_name=x_name, Te_eff=Te_eff, eedf=str(cfg["eedf"]), Ne_grid=Ne,
                P_Torr=P, Tg=Tg, R=R, trap_lines=cfg["trap_lines"], N2_percent=float(cfg.get("N2_percent", 0.0)),
                quench_4p=quench_4p_applied(cfg), N2_dissociation=float(cfg.get("N2_dissociation", 0.0)),
-               xsec=_xsec_set(), atom_transfer=bool(cfg.get("atom_transfer", True)),
+               N2_quench_scale=float(cfg.get("N2_quench_scale", 1.0)), xsec=_xsec_set(), atom_transfer=bool(cfg.get("atom_transfer", True)),
                trap_table=_helpers().TRAPPING_TABLE_FILE, escape_mode=cfg.get("escape_mode", "table"),
                trap_ref_Ne=float(ref_Ne or 0.0),
                levels=np.array(levels), line_upper=np.array([l[0] for l in lines]),
@@ -546,9 +558,17 @@ def hpd_level(post, mass=0.68):
     return p[np.searchsorted(c, mass)]
 
 
+def no_tilt(cfg):
+    """The response tilt is disabled: raise if cfg asks for one."""
+    if cfg.get("response_deg"):
+        raise ValueError(f"response_deg = {cfg['response_deg']!r}: the response tilt is disabled - "
+                         "set response_deg=None (intensity calibration trusted)")
+
+
 def fit_block(d, M, feats, grid, Te_f, cfg=CONFIG):
     """Joint fit of the rows in d (one or more spectra).  Returns summary dict,
     posterior (nX, nNe) and per-row best-fit residuals."""
+    no_tilt(cfg)
     fX, fN = grid
     fidx = {f: k for k, f in enumerate(feats.feature)}
     li = d.feature.map(fidx).to_numpy()

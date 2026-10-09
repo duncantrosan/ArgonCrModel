@@ -58,14 +58,15 @@ def GetEta(interp,tau,a):
 def GroundQuenchingLoss(Ng):
     """
     Loss frequency [s^-1] of a metastable by collisions with ground-state Ar
-    (density Ng [m^-3]), H. Tachibana, Phys. Rev. A 34, 1007 (1986):
-        two-body    Ar(1s5,1s3) + Ar  -> 2Ar         k2 = 2.3e-15 cm^3/s
+    (density Ng [m^-3]), K. Tachibana, Phys. Rev. A 34, 1007 (1986):
         three-body  Ar(1s5,1s3) + 2Ar -> Ar2* + Ar   k3 = 1.4e-32 cm^6/s
-    The three-body term grows as P^2 and passes the two-body term above ~5 Torr.
+    Tachibana's two-body term (k2 = 2.3e-15 cm^3/s, Ar* + Ar -> 2Ar) is left out: a thermal
+    Ar* + Ar collision cannot take up 11.5 eV, and the measured k2 is the transfer of the
+    metastables to the nearby resonance levels, which radiate - in the model that path is the
+    4s mixing followed by the trapped resonance decay, not a sink.
     """
-    k2 = 2.3e-21   # m^3/s
     k3 = 1.4e-44   # m^6/s
-    return k2 * Ng + k3 * Ng**2
+    return k3 * Ng**2
 
 def CreateSuperelasticRates(ModelData, eedf):
     """
@@ -396,11 +397,12 @@ def SolveLabelEquation(InputModel, Ng, Ne, P, T, R, interp):
 
         # ---- Diffusion loss (metastables only) ----
         DiffusionLoss = 1/(US['DiffusionLoss']) if kind == 'metastable' else 0
-        # Collisional Mixing between metastables 
+        # Energy pooling between pairs of 4s levels, Ar(1s_j) + Ar(1s_l) -> Ar + Ar+ + e (or Ar2+ + e):
+        # loss k_p * n_4s on each of the four 4s levels, n_4s the summed density of all four,
+        # Ferreira, Loureiro & Ricard, J. Appl. Phys. 57, 82 (1985), Eq. (8)
         k_met = 6.4e-16   # m^3/s, Ferreira et al. (Ref 31 in Bogaerts)
-        n_meta = sum(p['density_m^-3'] for p in InputModel.values()
-                     if p['kind'] == 'metastable')
-        MetLoss = k_met * n_meta
+        n_4s = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] in ('metastable', 'resonant'))
+        MetLoss = k_met * n_4s if kind in ('metastable', 'resonant') else 0
         # Two- and three-body quenching by ground-state Ar (metastables only)
         QuenchLoss = GroundQuenchingLoss(Ng) if kind == 'metastable' else 0
         # Quenching by an admixed gas, set by the caller (MainFileWithNitrogen); 0 in pure Ar
@@ -436,8 +438,8 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all', trap_density=Non
     the level-by-level iteration converges very slowly.
 
     The escape factors are taken from the current densities; CRModel repeats
-    the solve until they are consistent. The metastable-collision loss
-    k_met * n_meta * n_i is quadratic in the densities, so it enters as a
+    the solve until they are consistent. The 4s energy-pooling loss
+    k_met * n_4s * n_i (4s levels only) is quadratic in the densities, so it enters as a
     Newton step (its derivative is included in the matrix) - a plain
     fixed-point update of n_meta oscillates slowly when this loss dominates.
 
@@ -452,9 +454,9 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all', trap_density=Non
     idx = {lbl: i for i, lbl in enumerate(Levels)}
     M = np.zeros((len(Levels), len(Levels)))
     S = np.zeros(len(Levels))
-    k_met = 6.4e-16   # m^3/s, Ferreira et al. (Ref 31 in Bogaerts)
-    n_meta = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'metastable')
-    Ng = next(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'ground')
+    k_met = 6.4e-16   # m^3/s, 4s energy pooling, Ferreira et al. (Ref 31 in Bogaerts)
+    n_4s = sum(p['density_m^-3'] for p in InputModel.values() if p['kind'] in ('metastable', 'resonant'))
+    Ng =next(p['density_m^-3'] for p in InputModel.values() if p['kind'] == 'ground')
 
     # Escape factors of every line at the current densities, with one interpolator call for
     # all lines (GetEta line by line took most of the solve time). A line's escape factor
@@ -522,7 +524,7 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all', trap_density=Non
                                    for Rad in US['RadiativeDecay'] if Rad['direction'] == 'loss')
             RadiativeLossSum += US.get('A_untracked_loss', 0.0)
         DiffusionLoss = 1/(US['DiffusionLoss']) if US['kind'] == 'metastable' else 0
-        MetLoss = k_met * n_meta
+        MetLoss = k_met * n_4s if US['kind'] in ('metastable', 'resonant') else 0
         QuenchLoss = GroundQuenchingLoss(Ng) if US['kind'] == 'metastable' else 0
         QuenchLoss += US.get('GasQuenching_s^-1', 0.0)     # admixed gas (MainFileWithNitrogen)
         AtomLoss = Ng * sum(AT['coeff'] for AT in US.get('AtomTransfer', []) if AT['direction'] == 'loss')
@@ -530,13 +532,14 @@ def SolveDirect(InputModel, Ne, T, R, interp, trap_lines='all', trap_density=Non
                            + DiffusionLoss + MetLoss + QuenchLoss + AtomLoss)
         M[i, i] -= US['Loss_s^-1']
 
-    # Newton step on F(n) = M n + S, where d/dn_m of -k_met n_meta n_i adds
-    # -k_met n_i to column m for each metastable m (M already holds -k_met n_meta)
+    # Newton step on F(n) = M n + S, where d/dn_m of -k_met n_4s n_i adds -k_met n_i to
+    # column m for each 4s level m, on the 4s rows i only (M already holds -k_met n_4s)
     n_old = np.array([InputModel[lbl]['density_m^-3'] for lbl in Levels], dtype=float)
+    pooled = np.array([InputModel[lbl]['kind'] in ('metastable', 'resonant') for lbl in Levels])
     J = M.copy()
     for lbl in Levels:
-        if InputModel[lbl]['kind'] == 'metastable':
-            J[:, idx[lbl]] -= k_met * n_old
+        if InputModel[lbl]['kind'] in ('metastable', 'resonant'):
+            J[:, idx[lbl]] -= k_met * n_old * pooled
     n = n_old - np.linalg.solve(J, M @ n_old + S)
     for lbl in Levels:
         US = InputModel[lbl]

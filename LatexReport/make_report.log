@@ -1,0 +1,24 @@
+                     EN_min  EN_max  Te_min  Te_max  chi2_min  chi2_max  pin_max  r_first  r_last
+dataset                                                                                          
+80W_1Torr            35.461  37.813   0.807   0.809     1.438     1.866    8.447    0.858   0.360
+60W_1Torr            34.710  38.631   0.807   0.811     1.158     3.036    6.817    0.901   0.499
+35W_1Torr            31.862  43.926   0.809   0.822     1.367     2.062   10.809    0.837   0.737
+80W_3pctN2_pressure  30.792  62.100   0.805   0.818     1.227     1.946    7.011    0.225   0.586
+                              nN_min   nN_max  diss_min  diss_max  nN_abs_min  nN_abs_max  err_med  birge_med
+dataset             variant                                                                                  
+80W_1Torr           direct  3.09e-05  0.00016   0.00201   0.00718    4.58e+17    2.15e+18    0.481       2.78
+                    cr      0.000187  0.00057   0.00687    0.0353    2.77e+18    7.76e+18    0.103       1.13
+60W_1Torr           direct  4.24e-05 0.000272   0.00241   0.00805    6.28e+17    3.97e+18    0.454       3.49
+                    cr      0.000246 0.000811   0.00936    0.0371    3.64e+18    1.19e+19   0.0985       1.08
+35W_1Torr           direct  2.08e-05 0.000222   0.00245   0.00654    3.34e+17    2.97e+18    0.419       2.15
+                    cr       0.00013 0.000751   0.00818    0.0259    2.08e+18    1.02e+19    0.128       1.09
+80W_3pctN2_pressure direct  0.000119 0.000338   0.00192   0.00547     1.5e+18    5.51e+18    0.364       2.62
+                    cr      0.000399 0.000958   0.00645    0.0155    3.45e+18    1.55e+19    0.135        1.2
+Tg trend: {'T0': np.float64(651.869), 'a_p': np.float64(172.239), 'a_P': np.float64(0.814), 'a_x': np.float64(24.318), 'a_xx': np.float64(-0.792), 'sigma_within': np.float64(46.418), 'n_points': 870, 'n_outliers': 15, 'sigma_runs': np.float64(83.089)}
+           file          s
+Percent_2_00__1 -15.756077
+Percent_2_00__2 -15.694315
+Percent_2_00__3 -15.746559
+Percent_2_00__4 -15.781100
+Percent_2_00__5 -15.793398
+figures and tables in C:\Users\dptro\Documents\Work\Python\ArgonCrModel\LatexReport

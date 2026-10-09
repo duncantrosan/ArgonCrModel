@@ -1,0 +1,75 @@
+# Echelle data sets for SmallAnalysisScripts/N2SweepPureArEEDF.py
+# (CR fit at n_c with the pure-Ar microwave EEDF, Ar metastables against LAS, N I 744.2 nm / Ar I actinometry;
+#  one output folder per set: Experimental_Data/Output/N2SweepPureArEEDF/<name>/)
+#
+# One [[dataset]] block per folder of spectra:
+#   name             short name of the set: output folder and legend of the overview plots
+#   folder           folder of the .spa files, relative to Experimental_Data/EchelleData (or a full path)
+#   files            file name of the spectra without .spa, with {x} for the sweep value and {rep} for the
+#                    repeat number; the decimal point of {x} may be '_' or '.':  "Percent_{x}__{rep}" reads
+#                    Percent_0_33__2 as x = 0.33, repeat 2.  Several patterns: files = ["...", "..."].
+#                    Spectra that match no pattern (ref1, ref_1 = backgrounds) are left out.
+#   sweep            what {x} is: "N2" (% N2 in the feed), "pressure" (mTorr) or "power" (W)
+#   power_W, pressure_mTorr, N2_percent
+#                    the plasma condition: give the two that are not swept
+# optional:
+#   run = false      skip the set but keep it in the file
+#   exclude_x        sweep values to leave out, e.g. [0.0, 1.5]
+#   Tg_K             gas temperature of every condition [K]; default: LAS trend (LASTgComparison), rounded to 50 K
+#
+# Spectra without the intensity calibration (3rd header flag 0) are dropped.  The line fits of each set are
+# cached in <name>/measurements/ and redone when the spectra in the folder change.
+# Check the file with   python SmallAnalysisScripts/N2SweepPureArEEDF.py --plan   (conditions, Tg, LAS 1s5 and
+# the libraries / CR tables still to build - nothing is built or fitted).
+
+
+
+[[dataset]]
+name = "80W_1Torr"
+folder = "N21TorrAdmixtureSweep80W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "60W_1Torr"
+folder = "N21TorrAdmixtureSweep60W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 60
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "35W_1Torr"
+folder = "N21TorrAdmictureSweep35W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 35
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "80W_3pctN2_pressure"
+folder = "PressureSweep_80W_3%nitrogen_97%Argon"
+files = "{x}mTorr_{rep}"
+sweep = "pressure"
+power_W = 80
+N2_percent = 3
+
+[[dataset]]
+name = "2.4pctN2_1Torr_power"
+folder = "PrelijminaryNitrogenAdmixtureMini/PowerSweepN2_2.4_Ar77_6_1Torr"
+files = "{x}W_{rep}"
+sweep = "power"
+pressure_mTorr = 1000
+N2_percent = 2.4
+run = false
+
+[[dataset]]
+name = "80W_pureAr_pressure"                            # pure Ar: CR fit and metastables only, no actinometry
+folder = "PressureSweep_80W_PureArgon/SPAFiles"
+files = "{x}mTorr_{rep}"
+sweep = "pressure"
+power_W = 80
+N2_percent = 0
+run = false

@@ -19,6 +19,7 @@ Run any of them from Spyder (F5) or `python SmallAnalysisScripts/<name>.py`.
 | `EEDFComparisonArN2.py` | Pure Ar and Ar + 10 % N2 at matched mean energy: MultiBolt 2-8 terms vs BOLSIG+; Maxwell vs BOLSIG+ (plain, e-e, superelastic); BOLSIG+ DC vs microwave with e-e + superelastic. Builds the libraries it needs | `Output/EEDFComparisonArN2/` |
 | `EEDFPhysicsFitComparison.py` | The pure-Ar CR fit with each EEDF library, with and without the response tilt | `Output/EEDFPhysics/` |
 | `FitSensitivity.py` | How much the fitted Ar I line pattern changes per decade of Ne and per 0.1 eV of Te_eff (after the free scale and response tilt), against the detection limit of the fit | `Output/FitSensitivity/` |
+| `MakeFitReport.py` | Figures and tables of the Overleaf report `LatexReport/main.tex` from the last N2SweepPureArEEDF run: copies of its overview / per-set figures, the chi^2 map with the free and n_c-pinned fit, the per-spectrum scale s, the cost of the pin, and the libraries / fits / actinometry tables (run from `Main.py` with `[report] make = true`) | `LatexReport/` |
 | `MicrowaveLowENFit.py` | The CR fit with the 2.45 GHz BOLSIG+ EEDFs extended below 6 Td (precision 1e-30 at <= 30 Td) and with e-e collisions at the ionization degree of n_c or N2(v) superelastics (Tv 3000-8000 K); pure-Ar chi^2 vs Ne; chi^2, Te_eff and 1s5 along E/N at Ne = n_c; the fit walked in Ne from the free optimum down through n_c (Delta chi^2, Te_eff, CR 1s5, ionization frequency), against the old microwave and DC fits. Builds its libraries and CR tables in parallel processes | `Output/MicrowaveLowEN/` |
 | `TwoZoneNeBias.py` | Synthetic two-zone line of sight (critical layer or overdense core + underdense shell, with and without the shell's 4s absorption) fitted with the one-zone CR fit: which way the fitted Ne moves | `Output/TwoZoneNeBias/` |
 | `MicrowaveN2AFit.py` | Microwave EEDFs with superelastic collisions from N2(A3Sigma) at an estimated N2(A) density (production/loss balance, scanned n_A/n_N2 = 1e-3 to 1e-2): chi^2/dof, Te_eff and CR 1s5 at Ne = n_c for every Ar/N2 condition, against a no-N2(A) baseline and the DC fits | `Output/MicrowaveN2A/` |
@@ -28,3 +29,7 @@ Run any of them from Spyder (F5) or `python SmallAnalysisScripts/<name>.py`.
 | `Plot_Slit_Function_Slides.py` | Slide figures of the echelle slit function (Hg 435.8 nm vs a delta line) and FWHM vs wavelength | `MolecularFitting/Slit_Functions/Figures/Slides/` |
 
 The EEDF libraries the two EEDF scripts use are made by `Scripts/CreateEEDFLibraries.py`.
+
+The main analysis (CR fit at n_c, metastables, actinometry of the echelle sweeps) is `N2SweepPureArEEDF.py`; run it
+through `Main.py` in the repo folder with an input file (`python Main.py input_example.toml --plan`, then without
+`--plan`). `input_example.toml` lists every setting with its default and explanation.
