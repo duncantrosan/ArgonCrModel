@@ -106,9 +106,15 @@ N2_dissociation = 0.0
 # ---------------------------------------------------------------------------------------------------------------------
 [eedf]
 # ---------------------------------------------------------------------------------------------------------------------
-# The EEDF is always the pure-Ar microwave BOLSIG+ solution (2.42 GHz, Biagi cross sections, E/N 3-1000 Td): the
-# Ar/N2 EEDF does not fit the spectra.  One library is made per (pressure, Tg).
+# The EEDF is a microwave BOLSIG+ solution (2.42 GHz, Biagi cross sections, E/N 3-1000 Td).
 #
+# Which EEDF family (the fit picks E/N within it):
+#   "pure_Ar"             pure-Ar BOLSIG+ EEDF; the N2 only acts in the CR model (quenching, dilution)  <- default
+#   "ArN2_vib_saturated"  Ar/N2 BOLSIG+ EEDF with the N2 vibrations saturated (no net e-V energy loss; N2 elastic,
+#                         electronic excitation and ionization kept). Cold N2(v=0) EEDFs fail the fit; this one fits as
+#                         well as pure Ar. Needs one library per (% N2, pressure, Tg) - built automatically (~1 min each).
+model = "pure_Ar"
+
 # Tg of each condition = LAS trend (fit to all LAS measurements), rounded to this step [K].  A smaller step means
 # more libraries and tables; 50 K changes the results by much less than their errors.
 # (A data set can also fix Tg itself: Tg_K in its [[dataset]] block.)

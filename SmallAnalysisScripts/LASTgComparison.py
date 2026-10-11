@@ -228,14 +228,42 @@ def plan(las=None):
 
 
 # ---- 3. libraries and CR tables ----------------------------------------------------------
-def lib_folder(n2, p_mTorr, Tg):
+VIBSAT_XSEC = he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2_novib.txt"   # Biagi Ar/N2 without the N2 vibrational excitations
+
+
+def vibsat_xsec():
+    """VIBSAT_XSEC (written from Biagi_ArN2.txt if missing): the N2 vibrational manifold saturated, i.e. in balance
+    with the electrons - no net e-V energy loss; N2 elastic, electronic excitation and ionization kept."""
+    if not VIBSAT_XSEC.is_file():
+        lines = (he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2.txt").read_text(errors="replace").splitlines()
+        out, i = [], 0
+        while i < len(lines):
+            if lines[i].strip() == "EXCITATION" and i + 1 < len(lines) and "VIB" in lines[i + 1] \
+                    and lines[i + 1].strip().startswith("N2"):
+                j = i
+                while not lines[j].startswith("-----"):
+                    j += 1
+                j += 1
+                while not lines[j].startswith("-----"):
+                    j += 1
+                i = j + 1
+                continue
+            out.append(lines[i])
+            i += 1
+        VIBSAT_XSEC.write_text("\n".join(out) + "\n")
+    return VIBSAT_XSEC
+
+
+def lib_folder(n2, p_mTorr, Tg, vibsat=False):
+    """vibsat: Ar/N2 library with saturated N2(v) (VIBSAT_XSEC); pure Ar (n2 = 0) is the same either way."""
     base = "Ar_Biagi_bolsig" if n2 == 0 else f"ArN2_{n2:g}pct_bolsig"
-    return he.BOLSIG_FOLDER / f"{base}_mw{FREQ_HZ / 1e9:g}GHz_{Tg:g}K_{p_mTorr:g}mTorr"
+    tag = "_vibsat" if vibsat and n2 > 0 else ""
+    return he.BOLSIG_FOLDER / f"{base}_mw{FREQ_HZ / 1e9:g}GHz_{Tg:g}K_{p_mTorr:g}mTorr{tag}"
 
 
-def library(n2, p_mTorr, Tg):
+def library(n2, p_mTorr, Tg, vibsat=False):
     """Microwave BOLSIG+ library of (n2 % N2, p_mTorr, Tg), run if missing (as PressureSweepAnalysis.library)."""
-    folder = lib_folder(n2, p_mTorr, Tg)
+    folder = lib_folder(n2, p_mTorr, Tg, vibsat)
     if he.IsBolsigLibrary(folder):
         return folder
     prec_max = psa.PREC_MAX_TD if n2 == 0 else PREC_MAX_TD_N2
@@ -245,7 +273,8 @@ def library(n2, p_mTorr, Tg):
     if n2 == 0:
         xsec, species, fractions = he.BOLSIG_XSEC_FOLDER / "Biagi_Ar.txt", ["Ar"], [1.0]
     else:
-        xsec, species, fractions = he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2.txt", ["Ar", "N2"], [1 - n2 / 100, n2 / 100]
+        xsec = vibsat_xsec() if vibsat else he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2.txt"
+        species, fractions = ["Ar", "N2"], [1 - n2 / 100, n2 / 100]
     run = lambda pr: he.RunBolsig(xsec, folder.name, EN_MW, species=species, fractions=fractions,
                                   **dict(kw, precision=pr))
     try:
@@ -594,6 +623,8 @@ def main(plan_only=False):
 if __name__ == "__main__":
     if len(sys.argv) > 2 and sys.argv[1] == "--lib":
         library(*_unkey(sys.argv[2]))
+    elif len(sys.argv) > 2 and sys.argv[1] == "--lib-vibsat":
+        library(*_unkey(sys.argv[2]), vibsat=True)
     elif len(sys.argv) > 2 and sys.argv[1] == "--build":
         build_table(sys.argv[2])
     else:

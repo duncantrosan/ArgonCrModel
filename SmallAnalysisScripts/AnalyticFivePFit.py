@@ -78,8 +78,15 @@ def conditions():
 
 def table_cfg(key, eedf="mix"):
     """CR table settings of key with the analytic-5p set; eedf 'mix' = Ar/N2 microwave library (LASTgComparison),
-    'ar' = pure-Ar microwave library at the same p and Tg (N2 quenching and dilution kept in the CR model)."""
+    'ar' = pure-Ar microwave library at the same p and Tg (N2 quenching and dilution kept in the CR model),
+    'vibsat' = Ar/N2 microwave library with saturated N2(v) (LASTgComparison.lib_folder(vibsat=True); 'ar' in pure Ar)."""
     cfg = L.table_cfg(key, "n2")
+    if eedf == "vibsat":
+        n2, p, Tg = L._unkey(key)
+        if n2 == 0:
+            return table_cfg(key, "ar")
+        lib = L.lib_folder(n2, p, Tg, vibsat=True)
+        return dict(cfg, eedf=str(lib), outdir=os.path.join(TABLE_DIR, "VibSat_" + lib.name))
     if eedf == "ar":
         n2, p, Tg = L._unkey(key)
         lib = L.lib_folder(0.0, p, Tg)

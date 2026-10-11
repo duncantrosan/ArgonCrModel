@@ -1,0 +1,41 @@
+# Main.py run with the saturated-N2(v) Ar/N2 EEDF (all settings not listed here: defaults, see input_example.toml).
+#   python Main.py input_vibsat.toml --plan     then     python Main.py input_vibsat.toml
+# Results in their own folder, so the pure-Ar EEDF results (Experimental_Data/Output/N2SweepPureArEEDF) stay.
+
+[run]
+output_folder = "Experimental_Data/Output/N2SweepVibSat"
+
+[eedf]
+model = "ArN2_vib_saturated"
+
+[[dataset]]
+name = "80W_1Torr"
+folder = "N21TorrAdmixtureSweep80W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "60W_1Torr"
+folder = "N21TorrAdmixtureSweep60W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 60
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "35W_1Torr"
+folder = "N21TorrAdmictureSweep35W"
+files = "Percent_{x}__{rep}"
+sweep = "N2"
+power_W = 35
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "80W_3pctN2_pressure"
+folder = "PressureSweep_80W_3%nitrogen_97%Argon"
+files = "{x}mTorr_{rep}"
+sweep = "pressure"
+power_W = 80
+N2_percent = 3

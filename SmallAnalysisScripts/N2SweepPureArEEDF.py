@@ -9,7 +9,9 @@ GsaSweep_85W_1_torr: 85 W, 1 Torr, 0-3 % N2) with the CR fit that works for the 
   - cross sections ArgonCrossSections_BSR_analytic5p.json: BSR-500, ground/4s -> 5p from the model's analytic
     (Drawin / Bogaerts) formulae instead of the NGFSRDW fallback (AnalyticFivePFit)
   - Ne pinned at the critical density n_c, E/N refitted; no response tilt (CRFitNeTe.no_tilt)
-CR tables are AnalyticFivePFit's.
+CR tables are AnalyticFivePFit's.  EEDF = 'vibsat' (Main.py, [eedf] model = "ArN2_vib_saturated") uses instead the
+Ar/N2 microwave EEDF with saturated N2(v) (no net e-V loss; LASTgComparison.lib_folder(vibsat=True)), one library per
+(% N2, p, Tg).
 
 0. Data sets: the input file (N2SweepPureArEEDF_input.toml next to this script, or the file given on the command
    line) gives per set the folder, the file-name pattern, the swept quantity (% N2, pressure or power) and the
@@ -81,7 +83,9 @@ INPUT_FILE = os.path.join(HERE, "N2SweepPureArEEDF_input.toml")
 ECHELLE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData")   # input-file folders relative to this
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "N2SweepPureArEEDF")
 N_C = L.N_C
-EEDF = "ar"                                         # AnalyticFivePFit table set: pure-Ar microwave EEDF
+EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
+                                                    # 'vibsat' Ar/N2 microwave EEDF with saturated N2(v) (Main.py)
+EEDF_LABEL = {"ar": "pure-Ar microwave EEDF", "vibsat": "Ar/N$_2$ microwave EEDF, saturated N$_2$(v)"}
 ACT = dict(anc.CONFIG, pin_Ne=N_C)                  # actinometry settings (fences, margins, xsec errors)
 EXTRA_N_WL = (746.831,)                             # N I lines tracked besides ActinometryLineSelection's (744.229):
                                                     # 746.83 is from the same upper level (3p 4S*3/2, A 1.96e7 vs
@@ -201,9 +205,13 @@ def conditions(ds, las, trend):
 
 
 def to_build(keys):
-    """(pure-Ar microwave libraries, CR tables) still missing for the table keys."""
-    libs = sorted({L._key(0.0, p, Tg) for _, p, Tg in map(L._unkey, keys)
-                   if not he.IsBolsigLibrary(L.lib_folder(0.0, p, Tg))})
+    """(microwave libraries as (worker flag, key), CR tables) still missing for the table keys: pure-Ar libraries,
+    and with EEDF 'vibsat' the saturated-N2(v) Ar/N2 library of every condition with N2."""
+    libs = sorted({("--lib", L._key(0.0, p, Tg)) for n2, p, Tg in map(L._unkey, keys)
+                   if (EEDF == "ar" or n2 == 0) and not he.IsBolsigLibrary(L.lib_folder(0.0, p, Tg))})
+    if EEDF == "vibsat":
+        libs += sorted({("--lib-vibsat", k) for k in keys if L._unkey(k)[0] > 0
+                        and not he.IsBolsigLibrary(L.lib_folder(*L._unkey(k), vibsat=True))})
     with A.xsec_set(A.CR_XSEC):
         tabs = [k for k in keys if not crf.table_is_current(A.table_cfg(k, EEDF))]
     return libs, tabs
@@ -453,7 +461,7 @@ def plot_metastables(t, ds, outdir):
     ax.set_ylim(0, 1.25 * np.nanmax(np.r_[t.n_1s5_hi, t.las_1s5 * (1 + t.las_1s5_rel_err)]))   # room for the legend
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("density [m$^{-3}$]")
-    ax.set_title(f"Ar metastables, {ds['note']}: CR fit (pure-Ar microwave EEDF, N$_e$ = n$_c$, {_tg_note(ds)}, "
+    ax.set_title(f"Ar metastables, {ds['note']}: CR fit ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, {_tg_note(ds)}, "
                  f"no tilt)\nE/N {t.EN_nc.min():.0f}-{t.EN_nc.max():.0f} Td, $\\chi^2$/dof {t.chi2_red_nc.min():.1f}-"
                  f"{t.chi2_red_nc.max():.1f}; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
@@ -484,7 +492,7 @@ def plot_actinometry(cond, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} (pure-Ar microwave EEDF, N$_e$ = n$_c$, "
+        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, "
                      "no tilt)\nbars: line ratios + E/N posterior + pair scatter; faint: + cross sections",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
@@ -507,7 +515,7 @@ def plot_by_n_line(cond, ds, outdir, variant="cr"):
     ax.set_ylim(bottom=0)
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("n$_N$ / n$_{Ar}$")
-    ax.set_title(f"Actinometry per N I line, {VARIANTS[variant]['label']}\n{ds['note']}, pure-Ar microwave EEDF, "
+    ax.set_title(f"Actinometry per N I line, {VARIANTS[variant]['label']}\n{ds['note']}, {EEDF_LABEL[EEDF]}, "
                  "N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
     ax.legend(fontsize=8)
@@ -563,7 +571,7 @@ def plot_per_line(pairs, cond, ds, outdir, variant="cr"):
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(f"n$_N$ / n$_{{Ar}}$ from N I {n_wl:.2f} nm / Ar line")
         ax.set_title(f"Actinometry per Ar reference line, N I {n_wl:.2f} nm, {VARIANTS[variant]['label']}\n"
-                     f"{ds['note']}, pure-Ar microwave EEDF, N$_e$ = n$_c$, no tilt (bars: 16-84 % from E/N)",
+                     f"{ds['note']}, {EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt (bars: 16-84 % from E/N)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=7, ncol=2)
@@ -582,7 +590,7 @@ def plot_fit_params(t, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"CR fit at N$_e$ = n$_c$, {ds['note']} (pure-Ar microwave EEDF, {_tg_note(ds)}, no tilt)\n"
+        ax.set_title(f"CR fit at N$_e$ = n$_c$, {ds['note']} ({EEDF_LABEL[EEDF]}, {_tg_note(ds)}, no tilt)\n"
                      "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         fig.tight_layout()
@@ -714,7 +722,7 @@ def plot_overview(kind, sets, res, outdir):
     ax.set_ylim(bottom=0)
     ax.set_xlabel(SWEPT[kind]["xlabel"])
     ax.set_ylabel("Ar(1s$_5$) density [m$^{-3}$]")
-    ax.set_title("Ar(1s$_5$): CR fit (pure-Ar microwave EEDF, N$_e$ = n$_c$, no tilt) and LAS\n"
+    ax.set_title(f"Ar(1s$_5$): CR fit ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt) and LAS\n"
                  "band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N; open diamonds: LAS (measured or interpolated)",
                  fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
@@ -731,7 +739,7 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title("CR fit at N$_e$ = n$_c$ (pure-Ar microwave EEDF, no tilt)\n"
+        ax.set_title(f"CR fit at N$_e$ = n$_c$ ({EEDF_LABEL[EEDF]}, no tilt)\n"
                      "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)
@@ -754,7 +762,7 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
         ax.set_title(f"{_n_label(next(iter(acts.values())))} / Ar I actinometry, {VARIANTS['cr']['label']}\n"
-                     "pure-Ar microwave EEDF, N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)",
+                     f"{EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)
@@ -767,7 +775,7 @@ def run_dataset(ds, cond):
     """CR fits, metastables and actinometry of one data set -> (fits table, actinometry per condition)."""
     figdir = os.path.join(ds["outdir"], "figures")
     os.makedirs(figdir, exist_ok=True)
-    print(f"\n=== {ds['name']} ({_plain(ds['note'])}): CR fits at n_c (pure-Ar microwave EEDF, analytic 5p, no tilt)",
+    print(f"\n=== {ds['name']} ({_plain(ds['note'])}): CR fits at n_c ({_plain(EEDF_LABEL[EEDF])}, analytic 5p, no tilt)",
           flush=True)
     t, fits = fit_conditions(ds, cond)
     if t.empty:
@@ -851,14 +859,17 @@ def main(input_file=INPUT_FILE, plan_only=False):
     if not conds:
         return {}
     libs, tabs = to_build(sorted(set(pd.concat(conds.values()).key)))
-    print(f"\nto build: {len(libs)} BOLSIG+ libraries (pure Ar, microwave), {len(tabs)} CR tables "
+    print(f"\nto build: {len(libs)} BOLSIG+ libraries ({_plain(EEDF_LABEL[EEDF])}), {len(tabs)} CR tables "
           f"(AnalyticFivePFit, ~2-3 min each, {A.N_WORKERS} at a time)")
     if plan_only:
         for what, keys in (("libraries", libs), ("CR tables", tabs)):
             if keys:
-                print(f"  {what} (% N2:p mTorr:Tg K): {', '.join(keys)}")
+                print(f"  {what} (% N2:p mTorr:Tg K): {', '.join(k if isinstance(k, str) else k[1] for k in keys)}")
         return conds
-    L._run_workers("--lib", libs, "BOLSIG+ libraries")
+    if EEDF == "vibsat":
+        L.vibsat_xsec()                             # written once here, not by the parallel library workers
+    for flag in ("--lib", "--lib-vibsat"):
+        L._run_workers(flag, [k for f, k in libs if f == flag], f"BOLSIG+ libraries ({flag[2:]})")
     A.build_all([(k, EEDF) for k in tabs])
     res = {}
     for d in sets:

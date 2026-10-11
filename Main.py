@@ -36,7 +36,7 @@ DEFAULTS = {   # section -> setting -> default
                 plan_only=False, show_plots=False),
     "model": dict(cross_sections="ArgonCrossSections_BSR_analytic5p.json", plasma_radius_m=0.04, trap_lines="all",
                   escape_mode="table", atom_transfer=True, quench_4p=True, N2_quench_scale=1.0, N2_dissociation=0.0),
-    "eedf": dict(Tg_step_K=50.0),
+    "eedf": dict(model="pure_Ar", Tg_step_K=50.0),
     "fit": dict(Ne_pin="nc", sigma_model=0.20, sigma_fit_floor=0.02, use_repeat_scatter=True, birge=True,
                 max_rel_err=0.15, merge_nm=0.10, wavelength_ranges_nm=[[400.0, 475.0], [690.0, 860.0]],
                 exclude_lines_nm=[852.144], min_rating=4),
@@ -47,7 +47,8 @@ DEFAULTS = {   # section -> setting -> default
     "plots": dict(zoom_Ar_line_nm=750.3869, zoom_half_width_nm=0.4),
     "report": dict(make=False, folder="LatexReport", example_set="80W_1Torr", example_x=[0.33, 2.0], s_example_x=2.0),
 }
-CHOICES = {("model", "trap_lines"): ("all", "ground"), ("model", "escape_mode"): ("table", "walsh"),
+CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated"),
+           ("model", "trap_lines"): ("all", "ground"), ("model", "escape_mode"): ("table", "walsh"),
            ("spectra", "line_status"): ("ok", "weak", "blend", "not_detected")}
 MODEL_KEYS = dict(plasma_radius_m="R", trap_lines="trap_lines", escape_mode="escape_mode",   # -> CRFitNeTe.CONFIG;
                   atom_transfer="atom_transfer", quench_4p="quench_4p",                      # these define the CR tables
@@ -124,6 +125,7 @@ def configure(S, s):
     S.OUTDIR = in_repo(s["run"]["output_folder"])
     S.ECHELLE_DIR = in_repo(s["run"]["echelle_folder"])
     L.TG_STEP = s["eedf"]["Tg_step_K"]
+    S.EEDF = {"pure_Ar": "ar", "ArN2_vib_saturated": "vibsat"}[s["eedf"]["model"]]
     ne = S.N_C if s["fit"]["Ne_pin"] == "nc" else s["fit"]["Ne_pin"]
     S.N_C = L.N_C = L.mlf.N_C = ne                    # every module that pins Ne reads one of these
     sp, a, pl = s["spectra"], s["actinometry"], s["plots"]
