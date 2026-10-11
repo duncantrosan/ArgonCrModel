@@ -261,15 +261,25 @@ s_example_x = 2.0
 # =====================================================================================================================
 #  name            short name: output folder and legend of the overview plots (no spaces is safest)
 #  folder          folder of the .spa files, relative to echelle_folder (or a full path)
-#  files           file name of the spectra WITHOUT .spa, with {x} = the sweep value and {rep} = the repeat number.
+#  files           (either this or file_list) file name of the spectra WITHOUT .spa, with {x} = the sweep value and
+#                  {rep} = the repeat number.
 #                  The decimal point of {x} may be written "_" or ".":
 #                      "Percent_{x}__{rep}"  reads  Percent_0_33__2.spa  as x = 0.33, repeat 2
 #                      "{x}mTorr_{rep}"      reads  850mTorr_3.spa       as x = 850, repeat 3
 #                  Several patterns: files = ["pattern1", "pattern2"].  Files that match no pattern (backgrounds
 #                  such as ref1.spa, ref_1.spa) are ignored.
-#  sweep           what {x} is: "N2" (% N2 in the feed), "pressure" (mTorr) or "power" (W)
+#  file_list       (instead of files) a CSV listing every spectrum with its conditions - no file-name pattern needed,
+#                  so odd or misspelled file names are fine.  Path relative to this input file (or a full path).
+#                  Columns (header names, any case):  file, pressure_mTorr, gas1, gas2, gas2_percent, power_W
+#                  optional:  flow_sccm (for the record), repeat, Tg_K, note.   gas1 = Ar, gas2 = N2 (or empty
+#                  with gas2_percent 0).  One row per spectrum; '#' lines are comments.  Example (all 50 spectra of
+#                  the 80 W sweep): input_files_80W_example.csv.  A listed file missing from the folder is an error;
+#                  files not listed (backgrounds) are ignored.  power_W / pressure_mTorr / N2_percent below are
+#                  then not needed: the conditions come from the list.
+#  sweep           what {x} is: "N2" (% N2 in the feed), "pressure" (mTorr) or "power" (W).  With file_list, the x
+#                  axis is that column of the list, and the other conditions must be the same for each x value.
 #  power_W, pressure_mTorr, N2_percent
-#                  the plasma condition: give the TWO that are not swept
+#                  (with files) the plasma condition: give the TWO that are not swept
 #  optional:
 #  run = false     skip this data set but keep it in the file
 #  exclude_x       sweep values to leave out, e.g. exclude_x = [0.0, 1.5]
@@ -284,6 +294,9 @@ files = "Percent_{x}__{rep}"
 sweep = "N2"
 power_W = 80
 pressure_mTorr = 1000
+# the same data set from a CSV list instead of the file-name pattern (delete the files / power_W / pressure_mTorr
+# lines above and use):
+# file_list = "input_files_80W_example.csv"
 
 [[dataset]]
 name = "60W_1Torr"

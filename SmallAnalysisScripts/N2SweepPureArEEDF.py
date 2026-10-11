@@ -157,9 +157,66 @@ def file_parser(patterns, exclude_x=()):
     return parse
 
 
+LIST_COLUMNS = ("file", "pressure_mTorr", "gas1", "gas2", "gas2_percent", "power_W")   # file list of a data set
+LIST_OPTIONAL = ("flow_sccm", "repeat", "Tg_K", "note")
+LIST_STATE = {"pressure_mTorr": "pressure_mTorr", "power_W": "power_W", "N2_percent": "gas2_percent"}
+
+
+def read_file_list(path, kind, folder, exclude_x, where):
+    """Spectra of a data set listed in a CSV file (one row per spectrum, columns LIST_COLUMNS + LIST_OPTIONAL; header
+    case and spaces do not matter, '#' starts a comment) -> (parse, state, {x: Tg} or {}, fixed {key: value} of the
+    quantities that are the same in every row).  The swept quantity of `kind` is read from its column; every other
+    condition must be the same in all rows of one sweep value.  Files listed but not in the folder are an error."""
+    t = pd.read_csv(path, dtype=str, comment="#", skipinitialspace=True).dropna(how="all")
+    low = {c.strip().lower(): c for c in t.columns}
+    if missing := [c for c in LIST_COLUMNS if c.lower() not in low]:
+        raise ValueError(f"{where}: {path} has no column {', '.join(missing)} (needed: {', '.join(LIST_COLUMNS)}; "
+                         f"optional: {', '.join(LIST_OPTIONAL)})")
+    t = t.rename(columns={low[c.lower()]: c for c in LIST_COLUMNS + LIST_OPTIONAL if c.lower() in low})
+    t["file"] = t.file.str.strip().str.replace(r"\.spa$", "", case=False, regex=True)
+    for c in ("pressure_mTorr", "gas2_percent", "power_W", "flow_sccm", "repeat", "Tg_K"):
+        if c in t:
+            t[c] = pd.to_numeric(t[c].str.strip(), errors="raise")
+    t["gas2_percent"] = t.gas2_percent.fillna(0.0)
+    t["gas1"], t["gas2"] = t.gas1.fillna("").str.strip(), t.gas2.fillna("").str.strip()
+    if bad := sorted(set(t.gas1[t.gas1.str.lower() != "ar"])):
+        raise ValueError(f"{where}: {path}: gas1 must be Ar (the CR model is argon), not {bad}")
+    if bad := sorted(set(t.gas2[(t.gas2_percent > 0) & (t.gas2.str.upper() != "N2")])):
+        raise ValueError(f"{where}: {path}: gas2 must be N2 when gas2_percent > 0, not {bad}")
+    if dup := sorted(t.file[t.file.str.lower().duplicated()]):
+        raise ValueError(f"{where}: {path}: files listed twice: {', '.join(dup[:10])}")
+    have = {os.path.splitext(os.path.basename(f))[0].lower() for f in glob(os.path.join(folder, "*.spa"))}
+    if missing := [f for f in t.file if f.lower() not in have]:
+        raise FileNotFoundError(f"{where}: {path} lists {len(missing)} file(s) not in {folder}: "
+                                f"{', '.join(missing[:10])}{' ...' if len(missing) > 10 else ''}")
+    x_col = LIST_STATE[SWEPT[kind]["key"]]
+    t["x"] = t[x_col].astype(float)
+    t = t[~np.isclose(t.x.to_numpy()[:, None], np.asarray(exclude_x, float)[None, :]).any(axis=1)] \
+        if len(exclude_x) else t
+    if "repeat" not in t or t.repeat.isna().any():
+        t["repeat"] = t.groupby("x").cumcount() + 1
+    states, tgs = {}, {}
+    for x, g in t.groupby("x"):
+        v = g[list(LIST_STATE.values())].drop_duplicates()
+        if len(v) > 1:
+            raise ValueError(f"{where}: {path}: the rows with {x_col} = {x:g} differ in their other conditions:\n"
+                             f"{v.to_string(index=False)}")
+        states[x] = tuple(float(v.iloc[0][c]) for c in LIST_STATE.values())
+        if "Tg_K" in g and g.Tg_K.notna().any():
+            if g.Tg_K.nunique() > 1:
+                raise ValueError(f"{where}: {path}: Tg_K differs within {x_col} = {x:g}")
+            tgs[x] = float(g.Tg_K.dropna().iloc[0])
+    lookup = {f.lower(): (float(x), int(r)) for f, x, r in zip(t.file, t.x, t.repeat)}
+    fixed = {q: float(t[LIST_STATE[q]].iloc[0]) for q in FIXED                     # in FIXED order (titles)
+             if LIST_STATE[q] != x_col and t[LIST_STATE[q]].nunique() == 1}
+    return (lambda name: lookup.get(name.lower())), (lambda x: states[min(states, key=lambda v: abs(v - x))]), tgs, fixed
+
+
 def load_input(path=INPUT_FILE):
     """Data sets of the input file with run = true (default): dict(name, kind, note, Tg_K, sweep = the
-    ActinometryLineSelection / CRFitNeTe sweep entry, state = x -> (p mTorr, P W, % N2), outdir, measure_dir)."""
+    ActinometryLineSelection / CRFitNeTe sweep entry, state = x -> (p mTorr, P W, % N2), outdir, measure_dir).
+    The spectra of a set are found by the file-name pattern 'files' or listed in the CSV 'file_list' (read_file_list;
+    relative to the input file's folder)."""
     with open(path, "rb") as f:
         entries = tomllib.load(f).get("dataset", [])
     sets, names = [], set()
@@ -171,28 +228,40 @@ def load_input(path=INPUT_FILE):
         names.add(name)
         if not d.get("run", True):
             continue
-        if missing := [q for q in ("folder", "files", "sweep") if q not in d]:
+        if missing := [q for q in ("folder", "sweep") if q not in d]:
             raise ValueError(f"{where}: {', '.join(missing)} missing")
+        if ("files" in d) == ("file_list" in d):
+            raise ValueError(f"{where}: give either files (file-name pattern) or file_list (CSV), not "
+                             f"{'both' if 'files' in d else 'neither'}")
         kind = d["sweep"]
         if kind not in SWEPT:
             raise ValueError(f"{where}: sweep = {kind!r} - use one of {', '.join(map(repr, SWEPT))}")
-        need = [q for q in FIXED if q != SWEPT[kind]["key"]]
-        if missing := [q for q in need if q not in d]:
-            raise ValueError(f"{where}: {' and '.join(missing)} missing (a {kind} sweep needs {' and '.join(need)})")
-        fixed = {q: float(d[q]) for q in need}
         folder = os.path.join(ECHELLE_DIR, d["folder"])
         if not os.path.isdir(folder):
             raise FileNotFoundError(f"{where}: folder {folder} not found")
+        tg_x = {}
+        if "file_list" in d:
+            lst = d["file_list"] if os.path.isabs(d["file_list"]) else os.path.join(os.path.dirname(os.path.abspath(path)),
+                                                                                  d["file_list"])
+            if not os.path.isfile(lst):
+                raise FileNotFoundError(f"{where}: file_list {lst} not found")
+            parse, state, tg_x, fixed = read_file_list(lst, kind, folder, d.get("exclude_x", ()), where)
+        else:
+            need = [q for q in FIXED if q != SWEPT[kind]["key"]]
+            if missing := [q for q in need if q not in d]:
+                raise ValueError(f"{where}: {' and '.join(missing)} missing (a {kind} sweep needs {' and '.join(need)})")
+            fixed = {q: float(d[q]) for q in need}
 
-        def state(x, kind=kind, fixed=fixed):
-            v = dict(fixed, **{SWEPT[kind]["key"]: float(x)})
-            return v["pressure_mTorr"], v["power_W"], v["N2_percent"]
+            def state(x, kind=kind, fixed=fixed):
+                v = dict(fixed, **{SWEPT[kind]["key"]: float(x)})
+                return v["pressure_mTorr"], v["power_W"], v["N2_percent"]
 
+            parse = file_parser(d["files"], d.get("exclude_x", ()))
         note = ", ".join(FIXED[q](v) for q, v in fixed.items())
         out = os.path.join(OUTDIR, name)
-        sets.append(dict(name=name, kind=kind, note=note, state=state,
+        sets.append(dict(name=name, kind=kind, note=note, state=state, Tg_x=tg_x,
                          Tg_K=float(d["Tg_K"]) if "Tg_K" in d else None,
-                         sweep=dict(name=name, folder=folder, parse=file_parser(d["files"], d.get("exclude_x", ())),
+                         sweep=dict(name=name, folder=folder, parse=parse,
                                     xlabel=SWEPT[kind]["xlabel"], note=note, exclude_x=()),
                          outdir=out, measure_dir=os.path.join(out, "measurements")))
     return sets
@@ -223,7 +292,9 @@ def conditions(ds, las, trend):
     rows = []
     for x in sorted(n_files):
         p, P, n2 = ds["state"](x)
-        Tg = ds["Tg_K"] if ds["Tg_K"] is not None else float(L.tg_round(L.tg_trend(trend, p / 1000, P, n2)))
+        Tg = ds["Tg_K"] if ds["Tg_K"] is not None else ds.get("Tg_x", {}).get(x)
+        if Tg is None:
+            Tg = float(L.tg_round(L.tg_trend(trend, p / 1000, P, n2)))
         r = L.las_1s5_at(las, p / 1000, P, n2)
         rows.append(dict(sweep=sw["name"], x=x, p_mTorr=p, p_Torr=p / 1000, P_W=P, N2=n2, n_files=n_files[x], Tg=Tg,
                          las_1s5=r["n"], las_1s5_how=r["how"], las_1s5_rel_err=r["rel_err"], key=L._key(n2, p, Tg)))
