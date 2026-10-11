@@ -37,7 +37,7 @@ DEFAULTS = {   # section -> setting -> default
     "model": dict(cross_sections="ArgonCrossSections_BSR_analytic5p.json", plasma_radius_m=0.04, trap_lines="all",
                   escape_mode="table", atom_transfer=True, quench_4p=True, N2_quench_scale=1.0, N2_dissociation=0.0),
     "eedf": dict(model="pure_Ar", Tv_K=8000.0, Tg_step_K=50.0),
-    "fit": dict(Ne_pin="nc", sigma_model=0.20, sigma_fit_floor=0.02, use_repeat_scatter=True, birge=True,
+    "fit": dict(Ne_pin="free", sigma_model=0.20, sigma_fit_floor=0.02, use_repeat_scatter=True, birge=True,
                 max_rel_err=0.15, merge_nm=0.10, wavelength_ranges_nm=[[400.0, 475.0], [690.0, 860.0]],
                 exclude_lines_nm=[852.144], min_rating=4),
     "spectra": dict(export_flags="?-?-1-1", min_repeats=2, line_status=["ok", "weak"]),
@@ -93,9 +93,9 @@ def read_input(path):
             if k not in DEFAULTS[sec]:
                 raise ValueError(f"{name}: [{sec}] has no setting {k!r} - settings are {', '.join(DEFAULTS[sec])}")
             if (sec, k) == ("fit", "Ne_pin"):
-                if v != "nc" and not (isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0):
-                    raise ValueError(f"{where} = {v!r}: \"nc\" or a density in m^-3, e.g. 1.5e17")
-                out[sec][k] = v if v == "nc" else float(v)
+                if v not in ("free", "nc") and not (isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0):
+                    raise ValueError(f"{where} = {v!r}: \"free\", \"nc\" or a density in m^-3, e.g. 1.5e17")
+                out[sec][k] = v if v in ("free", "nc") else float(v)
             else:
                 out[sec][k] = _checked(where, v, DEFAULTS[sec][k], CHOICES.get((sec, k)))
     xsec = os.path.join(ROOT, "InputData", out["model"]["cross_sections"])
@@ -129,7 +129,9 @@ def configure(S, s):
     L.TG_STEP = s["eedf"]["Tg_step_K"]
     e = s["eedf"]
     S.EEDF = {"pure_Ar": "ar", "ArN2_vib_saturated": "vibsat", "ArN2_vib_Tv": f"tv{e['Tv_K']:g}"}[e["model"]]
-    ne = S.N_C if s["fit"]["Ne_pin"] == "nc" else s["fit"]["Ne_pin"]
+    pin = s["fit"]["Ne_pin"]
+    S.NE_MODE = pin if pin in ("free", "nc") else "value"
+    ne = pin if S.NE_MODE == "value" else S.N_C       # free: N_C stays n_c (cost of the pin, chi^2 maps)
     S.N_C = L.N_C = L.mlf.N_C = ne                    # every module that pins Ne reads one of these
     sp, a, pl = s["spectra"], s["actinometry"], s["plots"]
     als.CONFIG.update(export_flags=sp["export_flags"], min_reps=sp["min_repeats"], sweep_status=tuple(sp["line_status"]))

@@ -8,6 +8,9 @@ output_folder = "Experimental_Data/Output/N2SweepVibSat"
 [eedf]
 model = "ArN2_vib_saturated"
 
+[fit]
+Ne_pin = "nc"                  # as the 2026-10-10 run (the default is now "free")
+
 [[dataset]]
 name = "80W_1Torr"
 folder = "N21TorrAdmixtureSweep80W"

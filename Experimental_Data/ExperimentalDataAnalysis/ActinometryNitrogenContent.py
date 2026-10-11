@@ -154,7 +154,8 @@ def pair_fields(terms, pairs, variant):
     """ln(n_N/n_Ar) on the fine (x, Ne) grid for each pair (rows of the measured ratios)."""
     out = []
     for p in pairs.itertuples():
-        L = (terms.lnk("N I", p.n_upper) - terms.lnk("Ar I", p.ar_upper))[:, None]
+        col = lambda a: a[:, None] if np.ndim(a) == 1 else a   # along E/N, or (E/N, Ne) when a term depends on Ne
+        L = col(terms.lnk("N I", p.n_upper)) - col(terms.lnk("Ar I", p.ar_upper))   # (N2SweepPureArEEDF free mode)
         if variant == "stepwise":
             L = L + terms.ln_fdirect(p.ar_upper)
         out.append(np.log(p.I_ratio * p.bA / p.bN * p.lam) - L)

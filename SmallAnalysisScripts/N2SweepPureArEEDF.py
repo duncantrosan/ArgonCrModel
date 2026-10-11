@@ -83,12 +83,26 @@ INPUT_FILE = os.path.join(HERE, "N2SweepPureArEEDF_input.toml")
 ECHELLE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData")   # input-file folders relative to this
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "N2SweepPureArEEDF")
 N_C = L.N_C
+NE_MODE = "nc"                                      # 'free': Ne fitted with E/N (2D posterior); 'nc': pinned at n_c;
+                                                    # 'value': pinned at N_C set by Main.py ([fit] Ne_pin)
 EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
                                                     # 'vibsat' Ar/N2 microwave EEDF with saturated N2(v), 'tv<Tv>'
                                                     # Ar/N2 with N2(v) Boltzmann at Tv K, e.g. 'tv8000' (Main.py)
 PLOTS = dict(metastables=True, fit_params=True, eedf=True, residuals=True, fit_overlay=False, chi2_maps=False,
              actinometry=True, actinometry_per_line=True, line_ratios=True, same_upper_ratios=True, raw_lines=True,
              overviews=True, dpi=200)                # which figures to make (Main.py [plots])
+
+
+def _ne(pre=", ", post=""):
+    """'<pre>N_e = n_c<post>' for plot titles when Ne is pinned, '' when it is fitted."""
+    if NE_MODE == "free":
+        return ""
+    return f"{pre}N$_e$ = " + ("n$_c$" if NE_MODE == "nc" else f"{N_C:.2g} m$^{{-3}}$") + post
+
+
+def _band():
+    """Where the uncertainty bands come from: along E/N at the pinned Ne, or over (E/N, Ne)."""
+    return "over (E/N, N$_e$)" if NE_MODE == "free" else "along E/N"
 
 
 def eedf_label():
@@ -281,18 +295,44 @@ def fit_conditions(ds, cond):
         j = int(np.argmin(np.abs(fN - np.log(N_C))))
         chi2 = L.mlf.cdf.chi2_grid(posts[f"{c.sweep}|{c.x:g}"], f0.chi2_min, f0.birge)[:, j]
         band = fX[chi2 <= chi2.min() + f0.birge ** 2]
-        row.update(EN_nc_lo=float(np.exp(band.min())), EN_nc_hi=float(np.exp(band.max())))
+        row.update(EN_nc_lo=float(np.exp(band.min())), EN_nc_hi=float(np.exp(band.max())), Ne_fit=N_C,
+                   Ne_fit_lo=N_C, Ne_fit_hi=N_C)
         i = int(np.argmin(chi2))
+        if NE_MODE == "free":
+            i, j = free_fit_row(row, tab, grid, Te_f, posts[f"{c.sweep}|{c.x:g}"], f0, cfg)
         fits[c.x] = dict(tab=tab, grid=grid, Te_f=Te_f, posts=posts, cond=fc, cfg=cfg, eedfs=eedfs, i=i, j=j,
                          EN_best=float(np.exp(fX[i])), resid=pinned_residuals(d, feats, M, i, j, cfg))
         rows.append(dict(x=c.x, N2=c.N2, p_Torr=c.p_Torr, P_W=c.P_W, Tg=c.Tg, las_1s5=c.las_1s5,
                          las_1s5_how=c.las_1s5_how, las_1s5_rel_err=c.las_1s5_rel_err, **row))
         print(f"  {c.x:6g} {unit} (Tg {c.Tg:.0f} K): E/N {row['EN_nc']:5.1f} Td  Te_eff {row['Te_nc']:.2f} eV  "
-              f"chi2/dof {row['chi2_red_nc']:.2f}  1s5 {row['n_1s5']:.2e} (LAS {c.las_1s5:.2e})", flush=True)
+              f"chi2/dof {row['chi2_red_nc']:.2f}  Ne {row['Ne_fit']:.2e}  1s5 {row['n_1s5']:.2e} (LAS {c.las_1s5:.2e})",
+              flush=True)
     t = pd.DataFrame(rows)
     if len(t):
         t["ratio_cr_las"] = t.n_1s5 / t.las_1s5
     return t, fits
+
+
+def free_fit_row(row, tab, grid, Te_f, post, f0, cfg):
+    """With NE_MODE 'free': the summary row of LASTgComparison.fit_condition (columns named *_nc for the pinned fit)
+    replaced in place by the global best fit over (E/N, Ne), bands over Delta chi^2 <= B^2 in both; dchi2_nc keeps
+    the cost of pinning Ne at n_c.  -> (i, j) of the best fine-grid point."""
+    fX, fN = grid
+    chi2 = L.mlf.cdf.chi2_grid(post, f0.chi2_min, f0.birge)
+    i, j = np.unravel_index(int(np.argmin(chi2)), chi2.shape)
+    ok = chi2 <= chi2[i, j] + f0.birge ** 2
+    T2 = np.broadcast_to(Te_f[:, None], chi2.shape) if np.ndim(Te_f) == 1 else Te_f
+    rows_ok, cols_ok = np.any(ok, axis=1), np.any(ok, axis=0)
+    row.update(EN_nc=float(np.exp(fX[i])), EN_nc_lo=float(np.exp(fX[rows_ok].min())),
+               EN_nc_hi=float(np.exp(fX[rows_ok].max())), Te_nc=float(T2[i, j]), Te_nc_lo=float(T2[ok].min()),
+               Te_nc_hi=float(T2[ok].max()), chi2_red_nc=float(f0.chi2_red), EN_nc_at_edge=i in (0, len(fX) - 1),
+               Ne_fit=float(np.exp(fN[j])), Ne_fit_lo=float(np.exp(fN[cols_ok].min())),
+               Ne_fit_hi=float(np.exp(fN[cols_ok].max())))
+    lev = list(tab["levels"])
+    for m, lbl in L.psa.LEVELS_1S.items():
+        n2 = np.exp(crf.on_fine_grid(tab, np.log(np.clip(tab["dens"][:, :, lev.index(lbl)], 1e-300, None)), cfg, k=1))
+        row.update({f"n_{m}": float(n2[i, j]), f"n_{m}_lo": float(n2[ok].min()), f"n_{m}_hi": float(n2[ok].max())})
+    return int(i), int(j)
 
 
 def pinned_residuals(d, feats, M, i, j, cfg):
@@ -332,8 +372,8 @@ class CRTerms(anc.FitTerms):
 
     def __init__(self, fit, xs, cfg, lines, Ne):
         super().__init__(fit, xs, cfg)
-        self.lines, self.Ne = lines, Ne                    # {Ar upper: (wl, b_Ar)}
-        self.j = int(np.argmin(np.abs(fit["grid"][1] - np.log(Ne))))
+        self.lines, self.Ne = lines, Ne                    # {Ar upper: (wl, b_Ar)}; Ne None: every Ne of the grid
+        self.j = None if Ne is None else int(np.argmin(np.abs(fit["grid"][1] - np.log(Ne))))
         c = fit["cfg"]
         self.n_Ar = he.Torr2Volume(crf.gas_fractions(c)[0] * c["P_Torr"], c["Tg"])
 
@@ -345,7 +385,10 @@ class CRTerms(anc.FitTerms):
             tab, (wl, b) = self.fit["tab"], self.lines[upper]
             k = int(np.argmin(np.abs(tab["line_wl"] - wl)))
             lnI = crf.on_fine_grid(tab, np.log(np.clip(tab["I_obs"][:, :, k], 1e-300, None)), self.fit["cfg"], k=1)
-            self._k[key] = lnI[:, self.j] - np.log(self.Ne * self.n_Ar * b)
+            if self.j is None:                             # (E/N, Ne) field for the 2D posterior
+                self._k[key] = lnI - np.log(np.exp(self.fit["grid"][1])[None, :] * self.n_Ar * b)
+            else:
+                self._k[key] = lnI[:, self.j] - np.log(self.Ne * self.n_Ar * b)
         return self._k[key]
 
 
@@ -431,9 +474,15 @@ def actinometry(ds, cond, fits):
             continue
         fit = fits[x]
         c = cond[cond.x == x].iloc[0]
-        post, te, en = anc.pinned_posterior(fit, fit["posts"][f"{ds['name']}|{x:g}"], N_C)
+        if NE_MODE == "free":                           # the full (E/N, Ne) posterior
+            post = fit["posts"][f"{ds['name']}|{x:g}"] / fit["posts"][f"{ds['name']}|{x:g}"].sum()
+            T2 = np.broadcast_to(fit["Te_f"][:, None], post.shape) if np.ndim(fit["Te_f"]) == 1 else fit["Te_f"]
+            te, en = float((post * T2).sum()), float(np.exp((post.sum(axis=1) * fit["grid"][0]).sum()))
+        else:
+            post, te, en = anc.pinned_posterior(fit, fit["posts"][f"{ds['name']}|{x:g}"], N_C)
         lines = {r.ar_upper: (r.ar_wl, r.bA) for r in p.drop_duplicates("ar_upper").itertuples()}
-        terms = {"direct": anc.FitTerms(fit, xs, ACT), "cr": CRTerms(fit, xs, ACT, lines, N_C)}
+        terms = {"direct": anc.FitTerms(fit, xs, ACT),
+                 "cr": CRTerms(fit, xs, ACT, lines, None if NE_MODE == "free" else N_C)}
         f = c.N2 / 100
         N = he.Torr2Volume(fit["cfg"]["P_Torr"], fit["cfg"]["Tg"])
         for v in VARIANTS:
@@ -502,7 +551,7 @@ def plot_eedfs(t, fits, ds, outdir):
         ax.set(yscale="log", xlim=(0, 25), xlabel="electron energy [eV]")
         ax.grid(True, which="both", alpha=0.25)
     axs[0].set(ylim=(1e-14, 3), ylabel="EEPF [eV$^{-3/2}$]",
-               title=f"EEDF of the fit at N$_e$ = n$_c$, {ds['note']}\n{eedf_label()}; dotted: 1s, 4p, 5p thresholds")
+               title=f"EEDF of the fit{_ne(' at ')}, {ds['note']}\n{eedf_label()}; dotted: 1s, 4p, 5p thresholds")
     axs[1].set(ylim=(1e-3, 1e3), ylabel=f"EEPF / EEPF({xs[0]:g} {unit})", title="relative to the first condition")
     axs[0].legend(fontsize=7, ncol=2 if len(xs) > 10 else 1)
     fig.tight_layout()
@@ -523,7 +572,7 @@ def plot_residuals(fits, ds, outdir):
     sm = next(iter(fits.values()))["cfg"]["sigma_model"]
     axs[0].axhspan(-sm, sm, color="0.88", zorder=0, label=f"$\\sigma_{{model}}$ = {sm:.2f}")
     axs[0].set(xlabel=SWEPT[ds["kind"]]["xlabel"], ylabel="ln I$_{meas}$ - s - ln I$_{model}$ (mean of the repeats)",
-               title=f"Line residuals at the fit (N$_e$ = n$_c$), {ds['note']}\n{eedf_label()}")
+               title=f"Line residuals at the fit{_ne(' (', ')')}, {ds['note']}\n{eedf_label()}")
     sc = axs[1].scatter(r.ln_model, r.ln_meas - r.s, c=r.x, s=12, cmap="viridis")
     lim = np.array([r.ln_model.min(), r.ln_model.max()])
     axs[1].plot(lim, lim, "k--", lw=1)
@@ -555,7 +604,7 @@ def plot_fit_overlay(fits, ds, outdir):
             axs[1].errorbar(h.wl, h.resid, yerr=h.err, fmt="o", ms=3, color="0.4", alpha=0.7, capsize=2)
         axs[1].axhline(0, color="k", lw=1)
         axs[0].set(yscale="log", ylabel="line intensity [model units]",
-                   title=f"{ds['name']}, {x:g} {SWEPT[ds['kind']]['unit']}: fit at N$_e$ = n$_c$, "
+                   title=f"{ds['name']}, {x:g} {SWEPT[ds['kind']]['unit']}: fit{_ne(' at ')}, "
                          f"E/N {f['EN_best']:.1f} Td ({eedf_label()})")
         axs[1].set(xlabel="wavelength [nm]", ylabel="residual (ln)")
         for ax in axs:
@@ -580,7 +629,8 @@ def plot_chi2_maps(fits, ds, outdir):
         fig.colorbar(pc, ax=axs[0], label="$\\Delta\\chi^2/B^2$ (clipped at 25)")
         axs[0].axhline(N_C, color="C3", ls="--", lw=1.5)
         axs[0].plot(f0.x_best, f0.Ne_best, "*", color="gold", mec="k", ms=16, label="free fit")
-        axs[0].plot(f["EN_best"], N_C, "o", color="C3", mec="k", ms=9, label="fit at n$_c$")
+        jn = int(np.argmin(np.abs(fN - np.log(N_C))))
+        axs[0].plot(np.exp(fX[int(np.argmin(chi2[:, jn]))]), N_C, "o", color="C3", mec="k", ms=9, label="best at n$_c$")
         axs[0].set(xscale="log", yscale="log", xlabel="E/N [Td]", ylabel="N$_e$ [m$^{-3}$]",
                    title=f"{ds['name']}, {x:g} {SWEPT[ds['kind']]['unit']} ({eedf_label()})")
         axs[0].legend(fontsize=8, loc="lower left")
@@ -588,7 +638,7 @@ def plot_chi2_maps(fits, ds, outdir):
         axs[1].plot(np.exp(fN), prof, "k-", lw=2)
         axs[1].axvline(N_C, color="C3", ls="--", lw=1.5, label="n$_c$")
         axs[1].axhline(1, color="0.5", ls=":", lw=1.2)
-        axs[1].set(xscale="log", ylim=(-0.5, max(12.0, 1.1 * prof[f["j"]])), xlabel="N$_e$ [m$^{-3}$]",
+        axs[1].set(xscale="log", ylim=(-0.5, max(12.0, 1.1 * prof[jn])), xlabel="N$_e$ [m$^{-3}$]",
                    ylabel="min over E/N of $\\Delta\\chi^2/B^2$", title=f"profile over N$_e$ (B = {f0.birge:.2f})")
         axs[1].grid(True, which="both", alpha=0.25)
         axs[1].legend(fontsize=8)
@@ -614,9 +664,9 @@ def plot_metastables(t, ds, outdir):
     ax.set_ylim(0, 1.25 * np.nanmax(np.r_[t.n_1s5_hi, t.las_1s5 * (1 + t.las_1s5_rel_err)]))   # room for the legend
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("density [m$^{-3}$]")
-    ax.set_title(f"Ar metastables, {ds['note']}: CR fit ({eedf_label()}, N$_e$ = n$_c$, {_tg_note(ds)}, "
+    ax.set_title(f"Ar metastables, {ds['note']}: CR fit ({eedf_label()}{_ne()}, {_tg_note(ds)}, "
                  f"no tilt)\nE/N {t.EN_nc.min():.0f}-{t.EN_nc.max():.0f} Td, $\\chi^2$/dof {t.chi2_red_nc.min():.1f}-"
-                 f"{t.chi2_red_nc.max():.1f}; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
+                 f"{t.chi2_red_nc.max():.1f}; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ {_band()}", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
     ax.legend(fontsize=8)
     fig.tight_layout()
@@ -645,7 +695,7 @@ def plot_actinometry(cond, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} ({eedf_label()}, N$_e$ = n$_c$, "
+        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} ({eedf_label()}{_ne()}, "
                      "no tilt)\nbars: line ratios + E/N posterior + pair scatter; faint: + cross sections",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
@@ -669,7 +719,7 @@ def plot_by_n_line(cond, ds, outdir, variant="cr"):
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("n$_N$ / n$_{Ar}$")
     ax.set_title(f"Actinometry per N I line, {VARIANTS[variant]['label']}\n{ds['note']}, {eedf_label()}, "
-                 "N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)", fontsize=10)
+                 f"{_ne('', ', ')}no tilt (bars: line ratios + E/N posterior + pair scatter)", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
     ax.legend(fontsize=8)
     fig.tight_layout()
@@ -724,7 +774,7 @@ def plot_per_line(pairs, cond, ds, outdir, variant="cr"):
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(f"n$_N$ / n$_{{Ar}}$ from N I {n_wl:.2f} nm / Ar line")
         ax.set_title(f"Actinometry per Ar reference line, N I {n_wl:.2f} nm, {VARIANTS[variant]['label']}\n"
-                     f"{ds['note']}, {eedf_label()}, N$_e$ = n$_c$, no tilt (bars: 16-84 % from E/N)",
+                     f"{ds['note']}, {eedf_label()}{_ne()}, no tilt (bars: 16-84 % from E/N)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=7, ncol=2)
@@ -743,8 +793,8 @@ def plot_fit_params(t, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"CR fit at N$_e$ = n$_c$, {ds['note']} ({eedf_label()}, {_tg_note(ds)}, no tilt)\n"
-                     "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
+        ax.set_title(f"CR fit{_ne(' at ')}, {ds['note']} ({eedf_label()}, {_tg_note(ds)}, no tilt)\n"
+                     f"bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ {_band()}", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         fig.tight_layout()
         _savefig(fig, os.path.join(outdir, f"{fname}_vs_{ds['kind']}.png"))
@@ -875,8 +925,8 @@ def plot_overview(kind, sets, res, outdir):
     ax.set_ylim(bottom=0)
     ax.set_xlabel(SWEPT[kind]["xlabel"])
     ax.set_ylabel("Ar(1s$_5$) density [m$^{-3}$]")
-    ax.set_title(f"Ar(1s$_5$): CR fit ({eedf_label()}, N$_e$ = n$_c$, no tilt) and LAS\n"
-                 "band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N; open diamonds: LAS (measured or interpolated)",
+    ax.set_title(f"Ar(1s$_5$): CR fit ({eedf_label()}{_ne()}, no tilt) and LAS\n"
+                 f"band: $\\Delta\\chi^2 \\leq 1\\,s^2$ {_band()}; open diamonds: LAS (measured or interpolated)",
                  fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
     ax.legend(fontsize=7, ncol=2)
@@ -892,8 +942,8 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"CR fit at N$_e$ = n$_c$ ({eedf_label()}, no tilt)\n"
-                     "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
+        ax.set_title(f"CR fit{_ne(' at ')} ({eedf_label()}, no tilt)\n"
+                     f"bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ {_band()}", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)
         fig.tight_layout()
@@ -915,7 +965,7 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
         ax.set_title(f"{_n_label(next(iter(acts.values())))} / Ar I actinometry, {VARIANTS['cr']['label']}\n"
-                     f"{eedf_label()}, N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)",
+                     f"{eedf_label()}{_ne()}, no tilt (bars: line ratios + E/N posterior + pair scatter)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)

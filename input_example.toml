@@ -135,10 +135,14 @@ Tg_step_K = 50
 # spectrum (so only the relative intensities matter - no reference line needed).  The fit is done on a grid of E/N
 # and Ne; the free fit (best E/N AND Ne) is always reported too (fits.csv: Ne_free, chi2_red_free, dchi2_nc).
 
-# Ne used for the metastables and the actinometry:
-#   "nc"     the critical density of 2.42 GHz, 7.26e16 m^-3 (overdense microwave plasma)  <- default
-#   1.5e17   any fixed density in m^-3 (the plots still say "n_c" in their titles)
-Ne_pin = "nc"
+# Electron density:
+#   "free"   fitted together with E/N (best fit and bands over the whole (E/N, Ne) grid; the actinometry uses the
+#            full posterior)  <- default.  At 0-1 % N2 the free fit can run to the 3e19 m^-3 grid edge.
+#   "nc"     pinned at the critical density of 2.42 GHz, 7.26e16 m^-3 (overdense microwave plasma)
+#   1.5e17   pinned at any density in m^-3
+# fits.csv always has both: the columns *_nc hold the fit of this mode (pinned or free), Ne_fit its Ne, and
+# Ne_free / chi2_red_free / dchi2_nc (cost of pinning at n_c, in Birge units) the comparison.
+Ne_pin = "free"
 
 # Relative CR-model error per line, the same in every repeat (so repeats cannot average it away).
 sigma_model = 0.20
