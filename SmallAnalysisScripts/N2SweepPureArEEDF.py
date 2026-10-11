@@ -84,8 +84,20 @@ ECHELLE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData")   #
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "N2SweepPureArEEDF")
 N_C = L.N_C
 EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
-                                                    # 'vibsat' Ar/N2 microwave EEDF with saturated N2(v) (Main.py)
-EEDF_LABEL = {"ar": "pure-Ar microwave EEDF", "vibsat": "Ar/N$_2$ microwave EEDF, saturated N$_2$(v)"}
+                                                    # 'vibsat' Ar/N2 microwave EEDF with saturated N2(v), 'tv<Tv>'
+                                                    # Ar/N2 with N2(v) Boltzmann at Tv K, e.g. 'tv8000' (Main.py)
+PLOTS = dict(metastables=True, fit_params=True, eedf=True, residuals=True, fit_overlay=False, chi2_maps=False,
+             actinometry=True, actinometry_per_line=True, line_ratios=True, same_upper_ratios=True, raw_lines=True,
+             overviews=True, dpi=200)                # which figures to make (Main.py [plots])
+
+
+def eedf_label():
+    """The EEDF family of the run, for plot titles."""
+    if EEDF == "vibsat":
+        return "Ar/N$_2$ microwave EEDF, saturated N$_2$(v)"
+    if EEDF.startswith("tv"):
+        return f"Ar/N$_2$ microwave EEDF, N$_2$(v) at T$_v$ = {float(EEDF[2:]):g} K"
+    return "pure-Ar microwave EEDF"
 ACT = dict(anc.CONFIG, pin_Ne=N_C)                  # actinometry settings (fences, margins, xsec errors)
 EXTRA_N_WL = (746.831,)                             # N I lines tracked besides ActinometryLineSelection's (744.229):
                                                     # 746.83 is from the same upper level (3p 4S*3/2, A 1.96e7 vs
@@ -173,7 +185,7 @@ def load_input(path=INPUT_FILE):
 
 
 def _plain(s):
-    return s.replace("N$_2$", "N2")
+    return s.replace("N$_2$", "N2").replace("T$_v$", "Tv")
 
 
 def _tg_note(ds):
@@ -206,12 +218,14 @@ def conditions(ds, las, trend):
 
 def to_build(keys):
     """(microwave libraries as (worker flag, key), CR tables) still missing for the table keys: pure-Ar libraries,
-    and with EEDF 'vibsat' the saturated-N2(v) Ar/N2 library of every condition with N2."""
+    and with EEDF 'vibsat' / 'tv<Tv>' the Ar/N2 library of every condition with N2."""
     libs = sorted({("--lib", L._key(0.0, p, Tg)) for n2, p, Tg in map(L._unkey, keys)
                    if (EEDF == "ar" or n2 == 0) and not he.IsBolsigLibrary(L.lib_folder(0.0, p, Tg))})
-    if EEDF == "vibsat":
-        libs += sorted({("--lib-vibsat", k) for k in keys if L._unkey(k)[0] > 0
-                        and not he.IsBolsigLibrary(L.lib_folder(*L._unkey(k), vibsat=True))})
+    if EEDF != "ar":
+        flag = "--lib-vibsat" if EEDF == "vibsat" else f"--lib-tv{float(EEDF[2:]):g}"
+        kw = dict(vibsat=True) if EEDF == "vibsat" else dict(tv=float(EEDF[2:]))
+        libs += sorted({(flag, k) for k in keys if L._unkey(k)[0] > 0
+                        and not he.IsBolsigLibrary(L.lib_folder(*L._unkey(k), **kw))})
     with A.xsec_set(A.CR_XSEC):
         tabs = [k for k in keys if not crf.table_is_current(A.table_cfg(k, EEDF))]
     return libs, tabs
@@ -268,7 +282,9 @@ def fit_conditions(ds, cond):
         chi2 = L.mlf.cdf.chi2_grid(posts[f"{c.sweep}|{c.x:g}"], f0.chi2_min, f0.birge)[:, j]
         band = fX[chi2 <= chi2.min() + f0.birge ** 2]
         row.update(EN_nc_lo=float(np.exp(band.min())), EN_nc_hi=float(np.exp(band.max())))
-        fits[c.x] = dict(tab=tab, grid=grid, Te_f=Te_f, posts=posts, cond=fc, cfg=cfg, eedfs=eedfs)
+        i = int(np.argmin(chi2))
+        fits[c.x] = dict(tab=tab, grid=grid, Te_f=Te_f, posts=posts, cond=fc, cfg=cfg, eedfs=eedfs, i=i, j=j,
+                         EN_best=float(np.exp(fX[i])), resid=pinned_residuals(d, feats, M, i, j, cfg))
         rows.append(dict(x=c.x, N2=c.N2, p_Torr=c.p_Torr, P_W=c.P_W, Tg=c.Tg, las_1s5=c.las_1s5,
                          las_1s5_how=c.las_1s5_how, las_1s5_rel_err=c.las_1s5_rel_err, **row))
         print(f"  {c.x:6g} {unit} (Tg {c.Tg:.0f} K): E/N {row['EN_nc']:5.1f} Td  Te_eff {row['Te_nc']:.2f} eV  "
@@ -277,6 +293,20 @@ def fit_conditions(ds, cond):
     if len(t):
         t["ratio_cr_las"] = t.n_1s5 / t.las_1s5
     return t, fits
+
+
+def pinned_residuals(d, feats, M, i, j, cfg):
+    """Per measured point of one condition at the fit (E/N row i, Ne column j of the fine grid): ln I_meas, the model
+    ln I_model, the spectrum's profiled scale s (as CRFitNeTe.fit_block), the residual and its error."""
+    li = d.feature.map({f: k for k, f in enumerate(feats.feature)}).to_numpy()
+    si, files = pd.factorize(d.file)
+    y, m = np.log(d.area.to_numpy()), M[i, j, li]
+    X = np.eye(si.max() + 1)[si]
+    sig2 = d.rel_err.to_numpy() ** 2 + cfg["sigma_fit_floor"] ** 2
+    W = np.linalg.inv(np.diag(sig2) + cfg["sigma_model"] ** 2 * (li[:, None] == li[None, :]))
+    sc = np.linalg.pinv(X.T @ W @ X) @ X.T @ W @ (y - m)
+    return pd.DataFrame(dict(file=d.file.to_numpy(), feature=d.feature.to_numpy(), wl=d.wl.to_numpy(), ln_meas=y,
+                             ln_model=m, s=sc[si], resid=y - sc[si] - m, err=np.sqrt(sig2)))
 
 
 # ---- 2. actinometry ----------------------------------------------------------------------
@@ -433,7 +463,7 @@ def _yerr(y, s):
 def _savefig(fig, path):
     """Save at 200 dpi; a file Windows will not open for writing (open in a viewer) is reported, not fatal."""
     try:
-        fig.savefig(path, dpi=200)
+        fig.savefig(path, dpi=PLOTS["dpi"])
     except OSError as err:
         print(f"could not write {path} ({err.strerror}) - is it open in a viewer?", flush=True)
 
@@ -442,6 +472,129 @@ def _dx(x, frac):
     """frac of the sweep range: horizontal offset that keeps overlapping series apart."""
     span = float(np.ptp(np.asarray(x, float))) if len(x) > 1 else 0.0
     return frac * (span or 1.0)
+
+
+def _fit_eepf(fit, E):
+    """EEPF of the fit's E/N (between the two neighbouring library rows, linear in ln EEPF and ln E/N) on E [eV]."""
+    xg, ee = np.asarray(fit["tab"]["x_grid"], float), fit["eedfs"]
+    k = int(np.clip(np.searchsorted(xg, fit["EN_best"]) - 1, 0, len(xg) - 2))
+    w = np.clip(np.log(fit["EN_best"] / xg[k]) / np.log(xg[k + 1] / xg[k]), 0.0, 1.0)
+    lf = [np.log(np.clip(np.interp(E, e["E"], e["EEPF"], right=0.0), 1e-300, None)) for e in (ee[k], ee[k + 1])]
+    return np.exp((1 - w) * lf[0] + w * lf[1])
+
+
+def plot_eedfs(t, fits, ds, outdir):
+    """EEPF of the fit at n_c of every condition, and relative to the first condition."""
+    E = np.linspace(0.01, 30.0, 1500)
+    xs = sorted(fits)
+    cols = plt.cm.viridis(np.linspace(0, 0.92, len(xs)))
+    unit = SWEPT[ds["kind"]]["unit"]
+    fig, axs = plt.subplots(1, 2, figsize=(14, 5.5))
+    ref = _fit_eepf(fits[xs[0]], E)
+    for c, x in zip(cols, xs):
+        f = _fit_eepf(fits[x], E)
+        r = t[np.isclose(t.x, x)].iloc[0]
+        axs[0].plot(E, f, color=c, lw=1.8, label=f"{x:g} {unit}: {r.EN_nc:.0f} Td, T$_{{e,eff}}$ {r.Te_nc:.2f} eV")
+        axs[1].plot(E, f / ref, color=c, lw=1.8)
+    for ax in axs:
+        for th in (11.55, 12.9, 14.5):
+            ax.axvline(th, color="0.6", ls=":", lw=1)
+        ax.set(yscale="log", xlim=(0, 25), xlabel="electron energy [eV]")
+        ax.grid(True, which="both", alpha=0.25)
+    axs[0].set(ylim=(1e-14, 3), ylabel="EEPF [eV$^{-3/2}$]",
+               title=f"EEDF of the fit at N$_e$ = n$_c$, {ds['note']}\n{eedf_label()}; dotted: 1s, 4p, 5p thresholds")
+    axs[1].set(ylim=(1e-3, 1e3), ylabel=f"EEPF / EEPF({xs[0]:g} {unit})", title="relative to the first condition")
+    axs[0].legend(fontsize=7, ncol=2 if len(xs) > 10 else 1)
+    fig.tight_layout()
+    _savefig(fig, os.path.join(outdir, f"eedf_vs_{ds['kind']}.png"))
+
+
+def plot_residuals(fits, ds, outdir):
+    """Residual ln I_meas - s - ln I_model of every line feature at the fit (n_c) against the sweep, and measured
+    (scale removed) against model intensities of all conditions."""
+    r = pd.concat([f["resid"].assign(x=x) for x, f in fits.items()], ignore_index=True)
+    g = r.groupby(["wl", "x"]).agg(resid=("resid", "mean"), sd=("resid", "std")).reset_index()
+    fig, axs = plt.subplots(1, 2, figsize=(15, 5.5))
+    for k, (wl, h) in enumerate(g.groupby("wl")):
+        h = h.sort_values("x")
+        axs[0].errorbar(h.x, h.resid, yerr=h.sd.fillna(0), fmt="o-", ms=4, capsize=2, color=plt.cm.tab10(k % 10),
+                        label=f"{wl:.2f} nm")
+    axs[0].axhline(0, color="k", lw=1)
+    sm = next(iter(fits.values()))["cfg"]["sigma_model"]
+    axs[0].axhspan(-sm, sm, color="0.88", zorder=0, label=f"$\\sigma_{{model}}$ = {sm:.2f}")
+    axs[0].set(xlabel=SWEPT[ds["kind"]]["xlabel"], ylabel="ln I$_{meas}$ - s - ln I$_{model}$ (mean of the repeats)",
+               title=f"Line residuals at the fit (N$_e$ = n$_c$), {ds['note']}\n{eedf_label()}")
+    sc = axs[1].scatter(r.ln_model, r.ln_meas - r.s, c=r.x, s=12, cmap="viridis")
+    lim = np.array([r.ln_model.min(), r.ln_model.max()])
+    axs[1].plot(lim, lim, "k--", lw=1)
+    fig.colorbar(sc, ax=axs[1], label=SWEPT[ds["kind"]]["xlabel"])
+    axs[1].set(xlabel="ln I$_{model}$", ylabel="ln I$_{meas}$ - s",
+               title=f"measured (per-spectrum scale removed) vs model, {len(fits)} conditions")
+    for ax in axs:
+        ax.grid(True, alpha=0.25)
+    axs[0].legend(fontsize=7, ncol=2)
+    fig.tight_layout()
+    _savefig(fig, os.path.join(outdir, f"residuals_vs_{ds['kind']}.png"))
+
+
+def _x_tag(x, ds):
+    return f"{x:g}{SWEPT[ds['kind']]['unit'].split()[0]}".replace("%", "pct")
+
+
+def plot_fit_overlay(fits, ds, outdir):
+    """One figure per condition: measured line features of every spectrum (scale removed) and the model at the fit."""
+    os.makedirs(outdir, exist_ok=True)
+    for x, f in sorted(fits.items()):
+        r = f["resid"]
+        fig, axs = plt.subplots(2, 1, figsize=(11, 7), sharex=True, gridspec_kw=dict(height_ratios=[2, 1]))
+        mod = r.drop_duplicates("feature")
+        axs[0].plot(mod.wl, np.exp(mod.ln_model), "s", color="C3", ms=8, mfc="none", mew=2, label="model")
+        for k, (fl, h) in enumerate(r.groupby("file")):
+            axs[0].plot(h.wl, np.exp(h.ln_meas - h.s), "o", ms=4, color="0.4", alpha=0.7,
+                        label="measured spectra (scale removed)" if k == 0 else None)
+            axs[1].errorbar(h.wl, h.resid, yerr=h.err, fmt="o", ms=3, color="0.4", alpha=0.7, capsize=2)
+        axs[1].axhline(0, color="k", lw=1)
+        axs[0].set(yscale="log", ylabel="line intensity [model units]",
+                   title=f"{ds['name']}, {x:g} {SWEPT[ds['kind']]['unit']}: fit at N$_e$ = n$_c$, "
+                         f"E/N {f['EN_best']:.1f} Td ({eedf_label()})")
+        axs[1].set(xlabel="wavelength [nm]", ylabel="residual (ln)")
+        for ax in axs:
+            ax.grid(True, which="both", alpha=0.25)
+        axs[0].legend(fontsize=8)
+        fig.tight_layout()
+        _savefig(fig, os.path.join(outdir, f"fit_{_x_tag(x, ds)}.png"))
+        plt.close(fig)
+
+
+def plot_chi2_maps(fits, ds, outdir):
+    """One figure per condition: Delta chi^2 / B^2 over (E/N, Ne) with the free and the n_c fit, and its profile over
+    Ne (B = Birge ratio)."""
+    os.makedirs(outdir, exist_ok=True)
+    for x, f in sorted(fits.items()):
+        f0, (fX, fN) = f["cond"].iloc[0], f["grid"]
+        chi2 = L.mlf.cdf.chi2_grid(f["posts"][f"{ds['name']}|{x:g}"], f0.chi2_min, f0.birge)
+        d = (chi2 - chi2.min()) / f0.birge ** 2
+        fig, axs = plt.subplots(1, 2, figsize=(13, 5), gridspec_kw=dict(width_ratios=[1.25, 1]))
+        pc = axs[0].pcolormesh(np.exp(fX), np.exp(fN), np.minimum(d, 25).T, cmap="viridis_r", shading="auto")
+        axs[0].contour(np.exp(fX), np.exp(fN), d.T, levels=[1, 4, 9], colors="w", linewidths=[1.5, 1, 0.7])
+        fig.colorbar(pc, ax=axs[0], label="$\\Delta\\chi^2/B^2$ (clipped at 25)")
+        axs[0].axhline(N_C, color="C3", ls="--", lw=1.5)
+        axs[0].plot(f0.x_best, f0.Ne_best, "*", color="gold", mec="k", ms=16, label="free fit")
+        axs[0].plot(f["EN_best"], N_C, "o", color="C3", mec="k", ms=9, label="fit at n$_c$")
+        axs[0].set(xscale="log", yscale="log", xlabel="E/N [Td]", ylabel="N$_e$ [m$^{-3}$]",
+                   title=f"{ds['name']}, {x:g} {SWEPT[ds['kind']]['unit']} ({eedf_label()})")
+        axs[0].legend(fontsize=8, loc="lower left")
+        prof = d.min(axis=0)
+        axs[1].plot(np.exp(fN), prof, "k-", lw=2)
+        axs[1].axvline(N_C, color="C3", ls="--", lw=1.5, label="n$_c$")
+        axs[1].axhline(1, color="0.5", ls=":", lw=1.2)
+        axs[1].set(xscale="log", ylim=(-0.5, max(12.0, 1.1 * prof[f["j"]])), xlabel="N$_e$ [m$^{-3}$]",
+                   ylabel="min over E/N of $\\Delta\\chi^2/B^2$", title=f"profile over N$_e$ (B = {f0.birge:.2f})")
+        axs[1].grid(True, which="both", alpha=0.25)
+        axs[1].legend(fontsize=8)
+        fig.tight_layout()
+        _savefig(fig, os.path.join(outdir, f"chi2_{_x_tag(x, ds)}.png"))
+        plt.close(fig)
 
 
 def plot_metastables(t, ds, outdir):
@@ -461,7 +614,7 @@ def plot_metastables(t, ds, outdir):
     ax.set_ylim(0, 1.25 * np.nanmax(np.r_[t.n_1s5_hi, t.las_1s5 * (1 + t.las_1s5_rel_err)]))   # room for the legend
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("density [m$^{-3}$]")
-    ax.set_title(f"Ar metastables, {ds['note']}: CR fit ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, {_tg_note(ds)}, "
+    ax.set_title(f"Ar metastables, {ds['note']}: CR fit ({eedf_label()}, N$_e$ = n$_c$, {_tg_note(ds)}, "
                  f"no tilt)\nE/N {t.EN_nc.min():.0f}-{t.EN_nc.max():.0f} Td, $\\chi^2$/dof {t.chi2_red_nc.min():.1f}-"
                  f"{t.chi2_red_nc.max():.1f}; band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
@@ -492,7 +645,7 @@ def plot_actinometry(cond, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, "
+        ax.set_title(f"{lab} / Ar I actinometry, {ds['note']} ({eedf_label()}, N$_e$ = n$_c$, "
                      "no tilt)\nbars: line ratios + E/N posterior + pair scatter; faint: + cross sections",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
@@ -515,7 +668,7 @@ def plot_by_n_line(cond, ds, outdir, variant="cr"):
     ax.set_ylim(bottom=0)
     ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
     ax.set_ylabel("n$_N$ / n$_{Ar}$")
-    ax.set_title(f"Actinometry per N I line, {VARIANTS[variant]['label']}\n{ds['note']}, {EEDF_LABEL[EEDF]}, "
+    ax.set_title(f"Actinometry per N I line, {VARIANTS[variant]['label']}\n{ds['note']}, {eedf_label()}, "
                  "N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)", fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
     ax.legend(fontsize=8)
@@ -571,7 +724,7 @@ def plot_per_line(pairs, cond, ds, outdir, variant="cr"):
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(f"n$_N$ / n$_{{Ar}}$ from N I {n_wl:.2f} nm / Ar line")
         ax.set_title(f"Actinometry per Ar reference line, N I {n_wl:.2f} nm, {VARIANTS[variant]['label']}\n"
-                     f"{ds['note']}, {EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt (bars: 16-84 % from E/N)",
+                     f"{ds['note']}, {eedf_label()}, N$_e$ = n$_c$, no tilt (bars: 16-84 % from E/N)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=7, ncol=2)
@@ -590,7 +743,7 @@ def plot_fit_params(t, ds, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[ds["kind"]]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"CR fit at N$_e$ = n$_c$, {ds['note']} ({EEDF_LABEL[EEDF]}, {_tg_note(ds)}, no tilt)\n"
+        ax.set_title(f"CR fit at N$_e$ = n$_c$, {ds['note']} ({eedf_label()}, {_tg_note(ds)}, no tilt)\n"
                      "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         fig.tight_layout()
@@ -722,7 +875,7 @@ def plot_overview(kind, sets, res, outdir):
     ax.set_ylim(bottom=0)
     ax.set_xlabel(SWEPT[kind]["xlabel"])
     ax.set_ylabel("Ar(1s$_5$) density [m$^{-3}$]")
-    ax.set_title(f"Ar(1s$_5$): CR fit ({EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt) and LAS\n"
+    ax.set_title(f"Ar(1s$_5$): CR fit ({eedf_label()}, N$_e$ = n$_c$, no tilt) and LAS\n"
                  "band: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N; open diamonds: LAS (measured or interpolated)",
                  fontsize=10)
     ax.grid(True, which="both", alpha=0.25)
@@ -739,7 +892,7 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_ylim(bottom=0)
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
-        ax.set_title(f"CR fit at N$_e$ = n$_c$ ({EEDF_LABEL[EEDF]}, no tilt)\n"
+        ax.set_title(f"CR fit at N$_e$ = n$_c$ ({eedf_label()}, no tilt)\n"
                      "bars: $\\Delta\\chi^2 \\leq 1\\,s^2$ along E/N", fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)
@@ -762,7 +915,7 @@ def plot_overview(kind, sets, res, outdir):
         ax.set_xlabel(SWEPT[kind]["xlabel"])
         ax.set_ylabel(ylab)
         ax.set_title(f"{_n_label(next(iter(acts.values())))} / Ar I actinometry, {VARIANTS['cr']['label']}\n"
-                     f"{EEDF_LABEL[EEDF]}, N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)",
+                     f"{eedf_label()}, N$_e$ = n$_c$, no tilt (bars: line ratios + E/N posterior + pair scatter)",
                      fontsize=10)
         ax.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=8)
@@ -775,22 +928,35 @@ def run_dataset(ds, cond):
     """CR fits, metastables and actinometry of one data set -> (fits table, actinometry per condition)."""
     figdir = os.path.join(ds["outdir"], "figures")
     os.makedirs(figdir, exist_ok=True)
-    print(f"\n=== {ds['name']} ({_plain(ds['note'])}): CR fits at n_c ({_plain(EEDF_LABEL[EEDF])}, analytic 5p, no tilt)",
+    print(f"\n=== {ds['name']} ({_plain(ds['note'])}): CR fits at n_c ({_plain(eedf_label())}, analytic 5p, no tilt)",
           flush=True)
     t, fits = fit_conditions(ds, cond)
     if t.empty:
         return t, pd.DataFrame()
     t.to_csv(os.path.join(ds["outdir"], "fits.csv"), index=False)
-    plot_metastables(t, ds, figdir)
-    plot_fit_params(t, ds, figdir)
+    pd.concat([f["resid"].assign(x=x) for x, f in fits.items()]).to_csv(os.path.join(ds["outdir"], "residuals.csv"),
+                                                                         index=False)
+    if PLOTS["metastables"]:
+        plot_metastables(t, ds, figdir)
+    if PLOTS["fit_params"]:
+        plot_fit_params(t, ds, figdir)
+    if PLOTS["eedf"]:
+        plot_eedfs(t, fits, ds, figdir)
+    if PLOTS["residuals"]:
+        plot_residuals(fits, ds, figdir)
+    if PLOTS["fit_overlay"]:
+        plot_fit_overlay(fits, ds, os.path.join(figdir, "fit_overlay"))
+    if PLOTS["chi2_maps"]:
+        plot_chi2_maps(fits, ds, os.path.join(figdir, "chi2_maps"))
     act = pd.DataFrame()
     if not (cond.N2 > 0).any():
         print("pure Ar: no actinometry")
     else:
         act = actinometry_outputs(ds, cond, t, fits, figdir)
-    with warnings.catch_warnings():                     # all-NaN slices in the echelle gaps
-        warnings.simplefilter("ignore", RuntimeWarning)
-        plot_raw_lines(ds, cond, os.path.join(figdir, "raw_lines"))
+    if PLOTS["raw_lines"]:
+        with warnings.catch_warnings():                 # all-NaN slices in the echelle gaps
+            warnings.simplefilter("ignore", RuntimeWarning)
+            plot_raw_lines(ds, cond, os.path.join(figdir, "raw_lines"))
     return t, act
 
 
@@ -799,10 +965,12 @@ def actinometry_outputs(ds, cond, t, fits, figdir):
     pairs, act, ratios, same = actinometry(ds, cond, fits)
     if len(ratios):
         ratios.to_csv(os.path.join(ds["outdir"], "line_ratios.csv"), index=False)
-        plot_ratios(ratios, ds, figdir)
+        if PLOTS["line_ratios"]:
+            plot_ratios(ratios, ds, figdir)
     if len(same):
         same.to_csv(os.path.join(ds["outdir"], "NI_same_upper_ratios.csv"), index=False)
-        plot_same_upper(same, ds, figdir)
+        if PLOTS["same_upper_ratios"]:
+            plot_same_upper(same, ds, figdir)
         print("\nN I lines from the same upper level, measured / expected ratio:")
         print(same.assign(meas_over_expected=same.ratio / same.expected)
               .pivot_table(index=["wl_b", "wl_a"], columns="x", values="meas_over_expected")
@@ -815,10 +983,12 @@ def actinometry_outputs(ds, cond, t, fits, figdir):
               f"in {als.CONFIG['min_reps']} spectra (or no valid pair)")
     pairs.to_csv(os.path.join(ds["outdir"], "actinometry_per_pair.csv"), index=False)
     act.to_csv(os.path.join(ds["outdir"], "actinometry_per_condition.csv"), index=False)
-    plot_actinometry(act, ds, figdir)
-    plot_by_n_line(act, ds, figdir)
-    plot_per_line(pairs, act, ds, figdir, "cr")
-    plot_per_line(pairs, act, ds, figdir, "direct")
+    if PLOTS["actinometry"]:
+        plot_actinometry(act, ds, figdir)
+        plot_by_n_line(act, ds, figdir)
+    if PLOTS["actinometry_per_line"]:
+        plot_per_line(pairs, act, ds, figdir, "cr")
+        plot_per_line(pairs, act, ds, figdir, "direct")
     pd.set_option("display.width", 250)
     print("\nactinometry per condition (all pairs):")
     print(_combined(act)[["x", "variant", "n_pairs", "nN_nAr", "ln_err_stat", "birge_pairs", "dissociation", "n_N"]]
@@ -859,7 +1029,7 @@ def main(input_file=INPUT_FILE, plan_only=False):
     if not conds:
         return {}
     libs, tabs = to_build(sorted(set(pd.concat(conds.values()).key)))
-    print(f"\nto build: {len(libs)} BOLSIG+ libraries ({_plain(EEDF_LABEL[EEDF])}), {len(tabs)} CR tables "
+    print(f"\nto build: {len(libs)} BOLSIG+ libraries ({_plain(eedf_label())}), {len(tabs)} CR tables "
           f"(AnalyticFivePFit, ~2-3 min each, {A.N_WORKERS} at a time)")
     if plan_only:
         for what, keys in (("libraries", libs), ("CR tables", tabs)):
@@ -868,7 +1038,9 @@ def main(input_file=INPUT_FILE, plan_only=False):
         return conds
     if EEDF == "vibsat":
         L.vibsat_xsec()                             # written once here, not by the parallel library workers
-    for flag in ("--lib", "--lib-vibsat"):
+    elif EEDF.startswith("tv"):
+        L.ladder_xsec()
+    for flag in sorted({f for f, _ in libs}):
         L._run_workers(flag, [k for f, k in libs if f == flag], f"BOLSIG+ libraries ({flag[2:]})")
     A.build_all([(k, EEDF) for k in tabs])
     res = {}
@@ -882,8 +1054,9 @@ def main(input_file=INPUT_FILE, plan_only=False):
         frames = {n: r[i] for n, r in res.items() if len(r[i])}
         if frames:
             pd.concat(frames, names=["dataset"]).reset_index(level=0).to_csv(os.path.join(OUTDIR, fname), index=False)
-    for kind in SWEPT:
-        plot_overview(kind, sets, res, OUTDIR)
+    if PLOTS["overviews"]:
+        for kind in SWEPT:
+            plot_overview(kind, sets, res, OUTDIR)
     print(f"\noutput in {OUTDIR}")
     plt.show()
     return res

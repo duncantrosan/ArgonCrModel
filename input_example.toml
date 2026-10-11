@@ -113,7 +113,14 @@ N2_dissociation = 0.0
 #   "ArN2_vib_saturated"  Ar/N2 BOLSIG+ EEDF with the N2 vibrations saturated (no net e-V energy loss; N2 elastic,
 #                         electronic excitation and ionization kept). Cold N2(v=0) EEDFs fail the fit; this one fits as
 #                         well as pure Ar. Needs one library per (% N2, pressure, Tg) - built automatically (~1 min each).
+#   "ArN2_vib_Tv"         Ar/N2 BOLSIG+ EEDF with the N2(v) levels in a Boltzmann distribution at Tv_K (below): full
+#                         reversible vibrational ladder, so electrons lose energy to cold vibrations and get it back from
+#                         hot ones.  Tv_K ~ 300 is the cold case (fails); ~10000 K approaches saturation.
 model = "pure_Ar"
+
+# Vibrational temperature of N2(X) for model = "ArN2_vib_Tv" [K] (ignored otherwise).  Each Tv gets its own libraries
+# and CR tables (folder names ..._Tv<Tv>K), so several values can be compared without overwriting each other.
+Tv_K = 8000
 
 # Tg of each condition = LAS trend (fit to all LAS measurements), rounded to this step [K].  A smaller step means
 # more libraries and tables; 50 K changes the results by much less than their errors.
@@ -209,6 +216,24 @@ k_margin_eV = 1.0
 # ---------------------------------------------------------------------------------------------------------------------
 [plots]
 # ---------------------------------------------------------------------------------------------------------------------
+# Which figures to make (true / false).  Per data set they go to <output_folder>/<name>/figures/.
+metastables = true             # CR 1s5 / 1s3 at the fit against LAS
+fit_params = true              # E/N and Te_eff of the fit at n_c against the sweep
+eedf = true                    # the fitted EEDF (EEPF) of every condition, and relative to the first one
+residuals = true               # line residuals (measured - scale - model) per feature against the sweep, and a
+                               # measured-vs-model plot of all conditions
+fit_overlay = false            # one figure per condition: measured line features of every spectrum vs the model
+                               # (figures/fit_overlay/) - many files
+chi2_maps = false              # one figure per condition: chi^2 map over (E/N, Ne) with the free and the n_c fit, and
+                               # its profile over Ne (figures/chi2_maps/) - many files
+actinometry = true             # n_N/n_Ar and dissociation against the sweep, and per N I line
+actinometry_per_line = true    # n_N/n_Ar of every N I / Ar I pair (with and without metastables)
+line_ratios = true             # measured N I / Ar I line ratios
+same_upper_ratios = true       # I(746.83)/I(744.23) against the A/lambda ratio (calibration check)
+raw_lines = true               # raw-spectrum zooms around the N I lines and the Ar I reference (figures/raw_lines/)
+overviews = true               # all data sets of a sweep type together (<output_folder>/overview_*.png)
+dpi = 200                      # resolution of the saved figures
+
 # Ar I line shown in the raw-spectrum zooms (figures/raw_lines/) next to the N I lines, and the zoom half width.
 zoom_Ar_line_nm = 750.3869
 zoom_half_width_nm = 0.4

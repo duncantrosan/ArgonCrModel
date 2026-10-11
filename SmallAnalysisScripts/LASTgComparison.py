@@ -46,6 +46,7 @@ Run from Spyder (F5) or python SmallAnalysisScripts/LASTgComparison.py (--plan: 
 is built).  Libraries and CR tables are cached; delete one to rebuild it.
 """
 import os
+import re
 import subprocess
 import sys
 import time
@@ -55,6 +56,7 @@ from glob import glob
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import constants
 from scipy.optimize import least_squares
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -254,16 +256,74 @@ def vibsat_xsec():
     return VIBSAT_XSEC
 
 
-def lib_folder(n2, p_mTorr, Tg, vibsat=False):
-    """vibsat: Ar/N2 library with saturated N2(v) (VIBSAT_XSEC); pure Ar (n2 = 0) is the same either way."""
+LADDER_XSEC = he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2_vibladder.txt"   # Biagi Ar/N2 with a reversible N2(v) ladder
+
+
+def ladder_xsec():
+    """LADDER_XSEC (written from Biagi_ArN2.txt if missing) -> {v: level energy [eV]}.  The N2 v = 0 -> D vibrational
+    excitations are replaced by reversible 'N2(vv) <-> N2(vw)' for every v < w (cross section of 0 -> D, D = w - v,
+    shifted to the anharmonic threshold E_w - E_v; statistical weight ratio 1), so BOLSIG+ adds the superelastic
+    N2(vw) -> N2(vv) collisions weighted by the N2(vw) mole fraction (ladder_composition).  'N2' keeps the elastic,
+    electronic and ionization cross sections of all N2 molecules."""
+    lines = (he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2.txt").read_text(errors="replace").splitlines()
+    keep, vib, i = [], {}, 0
+    while i < len(lines):
+        if lines[i].strip() in ("ELASTIC", "EFFECTIVE", "EXCITATION", "IONIZATION", "ATTACHMENT"):
+            j = i
+            while not lines[j].startswith("-----"):
+                j += 1
+            k = j + 1
+            while not lines[k].startswith("-----"):
+                k += 1
+            m = re.fullmatch(r"\s*N2 -> N2\( VIB (\d*)V1\)\s*", lines[i + 1])
+            if lines[i].strip() == "EXCITATION" and m:
+                vib[int(m.group(1) or 1)] = (float(lines[i + 2].split()[0]),
+                                             np.array([[float(a) for a in s.split()[:2]] for s in lines[j + 1:k]]))
+            else:
+                keep += lines[i:k + 1]
+            i = k + 1
+            continue
+        keep.append(lines[i])
+        i += 1
+    E = {0: 0.0, **{D: e for D, (e, _) in vib.items()}}
+    if not LADDER_XSEC.is_file():
+        out, vmax = list(keep), max(vib)
+        for v in range(vmax):
+            for w in range(v + 1, vmax + 1):
+                thr0, tab = vib[w - v]
+                thr = E[w] - E[v]
+                out += ["EXCITATION", f"N2(v{v}) <-> N2(v{w})", f"{thr:.6e}  1", "SPECIES: e / N2",
+                        f"PROCESS: N2(v{v}) <-> N2(v{w}), cross section of v = 0 -> {w - v} shifted to the threshold",
+                        "COLUMNS: Energy (eV) | Cross section (m2)", "-----------------------------"]
+                out += [f"{max(a - thr0 + thr, 0.0):.6e}\t{b:.6e}" for a, b in tab]
+                out += ["-----------------------------", ""]
+        LADDER_XSEC.write_text("\n".join(out) + "\n")
+    return E
+
+
+def ladder_composition(n2, Tv):
+    """(cross sections, species, mole fractions) of n2 % N2 with N2(v) in a Boltzmann distribution at Tv [K]: 'N2'
+    (fraction x, elastic / electronic / ionization) and N2(vk), k = 0..vmax (fractions x p_k, the ladder only).  The
+    fractions add up to 1 + x (BOLSIG+ takes them as given: a 1 + x error on the Ar density, 2 % at 2 % N2)."""
+    E = ladder_xsec()
+    lev = np.array([E[k] for k in sorted(E)])
+    p = np.exp(-lev * constants.e / (constants.k * Tv))
+    p /= p.sum()
+    x = n2 / 100
+    return LADDER_XSEC, ["Ar", "N2"] + [f"N2(v{k})" for k in sorted(E)], [1 - x, x] + list(x * p)
+
+
+def lib_folder(n2, p_mTorr, Tg, vibsat=False, tv=None):
+    """vibsat: Ar/N2 library with saturated N2(v) (VIBSAT_XSEC); tv: with N2(v) in a Boltzmann distribution at tv [K]
+    (ladder_composition); pure Ar (n2 = 0) is the same either way."""
     base = "Ar_Biagi_bolsig" if n2 == 0 else f"ArN2_{n2:g}pct_bolsig"
-    tag = "_vibsat" if vibsat and n2 > 0 else ""
+    tag = "" if n2 == 0 else ("_vibsat" if vibsat else (f"_Tv{tv:g}K" if tv else ""))
     return he.BOLSIG_FOLDER / f"{base}_mw{FREQ_HZ / 1e9:g}GHz_{Tg:g}K_{p_mTorr:g}mTorr{tag}"
 
 
-def library(n2, p_mTorr, Tg, vibsat=False):
+def library(n2, p_mTorr, Tg, vibsat=False, tv=None):
     """Microwave BOLSIG+ library of (n2 % N2, p_mTorr, Tg), run if missing (as PressureSweepAnalysis.library)."""
-    folder = lib_folder(n2, p_mTorr, Tg, vibsat)
+    folder = lib_folder(n2, p_mTorr, Tg, vibsat, tv)
     if he.IsBolsigLibrary(folder):
         return folder
     prec_max = psa.PREC_MAX_TD if n2 == 0 else PREC_MAX_TD_N2
@@ -275,6 +335,8 @@ def library(n2, p_mTorr, Tg, vibsat=False):
     else:
         xsec = vibsat_xsec() if vibsat else he.BOLSIG_XSEC_FOLDER / "Biagi_ArN2.txt"
         species, fractions = ["Ar", "N2"], [1 - n2 / 100, n2 / 100]
+        if tv and not vibsat:
+            xsec, species, fractions = ladder_composition(n2, tv)
     run = lambda pr: he.RunBolsig(xsec, folder.name, EN_MW, species=species, fractions=fractions,
                                   **dict(kw, precision=pr))
     try:
@@ -625,6 +687,8 @@ if __name__ == "__main__":
         library(*_unkey(sys.argv[2]))
     elif len(sys.argv) > 2 and sys.argv[1] == "--lib-vibsat":
         library(*_unkey(sys.argv[2]), vibsat=True)
+    elif len(sys.argv) > 2 and sys.argv[1].startswith("--lib-tv"):    # --lib-tv<Tv in K>
+        library(*_unkey(sys.argv[2]), tv=float(sys.argv[1][len("--lib-tv"):]))
     elif len(sys.argv) > 2 and sys.argv[1] == "--build":
         build_table(sys.argv[2])
     else:

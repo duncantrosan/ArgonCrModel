@@ -79,14 +79,18 @@ def conditions():
 def table_cfg(key, eedf="mix"):
     """CR table settings of key with the analytic-5p set; eedf 'mix' = Ar/N2 microwave library (LASTgComparison),
     'ar' = pure-Ar microwave library at the same p and Tg (N2 quenching and dilution kept in the CR model),
-    'vibsat' = Ar/N2 microwave library with saturated N2(v) (LASTgComparison.lib_folder(vibsat=True); 'ar' in pure Ar)."""
+    'vibsat' = Ar/N2 microwave library with saturated N2(v) (LASTgComparison.lib_folder(vibsat=True); 'ar' in pure Ar),
+    'tv<Tv>' (e.g. 'tv8000') = Ar/N2 microwave library with N2(v) in a Boltzmann distribution at Tv K (lib_folder(tv=Tv))."""
     cfg = L.table_cfg(key, "n2")
-    if eedf == "vibsat":
+    if eedf == "vibsat" or eedf.startswith("tv"):
         n2, p, Tg = L._unkey(key)
         if n2 == 0:
             return table_cfg(key, "ar")
-        lib = L.lib_folder(n2, p, Tg, vibsat=True)
-        return dict(cfg, eedf=str(lib), outdir=os.path.join(TABLE_DIR, "VibSat_" + lib.name))
+        if eedf == "vibsat":
+            lib, tag = L.lib_folder(n2, p, Tg, vibsat=True), "VibSat_"
+        else:
+            lib, tag = L.lib_folder(n2, p, Tg, tv=float(eedf[2:])), "VibTv_"
+        return dict(cfg, eedf=str(lib), outdir=os.path.join(TABLE_DIR, tag + lib.name))
     if eedf == "ar":
         n2, p, Tg = L._unkey(key)
         lib = L.lib_folder(0.0, p, Tg)

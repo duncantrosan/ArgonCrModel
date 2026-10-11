@@ -36,7 +36,7 @@ DEFAULTS = {   # section -> setting -> default
                 plan_only=False, show_plots=False),
     "model": dict(cross_sections="ArgonCrossSections_BSR_analytic5p.json", plasma_radius_m=0.04, trap_lines="all",
                   escape_mode="table", atom_transfer=True, quench_4p=True, N2_quench_scale=1.0, N2_dissociation=0.0),
-    "eedf": dict(model="pure_Ar", Tg_step_K=50.0),
+    "eedf": dict(model="pure_Ar", Tv_K=8000.0, Tg_step_K=50.0),
     "fit": dict(Ne_pin="nc", sigma_model=0.20, sigma_fit_floor=0.02, use_repeat_scatter=True, birge=True,
                 max_rel_err=0.15, merge_nm=0.10, wavelength_ranges_nm=[[400.0, 475.0], [690.0, 860.0]],
                 exclude_lines_nm=[852.144], min_rating=4),
@@ -44,10 +44,12 @@ DEFAULTS = {   # section -> setting -> default
     "actinometry": dict(extra_N_lines_nm=[746.831], exclude_Ar_references_nm=[706.7218, 415.859, 794.8176],
                         tukey_fence=1.5, tukey_min_pairs=5, min_valid_mass=0.9, xsec_error_N=0.20, xsec_error_Ar=0.15,
                         k_margin_eV=1.0),
-    "plots": dict(zoom_Ar_line_nm=750.3869, zoom_half_width_nm=0.4),
+    "plots": dict(metastables=True, fit_params=True, eedf=True, residuals=True, fit_overlay=False, chi2_maps=False,
+                  actinometry=True, actinometry_per_line=True, line_ratios=True, same_upper_ratios=True,
+                  raw_lines=True, overviews=True, dpi=200, zoom_Ar_line_nm=750.3869, zoom_half_width_nm=0.4),
     "report": dict(make=False, folder="LatexReport", example_set="80W_1Torr", example_x=[0.33, 2.0], s_example_x=2.0),
 }
-CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated"),
+CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated", "ArN2_vib_Tv"),
            ("model", "trap_lines"): ("all", "ground"), ("model", "escape_mode"): ("table", "walsh"),
            ("spectra", "line_status"): ("ok", "weak", "blend", "not_detected")}
 MODEL_KEYS = dict(plasma_radius_m="R", trap_lines="trap_lines", escape_mode="escape_mode",   # -> CRFitNeTe.CONFIG;
@@ -125,7 +127,8 @@ def configure(S, s):
     S.OUTDIR = in_repo(s["run"]["output_folder"])
     S.ECHELLE_DIR = in_repo(s["run"]["echelle_folder"])
     L.TG_STEP = s["eedf"]["Tg_step_K"]
-    S.EEDF = {"pure_Ar": "ar", "ArN2_vib_saturated": "vibsat"}[s["eedf"]["model"]]
+    e = s["eedf"]
+    S.EEDF = {"pure_Ar": "ar", "ArN2_vib_saturated": "vibsat", "ArN2_vib_Tv": f"tv{e['Tv_K']:g}"}[e["model"]]
     ne = S.N_C if s["fit"]["Ne_pin"] == "nc" else s["fit"]["Ne_pin"]
     S.N_C = L.N_C = L.mlf.N_C = ne                    # every module that pins Ne reads one of these
     sp, a, pl = s["spectra"], s["actinometry"], s["plots"]
@@ -136,6 +139,7 @@ def configure(S, s):
                  rel_err_xs_N=a["xsec_error_N"], rel_err_xs_Ar=a["xsec_error_Ar"], k_margin_eV=a["k_margin_eV"],
                  pin_Ne=ne)
     S.ZOOM_AR_WL, S.ZOOM_HALF_NM = pl["zoom_Ar_line_nm"], pl["zoom_half_width_nm"]
+    S.PLOTS.update({k: pl[k] for k in S.PLOTS})
     S.zoom_lines.cache_clear()
 
 
