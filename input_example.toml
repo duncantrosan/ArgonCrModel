@@ -56,6 +56,10 @@ echelle_folder = "Experimental_Data/EchelleData"
 # true = only check and plan (same as adding --plan on the command line).
 plan_only = false
 
+# true = a run first deletes the old results (tables, figures) of each data set it runs and the overview plots, so
+# nothing stale is left over; the line fits (<name>/measurements/) are kept.  false = stop if results already exist.
+overwrite = true
+
 # true = open the figures in windows at the end (the program then waits until you close them).
 # false = only save them (best for long or unattended runs).
 show_plots = false
@@ -260,12 +264,16 @@ frequency_MHz = [2400, 2450]
 # An LAS row belongs to an OES condition with the same nominal pressure and % N2 and a power within this [W].
 match_power_W = 5
 
-# true = write <output_folder>/LAS_summary_with_OES.csv (or summary_file): every LAS row and column, plus for the rows
-# of an analysed condition: E/N, Te_eff, Ne (with lo/hi bands), chi2/dof and CR 1s5 of the OES fit, and with N2
-# n_N/n_Ar, the N-atom density and the N2 dissociation degree (actinometry with metastables).  Densities in cm^-3
-# like the LAS columns.  The LAS file itself is never changed.
+# true = write a summary table: every row and column of summary_base, plus for the rows of an analysed condition
+# (same pressure and % N2, power within match_power_W): E/N, Te_eff, Ne (with lo/hi bands), chi2/dof and CR 1s5 of the
+# OES fit, and with N2 n_N/n_Ar, the N-atom density and the N2 dissociation degree (actinometry with metastables).
+# Densities in cm^-3 like the LAS columns.  OES columns of an earlier run in that table are replaced, not repeated.
 write_summary = true
-summary_file = ""               # "" = <output_folder>/LAS_summary_with_OES.csv
+# The table to add the OES results to: "" = the file above, or e.g. the per-condition summary
+# "Experimental_Data/LAS_Data/Master_Summary.csv" (both LAS layouts are recognised).
+summary_base = ""
+summary_file = ""               # where to write it; "" = <output_folder>/<summary_base name>_with_OES.csv
+summary_in_place = false        # true = write the OES columns back INTO summary_base itself (keep a copy!)
 
 
 # ---------------------------------------------------------------------------------------------------------------------

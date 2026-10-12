@@ -84,7 +84,8 @@ ECHELLE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData")   #
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "N2SweepPureArEEDF")
 N_C = L.N_C
 LAS_FILE = L.LAS_FILE                               # LAS summary: Tg trend, LAS 1s5, and the OES summary below
-LAS_SUMMARY = dict(write=True, path=None)           # write the LAS table with the OES results (path None: OUTDIR)
+LAS_SUMMARY = dict(write=True, path=None, base=None, in_place=False)   # LAS table + OES results (write_las_summary)
+OVERWRITE = True                                    # clear a data set's old results before its run (line fits kept)
 NE_MODE = "nc"                                      # 'free': Ne fitted with E/N (2D posterior); 'nc': pinned at n_c;
                                                     # 'value': pinned at N_C set by Main.py ([fit] Ne_pin)
 EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
@@ -1046,12 +1047,40 @@ def plot_overview(kind, sets, res, outdir):
         _savefig(fig, os.path.join(outdir, f"overview_{kind}_{fname}.png"))
 
 
+def clear_old_results(sets):
+    """OVERWRITE: delete the results of an earlier run (tables, figures) of these data sets and the run overviews in
+    OUTDIR; the line fits (<set>/measurements/) are kept.  Otherwise stop if a data set already has results."""
+    import shutil
+    for d in sets:
+        old = glob(os.path.join(d["outdir"], "*.csv")) + glob(os.path.join(d["outdir"], "figures"))
+        if old and not OVERWRITE:
+            raise FileExistsError(f"{d['outdir']} has results of an earlier run - set [run] overwrite = true or use "
+                                  f"another output_folder")
+        for f in old:
+            shutil.rmtree(f) if os.path.isdir(f) else os.remove(f)
+    if OVERWRITE:
+        for f in glob(os.path.join(OUTDIR, "overview_*.png")) + glob(os.path.join(OUTDIR, "*_all.csv")):
+            os.remove(f)
+
+
 # ---- LAS summary with the OES results ------------------------------------------------------
-def write_las_summary(res, sets, path):
-    """The LAS file (LAS_FILE, every row and column) with the OES results of this run added to the rows of the same
-    condition: nominal pressure, power within LASTgComparison.DP_W, % N2 within 0.02, frequency in LAS_FREQ_MHZ; the
-    OES condition with the closest power wins (then input-file order).  Densities in cm^-3 as in the LAS file."""
-    las = pd.read_csv(LAS_FILE)
+LAS_FORMATS = {   # column names (pressure Torr, power W, % N2, frequency MHz) of the two LAS table layouts
+    "all measurements": ("pressure", "power", "Nitrogen_Percent", "frequency"),
+    "summary": ("Pressure_Input_Torr", "Power_Input_W", "N2_Percent_Input", "Frequency_Input_MHz")}
+
+
+def write_las_summary(res, sets, path, base=None):
+    """An LAS table (base, default LAS_FILE; Master_AllMeasurements or Master_Summary layout, LAS_FORMATS) with every
+    row and column, and the OES results of this run added to the rows of the same condition: nominal pressure, power
+    within LASTgComparison.DP_W, % N2 within 0.02, frequency in LAS_FREQ_MHZ; the OES condition with the closest
+    power wins (then input-file order).  OES columns already in the table (an earlier run) are replaced.  Densities
+    in cm^-3 as in the LAS file."""
+    las = pd.read_csv(base or LAS_FILE)
+    fmt = next((k for k, c in LAS_FORMATS.items() if all(q in las.columns for q in c)), None)
+    if fmt is None:
+        raise ValueError(f"{base or LAS_FILE}: neither LAS layout ({'; '.join(', '.join(c) for c in LAS_FORMATS.values())})")
+    cp, cP, cx, cf = LAS_FORMATS[fmt]
+    las = las[[c for c in las.columns if not (c.startswith("OES ") or "from OES" in c)]]
     oes = []
     for d in sets:
         if d["name"] not in res:
@@ -1074,12 +1103,12 @@ def write_las_summary(res, sets, path):
             oes.append((r.p_Torr, r.P_W, r.N2, row))
     cols = list(dict.fromkeys(k for *_, row in oes for k in row))
     out = las.reindex(columns=list(las.columns) + [c for c in cols if c not in las.columns])
-    fr = las.frequency.between(*L.LAS_FREQ_MHZ)
+    fr = las[cf].between(*L.LAS_FREQ_MHZ)
     n = 0
     for i in las.index[fr]:
-        cand = [(abs(las.at[i, "power"] - P), k) for k, (p, P, n2, _) in enumerate(oes)
-                if np.isclose(las.at[i, "pressure"], p, atol=1e-3) and abs(las.at[i, "power"] - P) <= L.DP_W + 1e-9
-                and abs(las.at[i, "Nitrogen_Percent"] - n2) <= 0.02 + 1e-9]
+        cand = [(abs(las.at[i, cP] - P), k) for k, (p, P, n2, _) in enumerate(oes)
+                if np.isclose(las.at[i, cp], p, atol=1e-3) and abs(las.at[i, cP] - P) <= L.DP_W + 1e-9
+                and abs(las.at[i, cx] - n2) <= 0.02 + 1e-9]
         if cand:
             for c, v in oes[min(cand)[1]][3].items():
                 out.at[i, c] = v
@@ -1208,6 +1237,7 @@ def main(input_file=INPUT_FILE, plan_only=False):
     for flag in sorted({f for f, _ in libs}):
         L._run_workers(flag, [k for f, k in libs if f == flag], f"BOLSIG+ libraries ({flag[2:]})")
     A.build_all([(k, EEDF) for k in tabs])
+    clear_old_results([d for d in sets if d["name"] in conds])
     res = {}
     for d in sets:
         if d["name"] in conds:
@@ -1223,7 +1253,10 @@ def main(input_file=INPUT_FILE, plan_only=False):
         for kind in SWEPT:
             plot_overview(kind, sets, res, OUTDIR)
     if LAS_SUMMARY["write"]:
-        write_las_summary(res, sets, LAS_SUMMARY["path"] or os.path.join(OUTDIR, "LAS_summary_with_OES.csv"))
+        base = LAS_SUMMARY["base"] or LAS_FILE
+        path = (base if LAS_SUMMARY["in_place"] else LAS_SUMMARY["path"]
+                or os.path.join(OUTDIR, os.path.splitext(os.path.basename(base))[0] + "_with_OES.csv"))
+        write_las_summary(res, sets, path, base)
     print(f"\noutput in {OUTDIR}")
     plt.show()
     return res

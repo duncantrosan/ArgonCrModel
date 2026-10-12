@@ -33,7 +33,7 @@ DEFAULT_INPUT = os.path.join(ROOT, "input_example.toml")
 
 DEFAULTS = {   # section -> setting -> default
     "run": dict(output_folder="Experimental_Data/Output/N2SweepPureArEEDF", echelle_folder="Experimental_Data/EchelleData",
-                plan_only=False, show_plots=False),
+                plan_only=False, show_plots=False, overwrite=True),
     "model": dict(cross_sections="ArgonCrossSections_BSR_analytic5p.json", plasma_radius_m=0.04, trap_lines="all",
                   escape_mode="table", atom_transfer=True, quench_4p=True, N2_quench_scale=1.0, N2_dissociation=0.0),
     "eedf": dict(model="pure_Ar", Tv_K=8000.0, Tg_step_K=50.0),
@@ -48,7 +48,7 @@ DEFAULTS = {   # section -> setting -> default
                   actinometry=True, actinometry_per_line=True, line_ratios=True, same_upper_ratios=True,
                   raw_lines=True, overviews=True, dpi=200, zoom_Ar_line_nm=750.3869, zoom_half_width_nm=0.4),
     "las": dict(file="Experimental_Data/LAS_Data/Master_AllMeasurements.csv", frequency_MHz=[2400.0, 2450.0],
-                match_power_W=5.0, write_summary=True, summary_file=""),
+                match_power_W=5.0, write_summary=True, summary_base="", summary_file="", summary_in_place=False),
     "report": dict(make=False, folder="LatexReport", example_set="80W_1Torr", example_x=[0.33, 2.0], s_example_x=2.0),
 }
 CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated", "ArN2_vib_Tv"),
@@ -140,7 +140,12 @@ def configure(S, s):
     if not os.path.isfile(S.LAS_FILE):
         raise FileNotFoundError(f"[las] file: {S.LAS_FILE} not found")
     L.LAS_FREQ_MHZ, L.DP_W = tuple(lc["frequency_MHz"]), lc["match_power_W"]
-    S.LAS_SUMMARY = dict(write=lc["write_summary"], path=in_repo(lc["summary_file"]) if lc["summary_file"] else None)
+    S.LAS_SUMMARY = dict(write=lc["write_summary"], path=in_repo(lc["summary_file"]) if lc["summary_file"] else None,
+                         base=in_repo(lc["summary_base"]) if lc["summary_base"] else None,
+                         in_place=lc["summary_in_place"])
+    if S.LAS_SUMMARY["base"] and not os.path.isfile(S.LAS_SUMMARY["base"]):
+        raise FileNotFoundError(f"[las] summary_base: {S.LAS_SUMMARY['base']} not found")
+    S.OVERWRITE = s["run"]["overwrite"]
     sp, a, pl = s["spectra"], s["actinometry"], s["plots"]
     als.CONFIG.update(export_flags=sp["export_flags"], min_reps=sp["min_repeats"], sweep_status=tuple(sp["line_status"]))
     S.EXTRA_N_WL = tuple(a["extra_N_lines_nm"])
