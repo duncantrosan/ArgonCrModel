@@ -244,6 +244,31 @@ zoom_half_width_nm = 0.4
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+[las]
+# ---------------------------------------------------------------------------------------------------------------------
+# The LAS summary table (one row per LAS measurement: run_id, pressure [Torr], power [W], Nitrogen_Percent, frequency
+# [MHz], T_gas_K, N_s_cm3 = 1s5 density, ...).  It is used for
+#   - the gas temperature of every OES condition: a trend Tg(p, P, % N2) fitted to all its rows, rounded to
+#     [eedf] Tg_step_K - this picks the BOLSIG+ libraries and CR tables of each condition;
+#   - the LAS 1s5 density shown against the CR model;
+#   - the summary below: a copy of this table with the OES results added, so all the data is in one place.
+file = "Experimental_Data/LAS_Data/Master_AllMeasurements.csv"
+
+# Only LAS rows with a source frequency in this range [MHz] are used.
+frequency_MHz = [2400, 2450]
+
+# An LAS row belongs to an OES condition with the same nominal pressure and % N2 and a power within this [W].
+match_power_W = 5
+
+# true = write <output_folder>/LAS_summary_with_OES.csv (or summary_file): every LAS row and column, plus for the rows
+# of an analysed condition: E/N, Te_eff, Ne (with lo/hi bands), chi2/dof and CR 1s5 of the OES fit, and with N2
+# n_N/n_Ar, the N-atom density and the N2 dissociation degree (actinometry with metastables).  Densities in cm^-3
+# like the LAS columns.  The LAS file itself is never changed.
+write_summary = true
+summary_file = ""               # "" = <output_folder>/LAS_summary_with_OES.csv
+
+
+# ---------------------------------------------------------------------------------------------------------------------
 [report]
 # ---------------------------------------------------------------------------------------------------------------------
 # true = after the run, refresh the figures/ and tables/ of the LaTeX report (LatexReport/main.tex) from this

@@ -47,6 +47,8 @@ DEFAULTS = {   # section -> setting -> default
     "plots": dict(metastables=True, fit_params=True, eedf=True, residuals=True, fit_overlay=False, chi2_maps=False,
                   actinometry=True, actinometry_per_line=True, line_ratios=True, same_upper_ratios=True,
                   raw_lines=True, overviews=True, dpi=200, zoom_Ar_line_nm=750.3869, zoom_half_width_nm=0.4),
+    "las": dict(file="Experimental_Data/LAS_Data/Master_AllMeasurements.csv", frequency_MHz=[2400.0, 2450.0],
+                match_power_W=5.0, write_summary=True, summary_file=""),
     "report": dict(make=False, folder="LatexReport", example_set="80W_1Torr", example_x=[0.33, 2.0], s_example_x=2.0),
 }
 CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated", "ArN2_vib_Tv"),
@@ -133,6 +135,12 @@ def configure(S, s):
     S.NE_MODE = pin if pin in ("free", "nc") else "value"
     ne = pin if S.NE_MODE == "value" else S.N_C       # free: N_C stays n_c (cost of the pin, chi^2 maps)
     S.N_C = L.N_C = L.mlf.N_C = ne                    # every module that pins Ne reads one of these
+    lc = s["las"]
+    S.LAS_FILE = in_repo(lc["file"])
+    if not os.path.isfile(S.LAS_FILE):
+        raise FileNotFoundError(f"[las] file: {S.LAS_FILE} not found")
+    L.LAS_FREQ_MHZ, L.DP_W = tuple(lc["frequency_MHz"]), lc["match_power_W"]
+    S.LAS_SUMMARY = dict(write=lc["write_summary"], path=in_repo(lc["summary_file"]) if lc["summary_file"] else None)
     sp, a, pl = s["spectra"], s["actinometry"], s["plots"]
     als.CONFIG.update(export_flags=sp["export_flags"], min_reps=sp["min_repeats"], sweep_status=tuple(sp["line_status"]))
     S.EXTRA_N_WL = tuple(a["extra_N_lines_nm"])

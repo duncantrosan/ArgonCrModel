@@ -83,6 +83,8 @@ INPUT_FILE = os.path.join(HERE, "N2SweepPureArEEDF_input.toml")
 ECHELLE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData")   # input-file folders relative to this
 OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "N2SweepPureArEEDF")
 N_C = L.N_C
+LAS_FILE = L.LAS_FILE                               # LAS summary: Tg trend, LAS 1s5, and the OES summary below
+LAS_SUMMARY = dict(write=True, path=None)           # write the LAS table with the OES results (path None: OUTDIR)
 NE_MODE = "nc"                                      # 'free': Ne fitted with E/N (2D posterior); 'nc': pinned at n_c;
                                                     # 'value': pinned at N_C set by Main.py ([fit] Ne_pin)
 EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
@@ -1044,6 +1046,48 @@ def plot_overview(kind, sets, res, outdir):
         _savefig(fig, os.path.join(outdir, f"overview_{kind}_{fname}.png"))
 
 
+# ---- LAS summary with the OES results ------------------------------------------------------
+def write_las_summary(res, sets, path):
+    """The LAS file (LAS_FILE, every row and column) with the OES results of this run added to the rows of the same
+    condition: nominal pressure, power within LASTgComparison.DP_W, % N2 within 0.02, frequency in LAS_FREQ_MHZ; the
+    OES condition with the closest power wins (then input-file order).  Densities in cm^-3 as in the LAS file."""
+    las = pd.read_csv(LAS_FILE)
+    oes = []
+    for d in sets:
+        if d["name"] not in res:
+            continue
+        t, act = res[d["name"]]
+        a = act[(act.variant == "cr") & (act.N_line == "combined")].set_index("x") if len(act) else pd.DataFrame()
+        for r in t.itertuples():
+            row = {"OES data set": d["name"], "OES sweep value": r.x, "OES EEDF": _plain(eedf_label()),
+                   "OES Ne": "fitted" if NE_MODE == "free" else _plain(_ne("pinned at ", "")).replace("$", ""),
+                   "OES Tg used [K]": r.Tg, "E/N from OES [Td]": r.EN_nc, "E/N from OES lo [Td]": r.EN_nc_lo,
+                   "E/N from OES hi [Td]": r.EN_nc_hi, "Te_eff from OES [eV]": r.Te_nc,
+                   "Ne from OES [m^-3]": r.Ne_fit, "Ne from OES lo [m^-3]": r.Ne_fit_lo,
+                   "Ne from OES hi [m^-3]": r.Ne_fit_hi, "OES fit chi2/dof": r.chi2_red_nc,
+                   "1s5 from OES CR model [cm^-3]": r.n_1s5 / 1e6, "1s5 from OES CR model lo [cm^-3]": r.n_1s5_lo / 1e6,
+                   "1s5 from OES CR model hi [cm^-3]": r.n_1s5_hi / 1e6}
+            if len(a) and r.x in a.index:
+                e = a.loc[r.x]
+                row.update({"n_N/n_Ar from OES": e.nN_nAr, "n_N/n_Ar from OES ln err (stat)": e.ln_err_stat,
+                            "N atom density from OES [cm^-3]": e.n_N / 1e6, "N2 dissociation from OES": e.dissociation})
+            oes.append((r.p_Torr, r.P_W, r.N2, row))
+    cols = list(dict.fromkeys(k for *_, row in oes for k in row))
+    out = las.reindex(columns=list(las.columns) + [c for c in cols if c not in las.columns])
+    fr = las.frequency.between(*L.LAS_FREQ_MHZ)
+    n = 0
+    for i in las.index[fr]:
+        cand = [(abs(las.at[i, "power"] - P), k) for k, (p, P, n2, _) in enumerate(oes)
+                if np.isclose(las.at[i, "pressure"], p, atol=1e-3) and abs(las.at[i, "power"] - P) <= L.DP_W + 1e-9
+                and abs(las.at[i, "Nitrogen_Percent"] - n2) <= 0.02 + 1e-9]
+        if cand:
+            for c, v in oes[min(cand)[1]][3].items():
+                out.at[i, c] = v
+            n += 1
+    out.to_csv(path, index=False)
+    print(f"\nLAS summary with the OES results: {path} ({n} of {len(las)} LAS rows matched an OES condition)")
+
+
 # ---- driver --------------------------------------------------------------------------------
 def run_dataset(ds, cond):
     """CR fits, metastables and actinometry of one data set -> (fits table, actinometry per condition)."""
@@ -1133,7 +1177,7 @@ def main(input_file=INPUT_FILE, plan_only=False):
     if not sets:
         print(f"{input_file}: no data set with run = true")
         return {}
-    las = L.load_las()
+    las = L.load_las(LAS_FILE)
     trend = L.fit_tg_trend(las)[0]
     conds = {}
     with pd.option_context("display.width", 200, "display.max_rows", 200):
@@ -1178,6 +1222,8 @@ def main(input_file=INPUT_FILE, plan_only=False):
     if PLOTS["overviews"]:
         for kind in SWEPT:
             plot_overview(kind, sets, res, OUTDIR)
+    if LAS_SUMMARY["write"]:
+        write_las_summary(res, sets, LAS_SUMMARY["path"] or os.path.join(OUTDIR, "LAS_summary_with_OES.csv"))
     print(f"\noutput in {OUTDIR}")
     plt.show()
     return res
