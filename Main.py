@@ -51,6 +51,7 @@ DEFAULTS = {   # section -> setting -> default
                 match_power_W=5.0, write_summary=True, summary_base="", summary_file="", summary_in_place=False),
     "report": dict(make=False, folder="LatexReport", example_set="80W_1Torr", example_x=[0.33, 2.0], s_example_x=2.0),
 }
+NE_MODES = ("free", "free_else_nc", "nc")
 CHOICES = {("eedf", "model"): ("pure_Ar", "ArN2_vib_saturated", "ArN2_vib_Tv"),
            ("model", "trap_lines"): ("all", "ground"), ("model", "escape_mode"): ("table", "walsh"),
            ("spectra", "line_status"): ("ok", "weak", "blend", "not_detected")}
@@ -95,9 +96,9 @@ def read_input(path):
             if k not in DEFAULTS[sec]:
                 raise ValueError(f"{name}: [{sec}] has no setting {k!r} - settings are {', '.join(DEFAULTS[sec])}")
             if (sec, k) == ("fit", "Ne_pin"):
-                if v not in ("free", "nc") and not (isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0):
-                    raise ValueError(f"{where} = {v!r}: \"free\", \"nc\" or a density in m^-3, e.g. 1.5e17")
-                out[sec][k] = v if v in ("free", "nc") else float(v)
+                if v not in NE_MODES and not (isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0):
+                    raise ValueError(f"{where} = {v!r}: {', '.join(map(repr, NE_MODES))} or a density in m^-3, e.g. 1.5e17")
+                out[sec][k] = v if v in NE_MODES else float(v)
             else:
                 out[sec][k] = _checked(where, v, DEFAULTS[sec][k], CHOICES.get((sec, k)))
     xsec = os.path.join(ROOT, "InputData", out["model"]["cross_sections"])
@@ -132,7 +133,7 @@ def configure(S, s):
     e = s["eedf"]
     S.EEDF = {"pure_Ar": "ar", "ArN2_vib_saturated": "vibsat", "ArN2_vib_Tv": f"tv{e['Tv_K']:g}"}[e["model"]]
     pin = s["fit"]["Ne_pin"]
-    S.NE_MODE = pin if pin in ("free", "nc") else "value"
+    S.NE_MODE = pin if pin in NE_MODES else "value"
     ne = pin if S.NE_MODE == "value" else S.N_C       # free: N_C stays n_c (cost of the pin, chi^2 maps)
     S.N_C = L.N_C = L.mlf.N_C = ne                    # every module that pins Ne reads one of these
     lc = s["las"]

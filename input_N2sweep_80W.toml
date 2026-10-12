@@ -4,6 +4,9 @@
 [run]
 output_folder = "Experimental_Data/Output/N2Sweep80W_pureArEEDF"
 
+[fit]
+Ne_pin = "free_else_nc"        # free Ne, n_c where the free fit runs to the grid edge
+
 [[dataset]]
 name = "80W_0.6Torr_0-10pctN2"
 folder = "N2AdmixtureSweep0,6Torr80W"

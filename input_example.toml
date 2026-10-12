@@ -142,6 +142,8 @@ Tg_step_K = 50
 # Electron density:
 #   "free"   fitted together with E/N (best fit and bands over the whole (E/N, Ne) grid; the actinometry uses the
 #            full posterior)  <- default.  At 0-1 % N2 the free fit can run to the 3e19 m^-3 grid edge.
+#   "free_else_nc"  free, but pinned at n_c for the conditions whose free fit runs to the top of the Ne grid
+#            (the cold, dense branch at 0-1 % N2); fits.csv column Ne_mode says which
 #   "nc"     pinned at the critical density of 2.42 GHz, 7.26e16 m^-3 (overdense microwave plasma)
 #   1.5e17   pinned at any density in m^-3
 # fits.csv always has both: the columns *_nc hold the fit of this mode (pinned or free), Ne_fit its Ne, and

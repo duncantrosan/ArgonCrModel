@@ -87,7 +87,9 @@ LAS_FILE = L.LAS_FILE                               # LAS summary: Tg trend, LAS
 LAS_SUMMARY = dict(write=True, path=None, base=None, in_place=False)   # LAS table + OES results (write_las_summary)
 OVERWRITE = True                                    # clear a data set's old results before its run (line fits kept)
 NE_MODE = "nc"                                      # 'free': Ne fitted with E/N (2D posterior); 'nc': pinned at n_c;
-                                                    # 'value': pinned at N_C set by Main.py ([fit] Ne_pin)
+                                                    # 'value': pinned at N_C set by Main.py ([fit] Ne_pin);
+                                                    # 'free_else_nc': free, but pinned at n_c where the free fit runs
+                                                    # to the top of the Ne grid (the cold, dense branch)
 EEDF = "ar"                                         # AnalyticFivePFit table set: 'ar' pure-Ar microwave EEDF,
                                                     # 'vibsat' Ar/N2 microwave EEDF with saturated N2(v), 'tv<Tv>'
                                                     # Ar/N2 with N2(v) Boltzmann at Tv K, e.g. 'tv8000' (Main.py)
@@ -100,12 +102,14 @@ def _ne(pre=", ", post=""):
     """'<pre>N_e = n_c<post>' for plot titles when Ne is pinned, '' when it is fitted."""
     if NE_MODE == "free":
         return ""
+    if NE_MODE == "free_else_nc":
+        return f"{pre}N$_e$ fitted (n$_c$ where the fit runs to the grid edge){post}"
     return f"{pre}N$_e$ = " + ("n$_c$" if NE_MODE == "nc" else f"{N_C:.2g} m$^{{-3}}$") + post
 
 
 def _band():
     """Where the uncertainty bands come from: along E/N at the pinned Ne, or over (E/N, Ne)."""
-    return "over (E/N, N$_e$)" if NE_MODE == "free" else "along E/N"
+    return "over (E/N, N$_e$)" if NE_MODE in ("free", "free_else_nc") else "along E/N"
 
 
 def eedf_label():
@@ -372,9 +376,18 @@ def fit_conditions(ds, cond):
         row.update(EN_nc_lo=float(np.exp(band.min())), EN_nc_hi=float(np.exp(band.max())), Ne_fit=N_C,
                    Ne_fit_lo=N_C, Ne_fit_hi=N_C)
         i = int(np.argmin(chi2))
-        if NE_MODE == "free":
-            i, j = free_fit_row(row, tab, grid, Te_f, posts[f"{c.sweep}|{c.x:g}"], f0, cfg)
-        fits[c.x] = dict(tab=tab, grid=grid, Te_f=Te_f, posts=posts, cond=fc, cfg=cfg, eedfs=eedfs, i=i, j=j,
+        pinned = NE_MODE not in ("free", "free_else_nc")
+        row["Ne_mode"] = "pinned" if pinned else "free"
+        if not pinned:
+            keep = dict(row)
+            fi, fj = free_fit_row(row, tab, grid, Te_f, posts[f"{c.sweep}|{c.x:g}"], f0, cfg)
+            if NE_MODE == "free_else_nc" and fj >= len(fN) - 2:   # free fit at the top of the Ne grid: pin at n_c
+                row.clear()
+                row.update(keep, Ne_mode="pinned (free fit at the Ne grid edge)")
+                pinned = True
+            else:
+                i, j = fi, fj
+        fits[c.x] = dict(tab=tab, grid=grid, Te_f=Te_f, posts=posts, cond=fc, cfg=cfg, eedfs=eedfs, i=i, j=j, pinned=pinned,
                          EN_best=float(np.exp(fX[i])), resid=pinned_residuals(d, feats, M, i, j, cfg))
         rows.append(dict(x=c.x, N2=c.N2, p_Torr=c.p_Torr, P_W=c.P_W, Tg=c.Tg, las_1s5=c.las_1s5,
                          las_1s5_how=c.las_1s5_how, las_1s5_rel_err=c.las_1s5_rel_err, **row))
@@ -548,7 +561,7 @@ def actinometry(ds, cond, fits):
             continue
         fit = fits[x]
         c = cond[cond.x == x].iloc[0]
-        if NE_MODE == "free":                           # the full (E/N, Ne) posterior
+        if not fit["pinned"]:                           # Ne fitted: the full (E/N, Ne) posterior
             post = fit["posts"][f"{ds['name']}|{x:g}"] / fit["posts"][f"{ds['name']}|{x:g}"].sum()
             T2 = np.broadcast_to(fit["Te_f"][:, None], post.shape) if np.ndim(fit["Te_f"]) == 1 else fit["Te_f"]
             te, en = float((post * T2).sum()), float(np.exp((post.sum(axis=1) * fit["grid"][0]).sum()))
@@ -556,7 +569,7 @@ def actinometry(ds, cond, fits):
             post, te, en = anc.pinned_posterior(fit, fit["posts"][f"{ds['name']}|{x:g}"], N_C)
         lines = {r.ar_upper: (r.ar_wl, r.bA) for r in p.drop_duplicates("ar_upper").itertuples()}
         terms = {"direct": anc.FitTerms(fit, xs, ACT),
-                 "cr": CRTerms(fit, xs, ACT, lines, None if NE_MODE == "free" else N_C)}
+                 "cr": CRTerms(fit, xs, ACT, lines, N_C if fit["pinned"] else None)}
         f = c.N2 / 100
         N = he.Torr2Volume(fit["cfg"]["P_Torr"], fit["cfg"]["Tg"])
         for v in VARIANTS:
@@ -1089,7 +1102,7 @@ def write_las_summary(res, sets, path, base=None):
         a = act[(act.variant == "cr") & (act.N_line == "combined")].set_index("x") if len(act) else pd.DataFrame()
         for r in t.itertuples():
             row = {"OES data set": d["name"], "OES sweep value": r.x, "OES EEDF": _plain(eedf_label()),
-                   "OES Ne": "fitted" if NE_MODE == "free" else _plain(_ne("pinned at ", "")).replace("$", ""),
+                   "OES Ne": getattr(r, "Ne_mode", "pinned"),
                    "OES Tg used [K]": r.Tg, "E/N from OES [Td]": r.EN_nc, "E/N from OES lo [Td]": r.EN_nc_lo,
                    "E/N from OES hi [Td]": r.EN_nc_hi, "Te_eff from OES [eV]": r.Te_nc,
                    "Ne from OES [m^-3]": r.Ne_fit, "Ne from OES lo [m^-3]": r.Ne_fit_lo,
