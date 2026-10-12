@@ -8,7 +8,7 @@ LAS measurements (Master_AllMeasurements.csv), one column per pressure:
          CR 1s5 with its band of each run
   row 2  CR / mean LAS
   row 3  E/N of the fit (band: Delta chi^2 <= B^2)
-  row 4  Ne of the fit (band), n_c dashed
+  row 4  Ne of the fit (band, linear), n_c dashed
 Conditions whose Ne is pinned at n_c (Ne_mode 'pinned ...', e.g. Ne_pin = "free_else_nc" where the free fit runs to the
 grid edge) are drawn with open symbols; any condition still at the Ne grid edge (free fit on the cold, dense branch)
 is marked at the bottom of row 1 instead of drawn.
@@ -86,11 +86,11 @@ def main():
         rx.set(ylim=(0, 3), ylabel="CR / LAS (mean)")
         ex.set(ylim=(0, None), ylabel="E/N of the fit [Td]")
         nx.axhline(N_C, color="k", ls="--", lw=1, label="n$_c$ (2.42 GHz)")
-        nx.set(yscale="log", ylim=(3e16, 1e18), ylabel="N$_e$ of the fit [m$^{-3}$]", xlabel="N$_2$ in the feed [%]")
+        nx.set(ylim=(0, 6e17), ylabel="N$_e$ of the fit [m$^{-3}$]", xlabel="N$_2$ in the feed [%]")
         for a in axs[:, col]:
             a.grid(True, which="both", alpha=0.25)
         ax.legend(fontsize=7)
-        nx.legend(fontsize=7)
+        nx.legend(fontsize=7, loc="upper right")
     fig.tight_layout()
     path = os.path.join(OUT, "N2Sweep80W_metastables_vs_LAS.png")
     fig.savefig(path, dpi=170)
