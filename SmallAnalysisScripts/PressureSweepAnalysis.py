@@ -69,20 +69,18 @@ def _pressure_x(name):
 
 # ---- settings -------------------------------------------------------------------
 TG = 800.0                                          # K, gas temperature (libraries and CR model)
-FREQ_HZ = 2.42e9                                    # microwave source
-N_C = constants.epsilon_0 * constants.m_e * (2 * np.pi * FREQ_HZ) ** 2 / constants.e ** 2
+# shared with the pipeline (pipeline/PipelineSettings.py): microwave frequency, n_c, the E/N grid and BOLSIG+
+# precision / timeout of the libraries, the 1s labels, the figure size
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pipeline"))
+from PipelineSettings import (FREQ_HZ, N_C, EN_MW, PREC_MAX_TD, BOLSIG_TIMEOUT, LEVELS_1S,   # noqa: E402,F401
+                              FIGSIZE)
 FAMILIES = ("microwave", "dc")
 NE_MODES = ("free", "nc")                           # overlays and residuals at these points
 SWEEP = dict(name="Pressure",
              folder=os.path.join(crf.ROOT_DIR, "Experimental_Data", "EchelleData", "PressureSweep_80W_PureArgon",
                                  "SPAFiles"),
              parse=_pressure_x, xlabel="Pressure [mTorr]", note="pure Ar, 80 W", exclude_x=(), pure_ar=True)
-EN_MW = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 35, 40, 45, 50, 55, 60,
-         70, 80, 90, 100, 115, 130, 150, 170, 210, 250, 300, 350, 400, 500, 600, 700, 850, 1000]   # Td
 EN_DC = [1, 1.25, 1.5, 1.75, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 10, 12, 15, 20, 30, 50, 75, 100, 150, 200]
-PREC_MAX_TD = 150                                   # precision 1e-30 up to here (tails reach the
-                                                    # thresholds at low E/N), 1e-25 above
-BOLSIG_TIMEOUT = 1200                               # s per library; then retried at 1e-25
 NE_GRID = crf.CONFIG["Ne_grid"]                     # 1e15-3e19 m^-3
 ESCAPE_MODE = os.environ.get("CR_ESCAPE_MODE", "table")   # 'walsh': Holstein-Walsh escape factors (systematic)
 TRAP_LINES = os.environ.get("CR_TRAP_LINES", "all")      # 'ground': lines to excited levels optically thin
@@ -94,10 +92,8 @@ OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output",
 MEASURE_DIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "PressureSweep", "measurements")
 FIGDIR = os.path.join(OUTDIR, "figures")              # one file per graph
 MW_NC_DIR = os.path.join(OUTDIR, "microwave_nc")      # microwave EEDF with Ne = n_c on its own
-LEVELS_1S = {"1s5": "4s1", "1s4": "4s2", "1s3": "4s3", "1s2": "4s4"}   # Paschen -> CR-model label
 KIND_1S = {"1s5": "metastable", "1s4": "resonant", "1s3": "metastable", "1s2": "resonant"}
 COLORS = {"microwave": "C3", "dc": "C0"}
-FIGSIZE = (8, 5.5)
 
 
 def pressures():

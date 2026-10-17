@@ -1,0 +1,89 @@
+# Low power sweep to see if we are at critical density
+#   python Main.py input_N2sweep_80W.toml --plan   then without --plan
+
+[run]
+output_folder = "Experimental_Data/Output/LowPowerTest"
+
+[fit]
+Ne_pin = "free_else_nc"        # free Ne, n_c where the free fit runs to the grid edge
+
+# ---------------------------------------------------------------------------------------------------------------------
+[spectra]
+# ---------------------------------------------------------------------------------------------------------------------
+# Header flags of the .spa export that a spectrum must have (pattern; ? = anything).  The 3rd flag is the
+# intensity calibration: "?-?-1-1" keeps only calibrated spectra.  Uncalibrated spectra are listed and skipped.
+export_flags = "?-?-1-30"
+
+# A condition / line ratio needs at least this many repeat spectra with the lines detected.
+min_repeats = 2
+
+# Line-fit status that counts as "detected" for the actinometry ("ok", "weak", "blend", "not_detected").
+line_status = ["ok", "weak"]
+
+
+
+
+[las]
+file = "Experimental_Data/LAS_Data/Master_AllMeasurements.csv"
+frequency_MHz = [2400, 2450]   # only LAS rows in this source-frequency range are used
+match_power_W = 1              # an LAS row matches an OES condition at the same p and % N2, power within ±5 W
+write_summary = true
+summary_base = ""          # table to add OES columns to; "" = the `file` above
+summary_file = ""          # where to write; "" = default path below
+summary_in_place = false   # true = write the OES columns back into summary_base itself
+
+# ---------------------------------------------------------------------------------------------------------------------
+[report]
+# ---------------------------------------------------------------------------------------------------------------------
+# true = after the run, refresh the figures/ and tables/ of the LaTeX report (LatexReport/main.tex) from this
+# run's results.  main.tex itself (the text) is not changed - its numbers in the text are from the last full run.
+make = false
+folder = "LatexReport"
+# Condition of the example figures (chi^2 map, per-spectrum scale s): data set name and sweep values.
+example_set = "80W_1Torr"
+example_x = [0.33, 2.0]
+s_example_x = 2.0
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[plots]
+# ---------------------------------------------------------------------------------------------------------------------
+# Which figures to make (true / false).  Per data set they go to <output_folder>/<name>/figures/.
+metastables = true             # CR 1s5 / 1s3 at the fit against LAS
+fit_params = true              # E/N and Te_eff of the fit at n_c against the sweep
+eedf = true                    # the fitted EEDF (EEPF) of every condition, and relative to the first one
+residuals = true               # line residuals (measured - scale - model) per feature against the sweep, and a
+                               # measured-vs-model plot of all conditions
+fit_overlay = false            # one figure per condition: measured line features of every spectrum vs the model
+                               # (figures/fit_overlay/) - many files
+chi2_maps = true               # one figure per condition: chi^2 map over (E/N, Ne) with the free and the n_c fit, and
+                               # its profile over Ne (figures/chi2_maps/) - many files
+actinometry = true             # n_N/n_Ar and dissociation against the sweep, and per N I line
+actinometry_per_line = true    # n_N/n_Ar of every N I / Ar I pair (with and without metastables)
+line_ratios = true             # measured N I / Ar I line ratios
+same_upper_ratios = true       # I(746.83)/I(744.23) against the A/lambda ratio (calibration check)
+raw_lines = true               # raw-spectrum zooms around the N I lines and the Ar I reference (figures/raw_lines/)
+overviews = true               # all data sets of a sweep type together (<output_folder>/overview_*.png)
+dpi = 200                      # resolution of the saved figures
+
+# Ar I line shown in the raw-spectrum zooms (figures/raw_lines/) next to the N I lines, and the zoom half width.
+zoom_Ar_line_nm = 750.3869
+zoom_half_width_nm = 0.4
+
+
+
+[[dataset]]
+name = "LowPowerSweepPureArgon"
+folder = "PowerSweep0%nitrogen_1_5__Torr"
+files = "{x}W_{rep}"
+sweep = "power"
+N2_percent = 0
+pressure_mTorr = 1500
+
+[[dataset]]
+name = "LowPowerSweep3%Nitrogen"
+folder = "PowerSweep3%nitrogen_1_5__Torr"
+files = "{x}W_{rep}"
+sweep = "power"
+N2_percent = 3
+pressure_mTorr = 1500

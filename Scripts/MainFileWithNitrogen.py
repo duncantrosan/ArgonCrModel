@@ -65,8 +65,8 @@ BOLSIG_SETTINGS = dict(n_grid=500, precision=1e-25, max_iter=20000)   # as Scrip
 if any(not 0 <= p <= N2_MAX_PERCENT for p in N2_PERCENT):
     raise ValueError(f'N2_PERCENT must lie in 0-{N2_MAX_PERCENT} % (raise N2_MAX_PERCENT to go higher)')
 
-# ---- load the CR-model functions from MainFileV2 (definitions only) -------------
-_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'MainFileV2.py')
+# ---- load the CR-model functions (pipeline/CRModelSolver.py, definitions only) -------------
+_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pipeline', 'CRModelSolver.py')
 _tree = ast.parse(open(_path, encoding='utf-8').read())
 _defs = ast.Module([n for n in _tree.body if isinstance(n, (ast.FunctionDef, ast.Import, ast.ImportFrom))], [])
 cr = {'__file__': _path, 'OUTPUT_DIR': OUTPUT_DIR, 'plt': plt}

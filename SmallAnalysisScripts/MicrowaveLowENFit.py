@@ -92,7 +92,7 @@ MEASURED_1S5 = cdf.MEASURED_1S5
 # R = 4 cm wall ~1e2-1e3 s^-1, Ar2+ conversion ~2e2 s^-1, Ar+ -> N2+ charge transfer and
 # dissociative recombination up to ~1e4 s^-1 with N2
 NU_LOSS = (1e2, 1e4)
-N_WORKERS = 6
+from PipelineSettings import N_WORKERS               # noqa: E402 - shared with the pipeline
 OUTDIR = os.path.join(ROOT_DIR, "Experimental_Data", "Output", "MicrowaveLowEN")
 FAMILIES = {   # label, colour, line style
     "mw_lowEN": ("microwave, from 3 Td (new)", "C3", "-"),

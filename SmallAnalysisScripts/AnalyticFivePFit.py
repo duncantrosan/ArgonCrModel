@@ -17,6 +17,9 @@ out of the cross-section set, so that the model fills them with its analytic Dra
 Output in Experimental_Data/Output/AnalyticFivePFit/: xsec_comparison.csv, fits.csv, figures/*.png
 Run from Spyder (F5) or python SmallAnalysisScripts/AnalyticFivePFit.py
 """
+# The pipeline half of this script (table settings per EEDF option, building the CR tables) is
+# pipeline/CRTableBuilder.py; this file keeps the analytic-5p cross-section comparison and its fits.  Main.py does not
+# use this file.
 import contextlib
 import io
 import json
@@ -31,20 +34,16 @@ import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pipeline"))
+import CRTableBuilder as P                          # noqa: E402 - the pipeline half
+from CRTableBuilder import *                        # noqa: E402,F401,F403
 import LASTgComparison as L                         # noqa: E402
 
 crf, he = L.crf, L.he
 
 BASE_XSEC = "ArgonCrossSections_BSR.json"
-XSEC = "ArgonCrossSections_BSR_analytic5p.json"
-CR_XSEC = os.environ.get("CR_XSEC_FILE", XSEC)          # cross sections of the CR tables (Main.py may choose)
-OUTDIR = os.path.join(crf.ROOT_DIR, "Experimental_Data", "Output", "AnalyticFivePFit")
 FIGDIR = os.path.join(OUTDIR, "figures")
-TABLE_DIR = os.path.join(OUTDIR, "tables" + os.environ.get("CR_TABLE_TAG", ""))   # Main.py: other model settings
-                                                    # get their own table folder
 SWEEP = "N2 fraction"
-N_WORKERS = 6
-N_C = L.N_C
 FIT_5P = (415.859, 430.0101)                        # the two 5p features of the 9-feature fit
 
 
@@ -61,70 +60,9 @@ def make_xsec():
     return drop
 
 
-@contextlib.contextmanager
-def xsec_set(name):
-    keep = he.CROSS_SECTION_FILE
-    he.CROSS_SECTION_FILE = name
-    try:
-        yield
-    finally:
-        he.CROSS_SECTION_FILE = keep
-
-
 def conditions():
     comp = pd.read_csv(os.path.join(L.OUTDIR, "comparison.csv"))
     return comp[comp.sweep == SWEEP].sort_values("x").reset_index(drop=True)
-
-
-def table_cfg(key, eedf="mix"):
-    """CR table settings of key with the analytic-5p set; eedf 'mix' = Ar/N2 microwave library (LASTgComparison),
-    'ar' = pure-Ar microwave library at the same p and Tg (N2 quenching and dilution kept in the CR model),
-    'vibsat' = Ar/N2 microwave library with saturated N2(v) (LASTgComparison.lib_folder(vibsat=True); 'ar' in pure Ar),
-    'tv<Tv>' (e.g. 'tv8000') = Ar/N2 microwave library with N2(v) in a Boltzmann distribution at Tv K (lib_folder(tv=Tv))."""
-    cfg = L.table_cfg(key, "n2")
-    if eedf == "vibsat" or eedf.startswith("tv"):
-        n2, p, Tg = L._unkey(key)
-        if n2 == 0:
-            return table_cfg(key, "ar")
-        if eedf == "vibsat":
-            lib, tag = L.lib_folder(n2, p, Tg, vibsat=True), "VibSat_"
-        else:
-            lib, tag = L.lib_folder(n2, p, Tg, tv=float(eedf[2:])), "VibTv_"
-        return dict(cfg, eedf=str(lib), outdir=os.path.join(TABLE_DIR, tag + lib.name))
-    if eedf == "ar":
-        n2, p, Tg = L._unkey(key)
-        lib = L.lib_folder(0.0, p, Tg)
-        return dict(cfg, eedf=str(lib), outdir=os.path.join(TABLE_DIR, "ArEEDF_" + lib.name))
-    return dict(cfg, outdir=os.path.join(TABLE_DIR, os.path.basename(cfg["outdir"])))
-
-
-def build_table(key, eedf="mix"):
-    with xsec_set(CR_XSEC):
-        tab = crf.build_model_table(table_cfg(key, eedf))
-    print(f"{key}: {len(tab['x_grid'])} E/N rows, {(~tab['converged']).sum()} not converged", flush=True)
-
-
-def build_all(keys):
-    """keys: (table key, eedf)"""
-    with xsec_set(CR_XSEC):
-        todo = [k for k in keys if not crf.table_is_current(table_cfg(*k))]
-    if not todo:
-        return
-    logs = os.path.join(OUTDIR, "logs")
-    os.makedirs(logs, exist_ok=True)
-    print(f"CR tables: {len(todo)} jobs ({N_WORKERS} at a time) ...", flush=True)
-    env = dict(os.environ, OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", MKL_NUM_THREADS="1")
-    t0, procs = time.time(), {}
-    for k in todo:
-        while sum(q.poll() is None for q in procs.values()) >= N_WORKERS:
-            time.sleep(5)
-        log = open(os.path.join(logs, f"build_{k[1]}_{k[0].replace(':', '_')}.log"), "w")
-        procs[k] = subprocess.Popen([sys.executable, "-u", os.path.abspath(__file__), "--build", *k],
-                                    stdout=log, stderr=subprocess.STDOUT, cwd=crf.ROOT_DIR, env=env)
-    failed = [k for k, q in procs.items() if q.wait() != 0]
-    print(f"CR tables done ({time.time() - t0:.0f} s)", flush=True)
-    if failed:
-        raise RuntimeError(f"CR tables failed for {failed} - see {logs}")
 
 
 # ---- cross sections ---------------------------------------------------------------------
@@ -288,6 +226,6 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) > 2 and sys.argv[1] == "--build":
-        build_table(*sys.argv[2:4])
+        P.build_table(*sys.argv[2:4])
     else:
         main()

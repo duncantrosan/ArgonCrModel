@@ -2,10 +2,20 @@
 #   python Main.py input_N2sweep_80W.toml --plan   then without --plan
 
 [run]
-output_folder = "Experimental_Data/Output/N2Sweep80W_pureArEEDF"
+output_folder = "Experimental_Data/Output/N2Sweep3Powers3Pressures"
 
 [fit]
 Ne_pin = "free_else_nc"        # free Ne, n_c where the free fit runs to the grid edge
+
+[las]
+file = "Experimental_Data/LAS_Data/Master_AllMeasurements.csv"
+frequency_MHz = [2400, 2450]   # only LAS rows in this source-frequency range are used
+match_power_W = 5              # an LAS row matches an OES condition at the same p and % N2, power within ±5 W
+write_summary = true
+summary_base = ""          # table to add OES columns to; "" = the `file` above
+summary_file = ""          # where to write; "" = default path below
+summary_in_place = false   # true = write the OES columns back into summary_base itself
+
 
 [[dataset]]
 name = "80W_0.6Torr_0-10pctN2"

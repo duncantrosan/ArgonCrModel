@@ -73,9 +73,7 @@ def load_fit(eedf, pct):
                 cond=pd.read_csv(os.path.join(cfg["outdir"], "fit_conditions.csv")))
 
 
-def chi2_grid(post, chi2_min, birge):
-    with np.errstate(divide="ignore"):
-        return chi2_min + 2 * birge ** 2 * (np.log(post.max()) - np.log(post))
+chi2_grid = anc.crf.chi2_grid                       # (pipeline/CRTableFit.py)
 
 
 def _q(values, weights):

@@ -32,8 +32,8 @@ RATIOS = [(750.387, 751.465), (811.531, 750.387), (420.067, 750.387)]
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# ---- load the CR-model functions from MainFileV2 (definitions only) -------------
-_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'MainFileV2.py')
+# ---- load the CR-model functions (pipeline/CRModelSolver.py, definitions only) -------------
+_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pipeline', 'CRModelSolver.py')
 _tree = ast.parse(open(_path, encoding='utf-8').read())
 _defs = ast.Module([n for n in _tree.body if isinstance(n, (ast.FunctionDef, ast.Import, ast.ImportFrom))], [])
 cr = {'__file__': _path, 'OUTPUT_DIR': OUTPUT_DIR, 'plt': plt}

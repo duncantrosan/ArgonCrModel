@@ -33,7 +33,7 @@ crf, he = pc.crf, pc.he
 
 # ---- settings -------------------------------------------------------------------
 SWEEP, X = pc.SWEEP, pc.X                           # pure Ar, 85 W, 1 Torr
-RESPONSE_DEG = 1                                    # None = calibration trusted, 1 = linear tilt
+RESPONSE_DEG = None                                 # calibration trusted (the tilt is disabled in CRFitNeTe)
 SOURCES = [   # label, EEDF ('maxwell' or library folder), colour, drawn in the spectrum figure
     ("MultiBolt", he.MULTIBOLT_FOLDER / "Ar_Biagi_lowEN_span12", "0.45", True),
     ("Maxwell-Boltzmann", "maxwell", "C1", True),

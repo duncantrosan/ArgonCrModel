@@ -1,0 +1,408 @@
+\documentclass[11pt,a4paper]{article}
+% ---------------------------------------------------------------------------------------------
+%  First user guide of the ArgonCrModel echelle pipeline (Main.py + pipeline/).
+%  Plain LaTeX, standard packages only: compiles with pdflatex, e.g. on Overleaf.
+% ---------------------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+% inline code / file names (underscores and braces are printed as they are; do not put % or # inside)
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\definecolor{codebg}{gray}{0.95}
+\definecolor{comment}{rgb}{0.35,0.45,0.35}
+\lstset{basicstyle=\ttfamily\small, backgroundcolor=\color{codebg}, frame=single, rulecolor=\color{gray!50},
+        columns=fullflexible, keepspaces=true, breaklines=true, showstringspaces=false,
+        commentstyle=\color{comment}, xleftmargin=3pt, xrightmargin=3pt, aboveskip=6pt, belowskip=6pt}
+\lstdefinelanguage{toml}{morecomment=[l]{\#}, morestring=[b]"}
+\lstdefinelanguage{shell}{morecomment=[l]{\#}}
+
+\newenvironment{note}{\par\smallskip\noindent\begin{minipage}{\linewidth}\small\textbf{Note.}~}{\end{minipage}\par\smallskip}
+
+\title{ArgonCrModel: a first user guide\\[2pt]\large CR-model fits of echelle spectra of Ar and Ar/admixture microwave plasmas}
+\date{October 2026}
+
+\begin{document}
+\emergencystretch=3em                 % long file names: stretch lines rather than run into the margin
+\maketitle
+\tableofcontents
+\bigskip
+
+% =============================================================================================
+\section{What the code does}
+% =============================================================================================
+You give the code \textbf{echelle emission spectra} of an argon microwave plasma (2.42\,GHz), with or without a
+second gas such as N$_2$, and the \textbf{laser-absorption (LAS) table} of the same discharge. For every plasma
+condition (pressure, power, admixture \%) it does the following:
+\begin{enumerate}
+  \item fits the emission lines of every spectrum (line areas);
+  \item takes the gas temperature $T_g$ of the condition from the LAS measurements, and builds, if it does not
+        exist yet, the BOLSIG+ EEDF library and the CR-model table that the condition needs;
+  \item fits the Ar\,I line intensities with the collisional--radiative (CR) model. This gives the E/N of the EEDF,
+        the effective electron temperature $T_{e,\mathrm{eff}}$, the electron density $N_e$ (fitted or pinned) and
+        the densities of all Ar levels, including the 1s metastables, which are compared with LAS;
+  \item for conditions with N$_2$: does N\,I/Ar\,I actinometry, giving the N-atom fraction $n_N/n_{Ar}$, the
+        N-atom density and the N$_2$ dissociation degree;
+  \item writes tables and figures, and returns everything as one \textbf{results dict} (\S\ref{sec:results}).
+\end{enumerate}
+Everything is controlled by \textbf{one input file} (TOML). You do not need to edit any Python to run the model.
+
+% =============================================================================================
+\section{Setting up}
+% =============================================================================================
+\textbf{Python} 3.11 or newer (the input file is read with \code{tomllib}), with \code{numpy}, \code{scipy},
+\code{pandas} and \code{matplotlib}. Spyder works well but is not required. Tested with Python 3.11.9, numpy 2.2,
+scipy 1.15, pandas 2.3 and matplotlib 3.10.
+
+\textbf{BOLSIG+} (\code{Bolsig/bolsigminus.exe}, Windows) is used only when a new EEDF library has to be built.
+Already-built libraries are stored in \code{InputData/Bolsig/} and are reused.
+
+\textbf{Paths.} Every path is relative to the folder that holds \code{Main.py} (the repo folder). The only
+exception is a full path you write in the input file, for example for the echelle data.
+
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lL@{}}
+\toprule
+Folder / file & What it is \\
+\midrule
+\code{Main.py} & \textbf{the script you run} \\
+\code{input_example.toml} & example input file: \textbf{every setting with its default and explanation} \\
+\code{InputFiles/} & your own input files (suggested place) \\
+\code{CreateEEDFScheme.py} & tool to define new EEDF options (\S\ref{sec:eedf}) \\
+\code{pipeline/} & the code of the pipeline; \code{pipeline/README.md} explains each file \\
+\code{Experimental_Data/EchelleData/} & echelle spectra, one folder per data set \\
+\code{Experimental_Data/LAS_Data/} & the LAS table(s) \\
+\code{Experimental_Data/Output/} & results, and the caches (CR tables, logs) \\
+\code{InputData/} & atomic data, cross sections, quenching tables; \code{Bolsig/} = EEDF libraries \\
+\code{Bolsig/} & BOLSIG+ program and its cross-section files \\
+\code{SmallAnalysisScripts/}, \code{Scripts/} & stand-alone analysis and test scripts (not needed for a run) \\
+\code{LatexReport/} & the LaTeX report the pipeline can refresh (\code{[report]}) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =============================================================================================
+\section{Quick start}
+% =============================================================================================
+\begin{enumerate}
+  \item Copy \code{input_example.toml} to, for example, \code{InputFiles/my_run.toml}.
+  \item In \code{[run]}, set \code{output_folder} to a \textbf{new} folder, so you do not overwrite earlier results:
+\begin{lstlisting}[language=toml]
+[run]
+output_folder = "Experimental_Data/Output/MyFirstRun"
+\end{lstlisting}
+  \item Describe your data sets in \code{[[dataset]]} blocks (\S\ref{sec:datasets}). Switch off the example data
+        sets you do not need with \code{run = false}.
+  \item \textbf{Always check first} with \code{--plan}. This reads and checks the input file, lists the conditions
+        with their $T_g$ and LAS 1s5, and tells you which libraries and CR tables would be built. Nothing is
+        fitted or overwritten:
+\begin{lstlisting}[language=shell]
+python Main.py InputFiles/my_run.toml --plan
+\end{lstlisting}
+  \item Run it:
+\begin{lstlisting}[language=shell]
+python Main.py InputFiles/my_run.toml
+\end{lstlisting}
+  \item Look at \code{<output_folder>/fits_all.csv}, the figures in \code{<output_folder>/<data set>/figures/},
+        and the results dict \code{RES} (\S\ref{sec:results}).
+\end{enumerate}
+
+\textbf{In Spyder:} open \code{Main.py}, then Run $\rightarrow$ Configuration per file $\rightarrow$
+\emph{Command line options}: \code{InputFiles/my_run.toml} (add \code{--plan} to check). After the run,
+\code{RES} is in the Variable Explorer. From the IPython console you can also call
+\code{import Main; RES = Main.main(["InputFiles/my_run.toml"])}.
+
+% =============================================================================================
+\section{Your input data}
+% =============================================================================================
+\subsection{Echelle spectra}
+\begin{itemize}
+  \item One folder per data set (one sweep), normally inside \code{Experimental_Data/EchelleData/}. It contains
+        the \code{.spa} exports of the echelle software, several repeats per condition.
+  \item \textbf{Intensity calibration:} the third header flag of a \code{.spa} file says whether it was exported
+        with the intensity calibration. The pattern \code{[spectra] export_flags} (\code{?} = anything) decides
+        which spectra are used. \code{"?-?-1-?"} or \code{"?-?-1-1"} keeps only calibrated spectra. Uncalibrated
+        spectra are listed in the printout and skipped.
+  \item Files that match no file-name pattern, such as backgrounds (\code{ref1.spa}), are ignored.
+  \item A condition needs at least \code{[spectra] min_repeats} spectra (default 2).
+\end{itemize}
+
+\subsection{Describing a data set: the \texttt{[[dataset]]} block}\label{sec:datasets}
+Each data set is one block. There are two ways to tell the code which file belongs to which condition.
+
+\textbf{(a) A file-name pattern} with \code{{x}} = the swept value and \code{{rep}} = the repeat number. The
+decimal point of \code{{x}} can be written \code{_} or \code{.}. For example, \code{Percent_0_33__2.spa} is
+read as $x = 0.33$, repeat 2.
+\begin{lstlisting}[language=toml]
+[[dataset]]
+name = "80W_1Torr"                    # short name: output folder and legend
+folder = "N21TorrAdmixtureSweep80W"   # relative to [run] echelle_folder, or a full path
+files = "Percent_{x}__{rep}"          # file name without .spa; several: ["pattern1", "pattern2"]
+sweep = "N2"                          # what {x} is: "N2" (% in the feed), "pressure" (mTorr), "power" (W)
+power_W = 80                          # give the TWO conditions that are not swept
+pressure_mTorr = 1000
+\end{lstlisting}
+
+\textbf{(b) A file list} (CSV): use this when the file names have no clean pattern. Write
+\code{file_list = "my_files.csv"}, with the path relative to the input file. Then \code{power_W},
+\code{pressure_mTorr} and \code{N2_percent} are not needed in the block. The example is
+\code{input_files_80W_example.csv}:
+\begin{lstlisting}
+file,pressure_mTorr,gas1,gas2,gas2_percent,power_W,flow_sccm,repeat,note
+Percent_0_33__1,1000,Ar,N2,0.33,80,,,
+Percent_0_33__2,1000,Ar,N2,0.33,80,,,
+\end{lstlisting}
+Required columns: \code{file}, \code{pressure_mTorr}, \code{gas1}, \code{gas2}, \code{gas2_percent},
+\code{power_W}. Optional: \code{flow_sccm}, \code{repeat}, \code{Tg_K}, \code{note}. Lines starting with the
+hash sign are comments.
+
+\textbf{Optional keys} of a block: \code{run = false} skips the data set (it stays in the file);
+\code{exclude_x = [0.0, 1.5]} leaves out these sweep values; \code{Tg_K = 600} uses a fixed gas temperature
+instead of the LAS trend. Pure-Ar data sets (0\,\% admixture) get the CR fit and the metastables but no
+actinometry.
+
+\subsection{The LAS table}
+\code{[las] file} (default \code{Experimental_Data/LAS_Data/Master_AllMeasurements.csv}) is used for three things:
+the \textbf{gas temperature} of every condition (a trend $T_g(p, P, \%)$ fitted to all LAS rows, rounded to
+\code{[eedf] Tg_step_K}), the \textbf{LAS 1s5 density} shown against the CR model, and an optional
+\textbf{summary table} with the OES results added. Both layouts are read: one row per measurement
+(\code{Master_AllMeasurements}) or one row per condition (\code{Master_Summary}). The columns used are
+\code{run_id}, \code{date}, \code{pressure} [Torr], \code{power} [W], \code{Nitrogen_Percent}, \code{frequency}
+[MHz], \code{T_gas_K} (and \code{_err}), and \code{N_s_cm3} (the 1s5 density, and \code{_err}). Useful settings
+are \code{frequency_MHz}, \code{match_power_W}, \code{runs = "latest"} or \code{"all"}, and
+\code{exclude_runs = ["<run id>"]}.
+
+\subsection{Data you normally do not touch}
+These live in \code{InputData/}: the Ar level and transition lists (\code{ArgonLevelList.json},
+\code{ArgonReactionList.json}), the CR cross sections (default \code{ArgonCrossSections_BSR_analytic5p.json}),
+the radiation-trapping table, and the two quenching tables \code{Ar_1s_quenching_data.csv} (4s levels) and
+\code{Ar_2p_quenching_Sadeghi2001.csv} (4p levels). To add quenching rates for a new gas, add rows to these CSV
+files.
+
+% =============================================================================================
+\section{The input file}
+% =============================================================================================
+\code{input_example.toml} lists \textbf{every} setting with its default and a full explanation. Read it once.
+A setting you leave out keeps its default. A misspelled setting or section is an error, and the message lists
+the allowed names. TOML basics: \texttt{\#} starts a comment, text goes in "double quotes", \code{true}/\code{false}
+are lower case, lists are written \code{[1, 2, 3]}.
+
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lL@{}}
+\toprule
+Section & Main settings (default) \\
+\midrule
+\code{[run]} & \code{output_folder}; \code{echelle_folder}; \code{overwrite} (true: clears old results of a data set, line fits kept); \code{show_plots} (false); \code{plan_only} \\
+\code{[model]} & CR-model physics: \code{cross_sections}, \code{plasma_radius_m} (0.04), \code{trap_lines} (\code{"all"}), \code{escape_mode} (\code{"table"}), \code{atom_transfer}, \code{quench_4p}, \code{N2_quench_scale} (1), \code{N2_dissociation} (0), \code{admixture_gas} (\code{"N2"}) \\
+\code{[eedf]} & \code{model} (\code{"pure_Ar"}, \code{"ArN2_vib_saturated"}, \code{"ArN2_vib_Tv"} or an EEDF scheme name); \code{Tv_K}, \code{Tv_grid_K}; \code{Tg_step_K} (50) \\
+\code{[fit]} & \code{Ne_pin} (\code{"free"}, \code{"free_else_nc"}, \code{"nc"} or a density); \code{nc_penalty}; \code{sigma_model} (0.20); line selection: \code{wavelength_ranges_nm}, \code{exclude_lines_nm}, \code{min_rating}, \code{max_rel_err}, \code{merge_nm} \\
+\code{[spectra]} & \code{export_flags}; \code{min_repeats} (2); \code{line_status} \\
+\code{[actinometry]} & extra N\,I lines, excluded Ar references, outlier fences, cross-section errors \\
+\code{[plots]} & one true/false per figure type; \code{dpi} \\
+\code{[las]} & the LAS table and how it is matched to the OES conditions; the summary table \\
+\code{[report]} & \code{make = true} refreshes \code{LatexReport/figures} and \code{tables} after the run \\
+\code{[[dataset]]} & one block per data set (\S\ref{sec:datasets}) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{note}
+Changing any \code{[model]} setting means new CR tables. These are built automatically and kept in their own
+folder, so the tables of the default settings are never overwritten. Check the number with \code{--plan} first.
+\end{note}
+
+% =============================================================================================
+\section{Running the model}
+% =============================================================================================
+\begin{itemize}
+  \item \code{python Main.py <input file> --plan}: check and plan only. Use it every time you change something.
+  \item \code{python Main.py <input file>}: full run. It builds the missing libraries and tables, fits, and writes
+        all outputs.
+  \item \code{python Main.py} with no argument runs the input file named in \code{DEFAULT_INPUT} at the top of
+        \code{Main.py}.
+\end{itemize}
+
+\textbf{Run time.} Everything expensive is cached and reused:
+\begin{itemize}
+  \item \textbf{BOLSIG+ libraries}: one per (admixture \%, pressure, $T_g$) for Ar/N$_2$ EEDFs, or per (pressure,
+        $T_g$) for the pure-Ar EEDF. They take about 1--20\,min each, with 6 built in parallel, and are stored in
+        \code{InputData/Bolsig/}.
+  \item \textbf{CR tables}: one per condition and EEDF library, about 2--3\,min each, 6 in parallel. They are stored
+        in \code{Experimental_Data/Output/AnalyticFivePFit/tables}.
+  \item \textbf{Line fits} of the spectra: 1--2\,min per data set the first time. They are stored in
+        \code{<output_folder>/<data set>/measurements/}, so a \emph{new} output folder fits the lines again.
+  \item With everything cached, a data set takes a few minutes.
+\end{itemize}
+The settings of every run are written to \code{<output_folder>/settings_used.json}.
+
+% =============================================================================================
+\section{Choosing the physics}
+% =============================================================================================
+\subsection{The EEDF}\label{sec:eedf}
+The EEDF is a BOLSIG+ solution in the 2.42\,GHz field, on an E/N grid of 3--1000\,Td. The fit picks the E/N.
+\begin{itemize}
+  \item \code{"pure_Ar"}: the pure-Ar EEDF. The admixture only acts in the CR model (quenching, dilution). This
+        is the default.
+  \item \code{"ArN2_vib_saturated"}: Ar/N$_2$ EEDF with the N$_2$ vibrations saturated (no net energy loss to
+        them).
+  \item \code{"ArN2_vib_Tv"}: Ar/N$_2$ EEDF with N$_2$(v) in a Boltzmann distribution at \code{Tv_K}. With
+        \code{Tv_K = "LAS"}, $T_v$ is chosen per condition from the LAS 1s5, scanning \code{Tv_grid_K}.
+  \item \textbf{Your own}: run \code{python CreateEEDFScheme.py} and answer the questions (gases, cross-section
+        files, reactions to leave out, vibrations, field, E/N values, LAS or fixed $T_g$, a name and a comment).
+        Then use \code{model = "<name>"}. All schemes, with their comments, are listed in
+        \code{InputData/EEDFSchemes/EEDF_schemes.md}.
+\end{itemize}
+
+\subsection{The electron density}
+\code{[fit] Ne_pin} can take four values:
+\begin{itemize}
+  \item \code{"free"}: $N_e$ is fitted together with E/N (2D posterior).
+  \item \code{"free_else_nc"}: free, but pinned at the critical density $n_c = 7.26\times10^{16}$\,m$^{-3}$ where
+        the free fit runs to the top of the $N_e$ grid (this happens at 0--1\,\% N$_2$).
+  \item \code{"nc"}: pinned at $n_c$.
+  \item a number, e.g. \code{1.5e17}: pinned at that value.
+\end{itemize}
+\code{fits.csv} always also has the free-fit $N_e$ (\code{Ne_free}) and the cost of pinning at $n_c$
+(\code{dchi2_nc}). \code{nc_penalty = true} adds a soft prior against $N_e$ far above $n_c$ (off by default).
+
+\subsection{The admixed gas}
+\code{[model] admixture_gas} (default \code{"N2"}) sets which gas quenches the Ar levels in the CR model. Only the
+quenching rates change; dilution, trapping and diffusion are the same for every gas. The rates are read from the
+two quenching tables:
+\begin{itemize}
+  \item all four 4s levels: N$_2$, H$_2$, O$_2$;
+  \item 4s metastables only (a 1s5/1s3 average): NO, CO$_2$, CF$_4$, CHF$_3$, CH$_4$, C$_2$H$_2$, C$_2$H$_4$,
+        C$_2$H$_6$, SF$_6$, NO$_2$, F$_2$, Cl$_2$.
+\end{itemize}
+The run \textbf{stops} if the gas has no metastable rate (e.g.\ He, Ne, Kr, Xe, CO). If only the resonant 4s rates
+are missing, it checks whether they matter, by comparing their estimated quenching with the trapped radiative
+decay. Below 5\,\% it only warns; above 5\,\% it stops, which happens at our 1\,Torr conditions. The EEDF is
+chosen separately, and a warning is printed when the EEDF's admixture differs from \code{admixture_gas}.
+
+\begin{note}
+There is deliberately no ``response tilt'' option: the intensity calibration is trusted.
+\end{note}
+
+% =============================================================================================
+\section{The results}\label{sec:results}
+% =============================================================================================
+\subsection{Files}
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{6.6cm}L@{}}
+\toprule
+File & Contents \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{in} \code{<output_folder>/}} \\
+\code{fits_all.csv} & one row per condition, all data sets: E/N, $T_{e,\mathrm{eff}}$, $N_e$ with bands, $\chi^2$/dof, CR 1s densities, LAS 1s5 \\
+\code{actinometry_per_condition_all.csv} & $n_N/n_{Ar}$, N-atom density, dissociation per condition and N\,I line \\
+\code{results.pkl} & the results dict \code{RES} (below) \\
+\code{overview_*.png} & all data sets of one sweep type together \\
+\code{<LAS table>_with_OES.csv} & the LAS table with the OES results added (densities in cm$^{-3}$) \\
+\code{settings_used.json} & exactly which settings the run used \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{in} \code{<output_folder>/<data set>/}} \\
+\code{fits.csv}, \code{residuals.csv} & the fits and the line residuals of the data set \\
+\code{actinometry_per_condition.csv}, \code{actinometry_per_pair.csv}, \code{line_ratios.csv} & actinometry per condition and per N\,I/Ar\,I pair; measured line ratios \\
+\code{figures/} & metastables vs LAS, E/N and $T_e$, $N_e$, EEDFs, residuals, actinometry, raw-line zooms \\
+\code{measurements/} & the cached line fits of the spectra \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Main columns of \code{fits.csv}: \code{x} (sweep value), \code{N2}, \code{p_Torr}, \code{P_W}, \code{Tg};
+\code{EN_nc}, \code{Te_nc} (with \code{_lo}/\code{_hi}); \code{Ne_fit} (with \code{_lo}/\code{_hi}) and
+\code{Ne_mode}; \code{chi2_red_nc}; \code{n_1s5}, \code{n_1s4}, \code{n_1s3}, \code{n_1s2} [m$^{-3}$];
+\code{las_1s5} and \code{ratio_cr_las}; \code{Ne_free}, \code{dchi2_nc}. The suffix \code{_nc} means ``the fit
+of the chosen $N_e$ mode'', which is pinned or free.
+
+\subsection{The results dict \texttt{RES}}
+\code{Main.py} returns \code{RES}, and it is saved as \code{<output_folder>/results.pkl}. It is ordered by data
+set and condition:
+\begin{lstlisting}
+RES["80W_1Torr"]["0.33 % N2"] = {
+    "condition":          data set, sweep, x, pressure, power, admixture gas and %, Tg
+    "files":              the spectra of this condition
+    "fit":                the fits.csv row (E/N, Te_eff, Ne, chi2, CR 1s densities, LAS 1s5, ...)
+    "scale_per_spectrum": {file: s}       (ln I_measured = ln I_model + s)
+    "line_residuals":     table of every measured line of every spectrum vs the model
+    "eedf":               the EEDF at the fitted E/N (E_eV, EEPF, Te_eff_eV, library)
+    "CR":                 {level: ...}  the CR model solved at the fit: for every state its
+                          density_m^-3, Loss_s^-1, Production_m^-3s^-1, kind, energy, rates,
+                          GasQuenching (what was read from the quenching tables), ...
+    "CR_solver":          Ne and E/N of the solve, convergence, the CR table used
+    "actinometry":        actinometry rows of this condition (N2 conditions)
+}
+RES["by_file"]["Percent_0_33__2"]   ->  the same entry, looked up by spectrum file
+\end{lstlisting}
+The condition keys are the sweep value with its unit: \texttt{"0.33 \% N2"}, \code{"850 mTorr"},
+\code{"35 W"}. Reading it later, without running anything:
+\begin{lstlisting}[language=Python]
+import pandas as pd
+RES = pd.read_pickle(r"Experimental_Data/Output/MyFirstRun/results.pkl")
+e = RES["80W_1Torr"]["0.33 % N2"]
+print(e["fit"]["EN_nc"], e["fit"]["Ne_fit"], e["fit"]["chi2_red_nc"])
+dens = {lvl: s["density_m^-3"] for lvl, s in e["CR"].items()}       # all states
+print(dens["4s1"], dens["4s3"])                                      # 1s5, 1s3 metastables
+print(RES["by_file"]["Percent_0_33__2"]["condition"])
+\end{lstlisting}
+The densities in \code{CR} come from a new CR solve at the fitted EEDF and $N_e$. The densities in \code{fit} are
+interpolated in the CR table, and the two agree to within about 1\,\%.
+
+% =============================================================================================
+\section{Troubleshooting}
+% =============================================================================================
+\begin{table}[h]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.6cm}L@{}}
+\toprule
+Message / problem & What to do \\
+\midrule
+\emph{unknown section} / \emph{has no setting} & a typo in the input file; the message lists the allowed names \\
+\emph{no calibrated spectrum matches the file pattern} & check \code{folder}, \code{files} and \code{[spectra] export_flags}; export the spectra with the intensity calibration \\
+\emph{N spectra without the intensity calibration left out} & these exports are raw; they are skipped \\
+\code{--plan} wants many libraries / tables & normal the first time for new pressures or $T_g$; a coarser \code{Tg_step_K} needs fewer \\
+\emph{BOLSIG+ libraries failed} / \emph{CR tables failed} & logs in \code{Experimental_Data/Output/LASTgComparison/logs} and \code{.../AnalyticFivePFit/logs} \\
+\emph{no quenching rate ... by admixture\_gas} & the gas is missing from the quenching tables: add its rates, or check the name \\
+$N_e$ at $3\times10^{19}$\,m$^{-3}$ (grid edge) & the free fit can run to the dense branch at low N$_2$: use \code{Ne_pin = "free_else_nc"} or \code{"nc"} \\
+results from an earlier run left over & \code{[run] overwrite = true} clears a data set's old results before its run; delete \code{<set>/measurements/} to refit the lines \\
+figures do not open & set \code{[run] show_plots = true} (the run then waits until you close them) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =============================================================================================
+\section{Where things are in the code}
+% =============================================================================================
+You do not need this to run the model. Every file in \code{pipeline/} starts with a header saying what it takes
+in, what it gives out and which files use it, and \code{pipeline/README.md} has a map of the files.
+\begin{itemize}
+  \item \code{Main.py}: reads and checks the input file, and passes the settings on (\code{DEFAULTS} lists them all).
+  \item \code{pipeline/RunDatasets.py}: the analysis of each data set and the results dict.
+  \item \code{pipeline/CRModelSolver.py}: the CR model (balance equations of the 51 Ar levels).
+  \item \code{pipeline/CRTableFit.py}: CR tables over (E/N, $N_e$), the line fit, and admixture quenching.
+  \item \code{pipeline/LASAndEEDFLibraries.py}: LAS $T_g$ and 1s5, and the BOLSIG+ libraries.
+  \item \code{pipeline/PhysicsHelpers.py}: atomic data, EEDFs, BOLSIG+, radiation trapping.
+\end{itemize}
+To add a new option: add it to \code{DEFAULTS} in \code{Main.py} and to \code{input_example.toml} with a comment,
+then check it with \code{--plan}. The old module names (\code{CRFitNeTe}, \code{HelperFunctions},
+\code{N2SweepPureArEEDF}, \dots) still work in older scripts.
+
+\end{document}

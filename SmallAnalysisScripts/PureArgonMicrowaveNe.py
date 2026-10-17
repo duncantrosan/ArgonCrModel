@@ -48,7 +48,7 @@ OUTDIR = os.path.join(mlf.ROOT_DIR, "Experimental_Data", "Output", "PureArgonMic
 
 
 # ---- fit ------------------------------------------------------------------------
-def line_cfg(keep=None, tilt=1):
+def line_cfg(keep=None, tilt=None):
     """Fit settings of the pure-Ar microwave table with only the lines keep (air nm) and the
     response tilt degree tilt (None = trust the intensity calibration)."""
     cfg = dict(mlf.job_cfg("lowEN:0"), response_deg=tilt)

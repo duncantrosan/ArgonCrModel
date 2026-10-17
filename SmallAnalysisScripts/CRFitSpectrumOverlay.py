@@ -109,6 +109,7 @@ def model_lines_at(tab, x, Ne, cfg):
 
 def nuisances(d, feats, wl_m, I_m, cfg):
     """Per-spectrum ln scale and response slope at the best fit (generalized LS, as fit_block)."""
+    crf.no_tilt(cfg)
     fwl = dict(zip(feats.feature, feats.wl))
     comp_wl = {ft.feature: [w for w, _, _ in ft.comps] for ft in feats.itertuples()}
     lnM = {f: np.log(sum(I_m[np.argmin(np.abs(wl_m - w))] for w in ws)) for f, ws in comp_wl.items()}

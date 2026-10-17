@@ -1,0 +1,122 @@
+# 80 W N2 admixture sweeps (0-10 % N2) at 0.6, 1 and 1.5 Torr against the LAS runs measured with the echelle spectra
+# (MiniChamberDataAnalysis Output/Batch_EchelleComparisionData, copied to Experimental_Data/LAS_Data); Ar/N2 EEDF with
+# N2(v) in a Boltzmann distribution at Tv, Tv of each condition from the LAS 1s5 (for now, until Tv is measured):
+# every condition is fitted at every Tv of Tv_grid_K and kept at the Tv where its CR 1s5 matches the LAS 1s5.
+# One of three runs compared in SmallAnalysisScripts/MetastablesVsLAS.py (with _pureAr and _vibsat).
+#   python Main.py InputFiles/input_N2sweep_80W_EchelleLAS_TvLAS.toml --plan   then without --plan
+# The first run builds one BOLSIG+ library and one CR table per condition and Tv (30 x 6): a few hours.
+
+
+
+
+[run]
+output_folder = "Experimental_Data/Output/N2Sweep80W_EchelleLAS_TvLAS"
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[fit]
+# ---------------------------------------------------------------------------------------------------------------------
+# CR fit of the Ar I line intensities: ln I_measured = ln I_model(E/N, Ne) + s_spectrum, one free scale s per
+# spectrum (so only the relative intensities matter - no reference line needed).  The fit is done on a grid of E/N
+# and Ne; the free fit (best E/N AND Ne) is always reported too (fits.csv: Ne_free, chi2_red_free, dchi2_nc).
+
+# Ne used for the metastables and the actinometry:
+#   "nc"     the critical density of 2.42 GHz, 7.26e16 m^-3 (overdense microwave plasma)  <- default
+#   1.5e17   any fixed density in m^-3 (the plots still say "n_c" in their titles)
+Ne_pin = "free"
+
+# Relative CR-model error per line, the same in every repeat (so repeats cannot average it away).
+sigma_model = 0.0
+
+# Smallest relative error of a measured line (added to 1/SNR of the line fit).
+sigma_fit_floor = 0.02
+
+# Add the measured repeat-to-repeat scatter of each line to its error (recommended: it is 10-40 %, far above 1/SNR).
+use_repeat_scatter = true
+
+# Widen the uncertainties by the Birge factor sqrt(chi2/dof) when the fit is worse than the errors allow.
+birge = true
+
+# A line is dropped from a spectrum if its relative error is larger than this.
+max_rel_err = 0.15
+
+# Lines closer than this [nm] are summed into one feature (the line fitter cannot separate them).
+merge_nm = 0.10
+
+# Wavelength ranges [nm] of the Ar I lines used: 5p -> 4s (blue) and 4p -> 4s (red).
+wavelength_ranges_nm = [[400.0, 475.0], [690.0, 860.0]]
+
+# Ar I lines [nm, air] left out by hand (852.14: at the edge of an echelle order).
+exclude_lines_nm = [852.144]
+
+# Smallest manual rating (1-5) of a line to be used; lines without a rating pass on the automatic checks.
+min_rating = 4
+
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[eedf]
+# ---------------------------------------------------------------------------------------------------------------------
+# The EEDF is a microwave BOLSIG+ solution (2.42 GHz, Biagi cross sections, E/N 3-1000 Td).
+#
+# Which EEDF family (the fit picks E/N within it):
+#   "pure_Ar"             pure-Ar BOLSIG+ EEDF; the N2 only acts in the CR model (quenching, dilution)  <- default
+#   "ArN2_vib_saturated"  Ar/N2 BOLSIG+ EEDF with the N2 vibrations saturated (no net e-V energy loss; N2 elastic,
+#                         electronic excitation and ionization kept). Cold N2(v=0) EEDFs fail the fit; this one fits as
+#                         well as pure Ar. Needs one library per (% N2, pressure, Tg) - built automatically (~1 min each).
+#   "ArN2_vib_Tv"         Ar/N2 BOLSIG+ EEDF with the N2(v) levels in a Boltzmann distribution at Tv_K (below): full
+#                         reversible vibrational ladder, so electrons lose energy to cold vibrations and get it back from
+#                         hot ones.  Tv_K ~ 300 is the cold case (fails); ~10000 K approaches saturation.
+model = "ArN2_vib_saturated"
+
+# Vibrational temperature of N2(X) for model = "ArN2_vib_Tv" [K] (ignored otherwise).  Each Tv gets its own libraries
+# and CR tables (folder names ..._Tv<Tv>K), so several values can be compared without overwriting each other.
+Tv_K = 8000
+
+# Tg of each condition = LAS trend (fit to all LAS measurements), rounded to this step [K].  A smaller step means
+# more libraries and tables; 50 K changes the results by much less than their errors.
+# (A data set can also fix Tg itself: Tg_K in its [[dataset]] block.)
+Tg_step_K = 50
+
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+[spectra]
+# ---------------------------------------------------------------------------------------------------------------------
+# Header flags of the .spa export that a spectrum must have (pattern; ? = anything).  The 3rd flag is the
+# intensity calibration: "?-?-1-1" keeps only calibrated spectra.  Uncalibrated spectra are listed and skipped.
+export_flags = "?-?-1-1"
+
+# A condition / line ratio needs at least this many repeat spectra with the lines detected.
+min_repeats = 2
+
+# Line-fit status that counts as "detected" for the actinometry ("ok", "weak", "blend", "not_detected").
+line_status = ["ok", "weak"]
+
+
+[las]
+exclude_runs = ["707ea594"]    # bad first 1 Torr run, redone as bc16bda5
+
+[[dataset]]
+name = "80W_0.6Torr_0-10pctN2"
+folder = "N2AdmixtureSweep0,6Torr80W"
+files = "N2_Percent_{x}_{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 600
+
+[[dataset]]
+name = "80W_1Torr_0-10pctN2"
+folder = "N2AdmixtureSweep1Torr80W"
+files = "N2_Percent_{x}_{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 1000
+
+[[dataset]]
+name = "80W_1.5Torr_0-10pctN2"
+folder = "N2AdmixtureSweep1,5Torr80W"
+files = "N2_Percent_{x}_{rep}"
+sweep = "N2"
+power_W = 80
+pressure_mTorr = 1500

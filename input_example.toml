@@ -33,7 +33,15 @@
 #  WHERE THE RESULTS GO
 #    <output_folder>/<data set name>/   tables (.csv) and figures/ of each data set
 #    <output_folder>/                   fits_all.csv, actinometry_per_condition_all.csv, overview_*.png,
-#                                       settings_used.json (exactly which settings this run used)
+#                                       settings_used.json (exactly which settings this run used),
+#                                       results.pkl: the results dict RES (Main.py returns it too):
+#                                         RES[data set][condition] -> files, fit, scale per spectrum, residuals,
+#                                         EEDF, and CR = the CR model at the fit (density, loss, production,
+#                                         rates of every state);  RES["by_file"][spectrum] -> its condition
+#                                       reload it with  pandas.read_pickle("<output_folder>/results.pkl")
+#  PATHS
+#    Relative paths in this file start at the folder of Main.py; [run] echelle_folder (and any other path) may
+#    also be a full path.  The code itself is in pipeline/ (pipeline/README.md).
 #
 #  RUN TIME
 #    Line fits and CR tables are cached and reused.  With everything cached a data set takes a few minutes.  A new
@@ -68,7 +76,7 @@ show_plots = false
 # ---------------------------------------------------------------------------------------------------------------------
 [model]
 # ---------------------------------------------------------------------------------------------------------------------
-# Physics of the argon CR model (Scripts/MainFileV2.py).
+# Physics of the argon CR model (pipeline/CRModelSolver.py).
 #
 # !! Changing ANY setting of this section means new CR tables: they are built automatically (~2-3 min each, all
 # !! conditions) and kept in their own folder (Experimental_Data/Output/AnalyticFivePFit/tables_<code>), so the
@@ -106,6 +114,23 @@ N2_quench_scale = 1.0
 # not quench the Ar levels in the model.
 N2_dissociation = 0.0
 
+# The admixed gas of the CR model (the second gas of the data sets; N2_percent / gas2_percent is then its %).
+# Only its quenching rates of the Ar levels change - dilution, trapping, diffusion, atom transfer are the same for
+# any gas (no collisional mixing by the admixture).  The rates are read from two tables in InputData/:
+#   Ar_1s_quenching_data.csv         the four 4s levels (metastable + resonant), kQ and three-body kQM:
+#                                    N2, H2, O2
+#   Ar_2p_quenching_Sadeghi2001.csv  the 4p levels 4p10, 4p6, 4p5, 4p3 (with quench_4p): He, Ne, Kr, Xe, H2, D2,
+#                                    N2, CO, O2, NO, CO2, CF4, SF6, CH4, ... and, for O2, NO, CO2, CF4, CHF3,
+#                                    CH4, C2H2, C2H4, C2H6, SF6, NO2, F2, Cl2, a 1s5/1s3 average (Velazco 1978)
+#                                    used for the two metastables when the 4s table does not have the gas
+# The run STOPS when the gas has no metastable rates (e.g. He, Ne, Kr, Xe, CO), or no 4p rates with
+# quench_4p = true.  When only the resonant 4s2 / 4s4 rates are missing it checks whether they matter: their
+# quenching (estimated with the metastable rate) against the trapped radiative decay (escape factor x A) of
+# their resonance lines.  Below 5 % (weak trapping: low pressure or little admixture) it only warns and leaves
+# them unquenched; above it stops.  Every CR table remembers its gas, so N2 tables are never reused for another.
+# The EEDF is chosen separately ([eedf] model); a warning is printed if its admixture is a different gas.
+admixture_gas = "N2"
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 [eedf]
@@ -120,11 +145,29 @@ N2_dissociation = 0.0
 #   "ArN2_vib_Tv"         Ar/N2 BOLSIG+ EEDF with the N2(v) levels in a Boltzmann distribution at Tv_K (below): full
 #                         reversible vibrational ladder, so electrons lose energy to cold vibrations and get it back from
 #                         hot ones.  Tv_K ~ 300 is the cold case (fails); ~10000 K approaches saturation.
+#   "<scheme name>"       an EEDF scheme made with  python CreateEEDFScheme.py : your own choice of gases, cross
+#                         sections (and processes left out), vibrations (cold / saturated / Boltzmann at a Tv), field,
+#                         E/N values and gas temperature (LAS or a fixed number).  The list of schemes, with what they
+#                         are for: InputData/EEDFSchemes/EEDF_schemes.md.  Its libraries are built automatically like
+#                         the ones above (--plan lists them).  Tv_K and Tv_grid_K below are not used by a scheme.
 model = "pure_Ar"
 
 # Vibrational temperature of N2(X) for model = "ArN2_vib_Tv" [K] (ignored otherwise).  Each Tv gets its own libraries
 # and CR tables (folder names ..._Tv<Tv>K), so several values can be compared without overwriting each other.
+#   Tv_K = "LAS"  instead: Tv chosen per condition from the LAS 1s5.  Every condition with N2 is fitted at every Tv of
+#                 Tv_grid_K (below) and reported at the grid Tv nearest to where its CR 1s5 crosses the LAS 1s5
+#                 (fits.csv: Tv_LAS, Tv_LAS_lo/hi = range where the CR band overlaps LAS +- its error, Tv_used,
+#                 Tv_match; the whole scan in tv_scan.csv and figures/tv_scan_vs_<x>.png).  Only Tv whose line fit is
+#                 acceptable (chi2/dof within 25 % of the condition's best) are used.  One library and CR table per
+#                 condition AND Tv: with 30 conditions and 6 Tv that is 180 of each (a few hours the first time).
 Tv_K = 8000
+
+# The Tv tried with Tv_K = "LAS" [K].  The crossing is interpolated in ln Tv between them; the fit is reported at the
+# nearest one, so a denser grid gives a CR 1s5 closer to the LAS value (and more libraries).
+# Keep Tv <= ~10000 K: hotter vibrations heat the electrons into a runaway (mean energy ~9 eV at 3 Td for 15000 K,
+# against 1.2 eV at 10000 K) and BOLSIG+ then needs > 20 min per library.  Below ~5000 K the line fit fails (cold
+# N2(v): chi2/dof 2-5 at 2000-4000 K against ~1.6 at 7000-10000 K, 80 W, 1 Torr).
+Tv_grid_K = [4000, 5000, 6000, 7000, 8000, 10000]
 
 # Tg of each condition = LAS trend (fit to all LAS measurements), rounded to this step [K].  A smaller step means
 # more libraries and tables; 50 K changes the results by much less than their errors.
@@ -149,6 +192,18 @@ Tg_step_K = 50
 # fits.csv always has both: the columns *_nc hold the fit of this mode (pinned or free), Ne_fit its Ne, and
 # Ne_free / chi2_red_free / dchi2_nc (cost of pinning at n_c, in Birge units) the comparison.
 Ne_pin = "free"
+
+# Soft penalty on Ne above the critical density (off by default; only with Ne_pin = "free" or "free_else_nc").
+# The fit still looks for the best (E/N, Ne) of the lines, but Ne above nc_penalty_start x n_c costs
+#     Delta chi^2 / B^2 = ( ln(Ne / (nc_penalty_start n_c)) / ln(nc_penalty_width) )^2      (B = Birge ratio)
+# and Ne below it costs nothing.  With width 3: 3x above the start costs 1 sigma, 10x 2.1 sigma, 30x 3.1 sigma,
+# 100x 4.2 sigma, the 3e19 grid edge (~400 n_c) 5.5 sigma - a fit the lines pull far above n_c is pulled back
+# unless they insist.  The bands, dchi2_nc and the actinometry use the penalized posterior; chi2_red_nc stays the
+# lines alone at the reported fit.  The chi^2 maps show both profiles ([plots] chi2_maps).  fits.csv then also has
+# Ne_lines_only (best Ne of the lines alone) and penalty_at_fit (the penalty at the reported Ne, in sigma^2).
+nc_penalty = false
+nc_penalty_start = 1.0          # the penalty starts at this multiple of n_c (>= 1)
+nc_penalty_width = 3.0          # factor in Ne above the start that costs 1 sigma (> 1; larger = softer)
 
 # Relative CR-model error per line, the same in every repeat (so repeats cannot average it away).
 sigma_model = 0.20
@@ -229,6 +284,8 @@ k_margin_eV = 1.0
 # Which figures to make (true / false).  Per data set they go to <output_folder>/<name>/figures/.
 metastables = true             # CR 1s5 / 1s3 at the fit against LAS
 fit_params = true              # E/N and Te_eff of the fit at n_c against the sweep
+electron_density = true        # Ne of the fit against the sweep, critical density of 2.42 GHz dotted (pinned
+                               # conditions: open markers, their free-fit Ne as grey x)
 eedf = true                    # the fitted EEDF (EEPF) of every condition, and relative to the first one
 residuals = true               # line residuals (measured - scale - model) per feature against the sweep, and a
                                # measured-vs-model plot of all conditions
@@ -265,6 +322,13 @@ frequency_MHz = [2400, 2450]
 
 # An LAS row belongs to an OES condition with the same nominal pressure and % N2 and a power within this [W].
 match_power_W = 5
+
+# LAS runs combined at one pressure and % N2 (measured beats interpolated beats extrapolated):
+#   "latest" = only the most recent run (by date); "all" = harmonic mean of every such run.
+runs = "latest"
+
+# LAS run ids left out of everything (Tg trend, LAS 1s5), e.g. a bad run that was redone: ["707ea594"].
+exclude_runs = []
 
 # true = write a summary table: every row and column of summary_base, plus for the rows of an analysed condition
 # (same pressure and % N2, power within match_power_W): E/N, Te_eff, Ne (with lo/hi bands), chi2/dof and CR 1s5 of the
